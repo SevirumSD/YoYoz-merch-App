@@ -1,0 +1,80 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Product name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Product description"
+    },
+    "price": {
+      "type": "number",
+      "description": "Price in USD"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "t-shirts",
+        "hoodies",
+        "stickers",
+        "posters",
+        "calendars",
+        "accessories"
+      ],
+      "description": "Product category"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Main product image URL"
+    },
+    "images": {
+      "type": "array",
+      "description": "Additional product images",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sizes": {
+      "type": "array",
+      "description": "Available sizes",
+      "items": {
+        "type": "string"
+      }
+    },
+    "colors": {
+      "type": "array",
+      "description": "Available colors",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_new": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is a new drop"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is featured on homepage"
+    },
+    "stock": {
+      "type": "number",
+      "default": 100,
+      "description": "Available stock"
+    },
+    "tour_exclusive": {
+      "type": "boolean",
+      "default": false,
+      "description": "Tour exclusive item"
+    }
+  },
+  "required": [
+    "name",
+    "price",
+    "category"
+  ]
+}

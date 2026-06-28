@@ -1,0 +1,56 @@
+{
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Notification title"
+    },
+    "message": {
+      "type": "string",
+      "description": "Notification body"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "new_merch",
+        "sale",
+        "tour",
+        "restock"
+      ],
+      "default": "new_merch"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    },
+    "is_global": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title",
+    "message"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "name": "Order",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "Order items",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string"
+          },
+          "product_name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "size": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "total": {
+      "type": "number",
+      "description": "Order total"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "shipped",
+        "delivered"
+      ],
+      "default": "pending"
+    },
+    "shipping_name": {
+      "type": "string"
+    },
+    "shipping_address": {
+      "type": "string"
+    },
+    "shipping_city": {
+      "type": "string"
+    },
+    "shipping_state": {
+      "type": "string"
+    },
+    "shipping_zip": {
+      "type": "string"
+    },
+    "shipping_country": {
+      "type": "string"
+    },
+    "shipping_email": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "items",
+    "total"
+  ]
+}
