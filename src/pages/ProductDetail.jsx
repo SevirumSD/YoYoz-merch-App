@@ -146,11 +146,67 @@ export default function ProductDetail() {
               className="aspect-square rounded-2xl overflow-hidden bg-zinc-900 cursor-zoom-in relative group border border-zinc-850"
               onClick={() => setZoomImage(allImages[0])}
             >
-              <img
-                src={allImages[0] || "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=600&q=80"}
-                alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-              />
+              {product.id === "mock-accessory-wristband-1" ? (
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-zinc-950">
+                  <div className="absolute inset-0 bg-radial-gradient from-black to-zinc-950" />
+                  
+                  {/* Glowing light effect based on active selection */}
+                  <div 
+                    className="absolute w-40 h-40 rounded-full blur-[80px] opacity-35 transition-all duration-700"
+                    style={{
+                      backgroundColor: (selectedColor || product.colors?.[0]) === "Green" ? "#22c55e" 
+                                     : (selectedColor || product.colors?.[0]) === "Blue" ? "#3b82f6" 
+                                     : (selectedColor || product.colors?.[0]) === "Pink" ? "#ec4899" 
+                                     : "#ef4444" // Default to Red
+                    }}
+                  />
+
+                  {/* Wristband SVG graphic */}
+                  <div className="relative z-10 w-48 h-48 flex flex-col items-center justify-center">
+                    <svg className="w-full h-full text-zinc-800 fill-current drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]" viewBox="0 0 100 100">
+                      {/* Silicon strap */}
+                      <path d="M10 40 C 30 30, 70 30, 90 40 C 90 48, 70 38, 10 48 Z" fill="#18181b" stroke="#3f3f46" strokeWidth="0.5" />
+                      
+                      {/* LED module base */}
+                      <rect x="35" y="28" width="30" height="14" rx="3" fill="#27272a" stroke="#52525b" strokeWidth="0.5" />
+                      
+                      {/* Light-up element */}
+                      <rect 
+                        x="39" y="32" width="22" height="6" rx="1.5" 
+                        fill={(selectedColor || product.colors?.[0]) === "Green" ? "#22c55e" : (selectedColor || product.colors?.[0]) === "Blue" ? "#3b82f6" : (selectedColor || product.colors?.[0]) === "Pink" ? "#ec4899" : "#ef4444"} 
+                        style={{
+                          filter: "drop-shadow(0 0 8px currentColor)",
+                        }}
+                        className="transition-colors duration-500"
+                      />
+                    </svg>
+
+                    {/* Engraved Logo Text overlay */}
+                    <div className="absolute top-[48%] text-center pointer-events-none select-none">
+                      <span 
+                        className="font-black text-[9px] block uppercase tracking-tight transition-all duration-500"
+                        style={{
+                          color: (selectedColor || product.colors?.[0]) === "Green" ? "#86efac" : (selectedColor || product.colors?.[0]) === "Blue" ? "#93c5fd" : (selectedColor || product.colors?.[0]) === "Pink" ? "#fbcfe8" : "#fca5a5",
+                          textShadow: (selectedColor || product.colors?.[0]) === "Green" ? "0 0 8px rgba(34,197,94,0.8)" : (selectedColor || product.colors?.[0]) === "Blue" ? "0 0 8px rgba(59,130,246,0.8)" : (selectedColor || product.colors?.[0]) === "Pink" ? "0 0 8px rgba(236,72,153,0.8)" : "0 0 8px rgba(239,68,68,0.8)"
+                        }}
+                      >
+                        BOOGIE
+                      </span>
+                      <span className="text-[6px] text-zinc-500 block font-bold tracking-widest uppercase">CONCERT</span>
+                    </div>
+                  </div>
+
+                  <span className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/5 text-[9px] font-black text-white uppercase tracking-wider">
+                    Interactive Light-Up Preview
+                  </span>
+                </div>
+              ) : (
+                <img
+                  src={allImages[0] || "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=600&q=80"}
+                  alt={product.name}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+              )}
 
               {/* Dynamic Custom Configuration overlay (simulating 24hourwristband preview) */}
               {product.isCustom && (customText || uploadedLogo) && (
@@ -356,12 +412,35 @@ export default function ProductDetail() {
                       onClick={() => setSelectedColor(color)}
                       className={cn(
                         "px-4 h-11 rounded-xl font-bold text-sm transition-all capitalize border",
-                        selectedColor === color
-                          ? "bg-red-600 border-red-600 text-white"
+                        (selectedColor || product.colors[0]) === color
+                          ? "bg-red-600 border-red-600 text-white shadow-md shadow-red-600/25"
                           : "bg-zinc-900 border-zinc-850 text-zinc-400 hover:bg-zinc-800 hover:text-white"
                       )}
                     >
                       {color}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Standard Size Selector */}
+            {product.sizes?.length > 0 && (
+              <div className="mt-6">
+                <label className="text-zinc-300 font-bold text-xs uppercase tracking-wider block mb-2">Select Size</label>
+                <div className="flex gap-2 flex-wrap">
+                  {product.sizes.map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={cn(
+                        "px-4 h-11 rounded-xl font-bold text-sm transition-all uppercase border",
+                        (selectedSize || product.sizes[0]) === size
+                          ? "bg-red-600 border-red-600 text-white shadow-md shadow-red-600/25"
+                          : "bg-zinc-900 border-zinc-850 text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                      )}
+                    >
+                      {size}
                     </button>
                   ))}
                 </div>

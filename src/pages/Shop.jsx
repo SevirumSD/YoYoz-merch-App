@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { getProducts } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
@@ -25,15 +26,29 @@ import {
 import { cn } from "@/lib/utils";
 
 export default function Shop() {
+  const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const initialFilter = urlParams.get("filter") || "";
+  const location = useLocation();
 
   // Unified filter state supporting category, gender, and style
-  const [filters, setFilters] = useState({
-    category: "all",
-    gender: "all",
-    style: "all",
+  const [filters, setFilters] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      category: params.get("category") || "all",
+      gender: params.get("gender") || "all",
+      style: params.get("style") || "all",
+    };
   });
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    setFilters({
+      category: params.get("category") || "all",
+      gender: params.get("gender") || "all",
+      style: params.get("style") || "all",
+    });
+  }, [location.search]);
   
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
@@ -79,8 +94,8 @@ export default function Shop() {
       product_name: product.name,
       price: product.price,
       quantity: 1,
-      size: product.sizes?.[0] || "",
-      color: product.colors?.[0] || "",
+      size: product.selectedSize || product.sizes?.[0] || "",
+      color: product.selectedColor || product.colors?.[0] || "",
       image_url: product.image_url,
     });
     window.dispatchEvent(new Event("cart-updated"));
@@ -131,37 +146,43 @@ export default function Shop() {
       p.koozie
     );
 
-    // Custom Steel Tumblers
-    const steelTumblers = filteredProducts.filter(p =>
+    // Custom Insulated Tumblers
+    const tumblers = filteredProducts.filter(p =>
       p.dbCategory?.toLowerCase() === 'steel tumblers' ||
       p.dbCategory?.toLowerCase() === 'steel_tumbler' ||
-      p.name?.toLowerCase().includes('steel tumbler')
-    );
-
-    // Custom Wine Tumblers
-    const wineTumblers = filteredProducts.filter(p =>
       p.dbCategory?.toLowerCase() === 'wine tumblers' ||
       p.dbCategory?.toLowerCase() === 'wine_tumbler' ||
-      p.name?.toLowerCase().includes('wine tumbler')
+      p.name?.toLowerCase().includes('tumbler')
     );
 
     const other = filteredProducts.filter(p => 
-      !shirts.includes(p) && !hoodies.includes(p) && !koozies.includes(p) && !steelTumblers.includes(p) && !wineTumblers.includes(p)
+      !shirts.includes(p) && !hoodies.includes(p) && !koozies.includes(p) && !tumblers.includes(p)
     );
 
-    return { shirts, hoodies, koozies, steelTumblers, wineTumblers, other };
+    return { shirts, hoodies, koozies, tumblers, other };
   }, [filteredProducts, isDefaultView]);
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <div className="px-5 pt-8 pb-4 max-w-7xl mx-auto">
-        <h1 className="text-white font-black text-3xl md:text-4xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-          {initialFilter === "tour_exclusive" ? "TOUR MERCH" : initialFilter === "new" ? "NEW DROPS" : "SHOP ALL"}
-        </h1>
-        <p className="text-zinc-500 mt-1">
-          {filteredProducts.length} products
-        </p>
+      {/* Concert Band Logo Header */}
+      <div className="relative overflow-hidden bg-zinc-950 border-y border-zinc-900 py-10 mb-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.12)_0%,transparent_70%)]" />
+        <div className="relative max-w-7xl mx-auto px-5 text-center">
+          <div className="inline-block bg-red-600 text-white font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-[0.2em] mb-3">
+            Official Tour Store
+          </div>
+          <h1 className="text-white font-black text-4xl md:text-6xl tracking-tighter uppercase leading-none select-none" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            BOOGIE <span className="text-red-600">& THE YO-YOZ</span>
+          </h1>
+          <p className="text-zinc-400 mt-2.5 text-xs md:text-sm font-medium max-w-md mx-auto uppercase tracking-wide">
+            {initialFilter === "tour_exclusive" ? "Exclusive Tour Merch" : initialFilter === "new" ? "Fresh New Drops" : "Shop the Gig Collection"}
+          </p>
+          <div className="mt-4 flex items-center justify-center gap-2 text-zinc-600 text-xs font-bold uppercase tracking-wider">
+            <span>{filteredProducts.length} Items Available</span>
+            <span>•</span>
+            <span className="text-red-500">Live & Loud</span>
+          </div>
+        </div>
       </div>
 
       {/* Filters & Actions Panel */}
@@ -198,7 +219,7 @@ export default function Shop() {
                 Refine
               </button>
             </SheetTrigger>
-            <SheetContent className="bg-black border-l border-zinc-900 text-white p-6 w-80 sm:w-96 max-h-screen overflow-y-auto">
+            <SheetContent className="bg-zinc-950 border-l-2 border-red-600 text-white p-6 w-80 sm:w-96 max-h-screen overflow-y-auto shadow-[0_0_50px_rgba(220,38,38,0.15)]">
               <SheetHeader className="mb-6">
                 <SheetTitle className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   Filter & Refine
@@ -206,7 +227,7 @@ export default function Shop() {
               </SheetHeader>
               
               <div className="space-y-6">
-                {/* Active Filters Clear Button */}
+                {/* Clear All Filters */}
                 {(filters.category !== "all" || filters.gender !== "all" || filters.style !== "all") && (
                   <button 
                     onClick={() => setFilters({ category: "all", gender: "all", style: "all" })}
@@ -216,120 +237,130 @@ export default function Shop() {
                   </button>
                 )}
 
-                {/* Dropdowns using Accordion */}
-                <Accordion type="single" collapsible className="w-full">
-                  {/* Men's Apparel Dropdown */}
-                  <AccordionItem value="mens" className="border-zinc-900">
-                    <AccordionTrigger className="text-sm font-black uppercase text-zinc-200 hover:text-white py-4 hover:no-underline">
-                      Men's Apparel
-                    </AccordionTrigger>
-                    <AccordionContent className="space-y-1.5 pt-1 pb-4">
-                      <button 
-                        onClick={() => setFilters({ category: "all", gender: "men", style: "all" })}
-                        className={cn(
-                          "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all",
-                          filters.gender === "men" && filters.category === "all" && filters.style === "all"
-                            ? "bg-red-600 text-white"
-                            : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
-                        )}
-                      >
-                        All Men's
-                      </button>
-                      <button 
-                        onClick={() => setFilters({ category: "Shirts", gender: "men", style: "all" })}
-                        className={cn(
-                          "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all",
-                          filters.gender === "men" && filters.category === "Shirts" && filters.style !== "v-neck"
-                            ? "bg-red-600 text-white"
-                            : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
-                        )}
-                      >
-                        Shirts
-                      </button>
-                      <button 
-                        onClick={() => setFilters({ category: "Hoodies", gender: "men", style: "all" })}
-                        className={cn(
-                          "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all",
-                          filters.gender === "men" && filters.category === "Hoodies"
-                            ? "bg-red-600 text-white"
-                            : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
-                        )}
-                      >
-                        Hoodies
-                      </button>
-                      <button 
-                        onClick={() => setFilters({ category: "all", gender: "men", style: "v-neck" })}
-                        className={cn(
-                          "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all",
-                          filters.gender === "men" && filters.style === "v-neck"
-                            ? "bg-red-600 text-white"
-                            : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
-                        )}
-                      >
-                        V-Necks
-                      </button>
-                    </AccordionContent>
-                  </AccordionItem>
+                {/* 1. Toggle headers for Men's and Women's Merchandise */}
+                <div>
+                  <h4 className="text-zinc-500 font-bold text-xs uppercase tracking-wider mb-3">Gender Filters</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => setFilters(f => ({ ...f, gender: f.gender === "men" ? "all" : "men" }))}
+                      className={cn(
+                        "py-3 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition-all border text-center font-bold",
+                        filters.gender === "men"
+                          ? "bg-red-600 border-red-600 text-white shadow-lg shadow-red-600/30"
+                          : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800"
+                      )}
+                    >
+                      Men's Merch
+                    </button>
+                    <button
+                      onClick={() => setFilters(f => ({ ...f, gender: f.gender === "women" ? "all" : "women" }))}
+                      className={cn(
+                        "py-3 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition-all border text-center font-bold",
+                        filters.gender === "women"
+                          ? "bg-red-600 border-red-600 text-white shadow-lg shadow-red-600/30"
+                          : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800"
+                      )}
+                    >
+                      Women's Merch
+                    </button>
+                  </div>
+                </div>
 
-                  {/* Women's Apparel Dropdown */}
-                  <AccordionItem value="womens" className="border-zinc-900">
-                    <AccordionTrigger className="text-sm font-black uppercase text-zinc-200 hover:text-white py-4 hover:no-underline">
-                      Women's Apparel
-                    </AccordionTrigger>
-                    <AccordionContent className="space-y-1.5 pt-1 pb-4">
-                      <button 
-                        onClick={() => setFilters({ category: "all", gender: "women", style: "all" })}
-                        className={cn(
-                          "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all",
-                          filters.gender === "women" && filters.category === "all" && filters.style === "all"
-                            ? "bg-red-600 text-white"
-                            : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
-                        )}
-                      >
-                        All Women's
-                      </button>
-                      <button 
-                        onClick={() => setFilters({ category: "Shirts", gender: "women", style: "all" })}
-                        className={cn(
-                          "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all",
-                          filters.gender === "women" && filters.category === "Shirts" && filters.style !== "v-neck"
-                            ? "bg-red-600 text-white"
-                            : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
-                        )}
-                      >
-                        Shirts
-                      </button>
-                      <button 
-                        onClick={() => setFilters({ category: "Hoodies", gender: "women", style: "all" })}
-                        className={cn(
-                          "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all",
-                          filters.gender === "women" && filters.category === "Hoodies"
-                            ? "bg-red-600 text-white"
-                            : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
-                        )}
-                      >
-                        Hoodies
-                      </button>
-                      <button 
-                        onClick={() => setFilters({ category: "all", gender: "women", style: "v-neck" })}
-                        className={cn(
-                          "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all",
-                          filters.gender === "women" && filters.style === "v-neck"
-                            ? "bg-red-600 text-white"
-                            : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
-                        )}
-                      >
-                        V-Necks
-                      </button>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                {/* Category Dropdowns styled in Red and Black concert theme */}
+                <div className="pt-2 border-t border-zinc-900">
+                  <h4 className="text-zinc-500 font-bold text-xs uppercase tracking-wider mb-2">Apparel Categories</h4>
+                  <Accordion type="single" collapsible className="w-full">
+                    {/* Men's Apparel Dropdown */}
+                    <AccordionItem value="mens" className="border-zinc-900">
+                      <AccordionTrigger className="text-sm font-black uppercase text-zinc-200 hover:text-red-500 py-3 hover:no-underline transition-colors">
+                        Men's Apparel Options
+                      </AccordionTrigger>
+                      <AccordionContent className="space-y-1.5 pt-1 pb-3">
+                        <button 
+                          onClick={() => setFilters({ category: "all", gender: "men", style: "all" })}
+                          className={cn(
+                            "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all border border-transparent",
+                            filters.gender === "men" && filters.category === "all" && filters.style === "all"
+                              ? "bg-red-950/40 border-red-800 text-red-500"
+                              : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                          )}
+                        >
+                          All Men's
+                        </button>
+                        <button 
+                          onClick={() => setFilters({ category: "Shirts", gender: "men", style: "all" })}
+                          className={cn(
+                            "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all border border-transparent",
+                            filters.gender === "men" && filters.category === "Shirts" && filters.style !== "v-neck"
+                              ? "bg-red-950/40 border-red-800 text-red-500"
+                              : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                          )}
+                        >
+                          Shirts
+                        </button>
+                        <button 
+                          onClick={() => setFilters({ category: "Hoodies", gender: "men", style: "all" })}
+                          className={cn(
+                            "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all border border-transparent",
+                            filters.gender === "men" && filters.category === "Hoodies"
+                              ? "bg-red-950/40 border-red-800 text-red-500"
+                              : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                          )}
+                        >
+                          Hoodies
+                        </button>
+                      </AccordionContent>
+                    </AccordionItem>
 
-                {/* Dedicated V-Necks Filter Button */}
+                    {/* Women's Apparel Dropdown */}
+                    <AccordionItem value="womens" className="border-zinc-900">
+                      <AccordionTrigger className="text-sm font-black uppercase text-zinc-200 hover:text-red-500 py-3 hover:no-underline transition-colors">
+                        Women's Apparel Options
+                      </AccordionTrigger>
+                      <AccordionContent className="space-y-1.5 pt-1 pb-3">
+                        <button 
+                          onClick={() => setFilters({ category: "all", gender: "women", style: "all" })}
+                          className={cn(
+                            "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all border border-transparent",
+                            filters.gender === "women" && filters.category === "all" && filters.style === "all"
+                              ? "bg-red-950/40 border-red-800 text-red-500"
+                              : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                          )}
+                        >
+                          All Women's
+                        </button>
+                        <button 
+                          onClick={() => setFilters({ category: "Shirts", gender: "women", style: "all" })}
+                          className={cn(
+                            "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all border border-transparent",
+                            filters.gender === "women" && filters.category === "Shirts" && filters.style !== "v-neck"
+                              ? "bg-red-950/40 border-red-800 text-red-500"
+                              : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                          )}
+                        >
+                          Shirts
+                        </button>
+                        <button 
+                          onClick={() => setFilters({ category: "Hoodies", gender: "women", style: "all" })}
+                          className={cn(
+                            "w-full text-left px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all border border-transparent",
+                            filters.gender === "women" && filters.category === "Hoodies"
+                              ? "bg-red-950/40 border-red-800 text-red-500"
+                              : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                          )}
+                        >
+                          Hoodies
+                        </button>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+
+                {/* Style Quick Filter */}
                 <div className="pt-5 border-t border-zinc-900">
-                  <h4 className="text-zinc-500 font-bold text-xs uppercase tracking-wider mb-3">Style Filter</h4>
+                  <h4 className="text-zinc-500 font-bold text-xs uppercase tracking-wider mb-3">Style Quick Filter</h4>
                   <button 
-                    onClick={() => setFilters({ category: "all", gender: "all", style: "v-neck" })}
+                    onClick={() => setFilters(f => ({ ...f, category: "all", gender: "all", style: f.style === "v-neck" ? "all" : "v-neck" }))}
                     className={cn(
                       "w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-black uppercase tracking-wider transition-all border",
                       filters.style === "v-neck"
@@ -338,7 +369,7 @@ export default function Shop() {
                     )}
                   >
                     <span>V-Necks Only</span>
-                    <span className="text-[10px] bg-black/30 px-2.5 py-0.5 rounded font-black text-red-400">HOT</span>
+                    <span className="text-[10px] bg-black/30 px-2.5 py-0.5 rounded font-black text-red-400 animate-pulse">V-NECK</span>
                   </button>
                 </div>
               </div>
@@ -373,10 +404,25 @@ export default function Shop() {
             {/* Shirts Collection */}
             {groupedProducts.shirts.length > 0 && (
               <div className="space-y-5">
-                <div className="flex items-end justify-between border-b border-zinc-900 pb-3">
-                  <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Shirts Collection
-                  </h2>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-900 pb-3 gap-3">
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      Shirts Collection
+                    </h2>
+                    {/* V-Necks Filter Button right inside the layout section */}
+                    <button
+                      onClick={() => setFilters(f => ({ ...f, category: "all", gender: "all", style: f.style === "v-neck" ? "all" : "v-neck" }))}
+                      className={cn(
+                        "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5 font-bold",
+                        filters.style === "v-neck"
+                          ? "bg-red-600 border-red-600 text-white shadow-md shadow-red-600/20"
+                          : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
+                      )}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                      V-Necks
+                    </button>
+                  </div>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
                     {groupedProducts.shirts.length} items
                   </span>
@@ -442,43 +488,19 @@ export default function Shop() {
               </div>
             )}
 
-            {/* Custom Steel Tumblers Collection */}
-            {groupedProducts.steelTumblers.length > 0 && (
+            {/* Custom Insulated Tumblers Collection */}
+            {groupedProducts.tumblers?.length > 0 && (
               <div className="space-y-5">
                 <div className="flex items-end justify-between border-b border-zinc-900 pb-3">
                   <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Custom Steel Tumblers
+                    Custom Insulated Tumblers
                   </h2>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
-                    {groupedProducts.steelTumblers.length} items
+                    {groupedProducts.tumblers.length} items
                   </span>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {groupedProducts.steelTumblers.map((product, i) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onQuickAdd={handleQuickAdd}
-                      index={i}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Custom Wine Tumblers Collection */}
-            {groupedProducts.wineTumblers.length > 0 && (
-              <div className="space-y-5">
-                <div className="flex items-end justify-between border-b border-zinc-900 pb-3">
-                  <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Custom Wine Tumblers
-                  </h2>
-                  <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
-                    {groupedProducts.wineTumblers.length} items
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {groupedProducts.wineTumblers.map((product, i) => (
+                  {groupedProducts.tumblers.map((product, i) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -523,6 +545,28 @@ export default function Shop() {
           </div>
         ) : (
           <div className="space-y-8">
+            {/* Active Filter Header Block */}
+            {(filters.category !== "all" || filters.gender !== "all" || filters.style !== "all") && (
+              <div className="flex items-center justify-between bg-zinc-950 border border-zinc-900 p-4 rounded-2xl">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">Active Filter:</span>
+                  <span className="bg-red-950/30 border border-red-900/50 text-red-500 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 capitalize">
+                    {filters.gender !== "all" && <span>{filters.gender}</span>}
+                    {filters.category !== "all" && <span>• {filters.category}</span>}
+                    {filters.style !== "all" && <span>• {filters.style}</span>}
+                  </span>
+                </div>
+                <button
+                  onClick={() => {
+                    setFilters({ category: "all", gender: "all", style: "all" });
+                    navigate(createPageUrl("Shop"));
+                  }}
+                  className="text-xs font-black uppercase tracking-wider text-zinc-400 hover:text-white transition-colors"
+                >
+                  Clear Filter
+                </button>
+              </div>
+            )}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {filteredProducts.map((product, i) => (
                 <ProductCard

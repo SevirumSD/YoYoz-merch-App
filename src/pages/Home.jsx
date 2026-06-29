@@ -18,14 +18,13 @@ export default function Home() {
   });
 
   const handleQuickAdd = async (product) => {
-    const user = await base44.auth.me().catch(() => null);
     await base44.entities.CartItem.create({
       product_id: product.id,
       product_name: product.name,
       price: product.price,
       quantity: 1,
-      size: product.sizes?.[0] || "",
-      color: product.colors?.[0] || "",
+      size: product.selectedSize || product.sizes?.[0] || "",
+      color: product.selectedColor || product.colors?.[0] || "",
       image_url: product.image_url,
     });
     window.dispatchEvent(new Event("cart-updated"));

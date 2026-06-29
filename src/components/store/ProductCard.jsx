@@ -14,15 +14,24 @@ const ACCENTS = [
 
 export default function ProductCard({ product, onQuickAdd, onAddToCart, index = 0 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [selectedSize, setSelectedSize] = useState(product.sizes && product.sizes.length > 0 ? product.sizes[0] : "");
+  const [selectedColor, setSelectedColor] = useState(product.colors && product.colors.length > 0 ? product.colors[0] : "");
   const accent = ACCENTS[index % ACCENTS.length];
 
   const handleAction = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    const productWithVariants = {
+      ...product,
+      selectedSize,
+      selectedColor,
+    };
+
     if (onQuickAdd) {
-      onQuickAdd(product);
+      onQuickAdd(productWithVariants);
     } else if (onAddToCart) {
-      onAddToCart(product);
+      onAddToCart(productWithVariants);
     }
   };
 
@@ -127,6 +136,74 @@ export default function ProductCard({ product, onQuickAdd, onAddToCart, index = 
         <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider mt-1">
           {product.category?.replace(/_/g, " ")}
         </p>
+
+        {/* Color picker badges */}
+        {product.colors && product.colors.length > 0 && (
+          <div className="flex items-center gap-1.5 mt-3" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+            {product.colors.map((c) => {
+              const colorName = c.toLowerCase();
+              let styleObj = {};
+              
+              if (colorName === "red" || colorName === "crimson red" || colorName === "flame red") {
+                styleObj = { backgroundColor: "#ff003c" };
+              } else if (colorName === "black" || colorName === "midnight black" || colorName === "concert black") {
+                styleObj = { backgroundColor: "#121212", border: "1px solid rgba(255,255,255,0.2)" };
+              } else if (colorName === "white") {
+                styleObj = { backgroundColor: "#ffffff" };
+              } else if (colorName === "silver") {
+                styleObj = { backgroundColor: "#c0c0c0" };
+              } else if (colorName === "rose gold") {
+                styleObj = { backgroundColor: "#b76e79" };
+              } else {
+                styleObj = { backgroundColor: colorName };
+              }
+
+              const isSelected = selectedColor === c;
+              
+              return (
+                <button
+                  key={c}
+                  onClick={() => setSelectedColor(c)}
+                  title={c}
+                  className="w-3.5 h-3.5 rounded-full transition-all relative flex items-center justify-center cursor-pointer"
+                  style={{
+                    ...styleObj,
+                    transform: isSelected ? "scale(1.25)" : "scale(1)",
+                    boxShadow: isSelected ? `0 0 10px ${accent.color}, 0 0 0 1.5px ${accent.color}` : "none",
+                  }}
+                >
+                  {isSelected && (
+                    <span className="w-1 h-1 rounded-full bg-white" style={{ backgroundColor: colorName === 'white' ? '#000' : '#fff' }} />
+                  )}
+                </button>
+              );
+            })}
+            <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider ml-1">
+              {selectedColor}
+            </span>
+          </div>
+        )}
+
+        {/* Dynamic Size Selector */}
+        {product.sizes && product.sizes.length > 0 && (
+          <div className="mt-3.5 flex items-center justify-between gap-2" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+            <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Size:</span>
+            <select
+              value={selectedSize}
+              onChange={(e) => setSelectedSize(e.target.value)}
+              className="bg-zinc-950 border border-zinc-800 text-zinc-300 text-[10px] font-black rounded-lg px-2 py-1 focus:outline-none focus:border-red-600 transition-colors uppercase tracking-wider cursor-pointer"
+              style={{
+                borderColor: selectedSize ? `${accent.color}44` : "rgba(255,255,255,0.08)"
+              }}
+            >
+              {product.sizes.map((s) => (
+                <option key={s} value={s} className="bg-zinc-950 text-zinc-300">
+                  {s}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div className="flex items-center justify-between gap-4 mt-5">
           <span
