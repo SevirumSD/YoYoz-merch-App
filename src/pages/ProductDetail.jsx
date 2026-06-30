@@ -157,6 +157,7 @@ export default function ProductDetail() {
                       backgroundColor: (selectedColor || product.colors?.[0]) === "Green" ? "#22c55e" 
                                      : (selectedColor || product.colors?.[0]) === "Blue" ? "#3b82f6" 
                                      : (selectedColor || product.colors?.[0]) === "Pink" ? "#ec4899" 
+                                     : (selectedColor || product.colors?.[0]) === "White" ? "#ffffff"
                                      : "#ef4444" // Default to Red
                     }}
                   />
@@ -173,7 +174,7 @@ export default function ProductDetail() {
                       {/* Light-up element */}
                       <rect 
                         x="39" y="32" width="22" height="6" rx="1.5" 
-                        fill={(selectedColor || product.colors?.[0]) === "Green" ? "#22c55e" : (selectedColor || product.colors?.[0]) === "Blue" ? "#3b82f6" : (selectedColor || product.colors?.[0]) === "Pink" ? "#ec4899" : "#ef4444"} 
+                        fill={(selectedColor || product.colors?.[0]) === "Green" ? "#22c55e" : (selectedColor || product.colors?.[0]) === "Blue" ? "#3b82f6" : (selectedColor || product.colors?.[0]) === "Pink" ? "#ec4899" : (selectedColor || product.colors?.[0]) === "White" ? "#ffffff" : "#ef4444"} 
                         style={{
                           filter: "drop-shadow(0 0 8px currentColor)",
                         }}
@@ -186,8 +187,8 @@ export default function ProductDetail() {
                       <span 
                         className="font-black text-[9px] block uppercase tracking-tight transition-all duration-500"
                         style={{
-                          color: (selectedColor || product.colors?.[0]) === "Green" ? "#86efac" : (selectedColor || product.colors?.[0]) === "Blue" ? "#93c5fd" : (selectedColor || product.colors?.[0]) === "Pink" ? "#fbcfe8" : "#fca5a5",
-                          textShadow: (selectedColor || product.colors?.[0]) === "Green" ? "0 0 8px rgba(34,197,94,0.8)" : (selectedColor || product.colors?.[0]) === "Blue" ? "0 0 8px rgba(59,130,246,0.8)" : (selectedColor || product.colors?.[0]) === "Pink" ? "0 0 8px rgba(236,72,153,0.8)" : "0 0 8px rgba(239,68,68,0.8)"
+                          color: (selectedColor || product.colors?.[0]) === "Green" ? "#86efac" : (selectedColor || product.colors?.[0]) === "Blue" ? "#93c5fd" : (selectedColor || product.colors?.[0]) === "Pink" ? "#fbcfe8" : (selectedColor || product.colors?.[0]) === "White" ? "#ffffff" : "#fca5a5",
+                          textShadow: (selectedColor || product.colors?.[0]) === "Green" ? "0 0 8px rgba(34,197,94,0.8)" : (selectedColor || product.colors?.[0]) === "Blue" ? "0 0 8px rgba(59,130,246,0.8)" : (selectedColor || product.colors?.[0]) === "Pink" ? "0 0 8px rgba(236,72,153,0.8)" : (selectedColor || product.colors?.[0]) === "White" ? "0 0 8px rgba(255,255,255,0.8)" : "0 0 8px rgba(239,68,68,0.8)"
                         }}
                       >
                         BOOGIE
