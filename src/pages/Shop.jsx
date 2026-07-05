@@ -4,8 +4,10 @@ import { base44 } from "@/api/base44Client";
 import { getProducts } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../components/store/ProductCard";
+import ComingSoonCard from "../components/store/ComingSoonCard";
 import CategoryBar from "../components/store/CategoryBar";
 import ConcertQRCodeCard from "../components/store/ConcertQRCodeCard";
+import logoFull from "@/assets/logo-full.png";
 import { Input } from "@/components/ui/input";
 import { Search, SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -171,8 +173,9 @@ export default function Shop() {
           <div className="inline-block bg-red-600 text-white font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-[0.2em] mb-3">
             Official Tour Store
           </div>
-          <h1 className="text-white font-black text-4xl md:text-6xl tracking-tighter uppercase leading-none select-none" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-            BOOGIE <span className="text-red-600">& THE YO-YOZ</span>
+          <h1 className="text-white font-black text-4xl md:text-6xl tracking-tighter uppercase leading-none select-none flex items-center justify-center gap-3" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span>BOOGIE <span className="text-red-600">& THE YO-YOZ</span></span>
+            <img src={logoFull} alt="Band Logo" className="w-10 h-10 md:w-16 md:h-16 object-contain inline-block select-none invert brightness-200" />
           </h1>
           <p className="text-zinc-400 mt-2.5 text-xs md:text-sm font-medium max-w-md mx-auto uppercase tracking-wide">
             {initialFilter === "tour_exclusive" ? "Exclusive Tour Merch" : initialFilter === "new" ? "Fresh New Drops" : "Shop the Gig Collection"}
@@ -424,11 +427,11 @@ export default function Shop() {
                     </button>
                   </div>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
-                    {groupedProducts.shirts.length} items
+                    4 items
                   </span>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {groupedProducts.shirts.map((product, i) => (
+                  {groupedProducts.shirts.slice(0, 4).map((product, i) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -436,6 +439,14 @@ export default function Shop() {
                       index={i}
                     />
                   ))}
+                  {Array(Math.max(0, 4 - groupedProducts.shirts.slice(0, 4).length))
+                    .fill(0)
+                    .map((_, i) => (
+                      <ComingSoonCard
+                        key={`placeholder-shirts-${i}`}
+                        index={groupedProducts.shirts.slice(0, 4).length + i}
+                      />
+                    ))}
                 </div>
               </div>
             )}
@@ -448,11 +459,11 @@ export default function Shop() {
                     Hoodies & Outerwear
                   </h2>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
-                    {groupedProducts.hoodies.length} items
+                    4 items
                   </span>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {groupedProducts.hoodies.map((product, i) => (
+                  {groupedProducts.hoodies.slice(0, 4).map((product, i) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -460,6 +471,14 @@ export default function Shop() {
                       index={i}
                     />
                   ))}
+                  {Array(Math.max(0, 4 - groupedProducts.hoodies.slice(0, 4).length))
+                    .fill(0)
+                    .map((_, i) => (
+                      <ComingSoonCard
+                        key={`placeholder-hoodies-${i}`}
+                        index={groupedProducts.hoodies.slice(0, 4).length + i}
+                      />
+                    ))}
                 </div>
               </div>
             )}
@@ -472,11 +491,11 @@ export default function Shop() {
                     Custom Can Koozies
                   </h2>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
-                    {groupedProducts.koozies.length} items
+                    4 items
                   </span>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {groupedProducts.koozies.map((product, i) => (
+                  {groupedProducts.koozies.slice(0, 4).map((product, i) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -484,6 +503,14 @@ export default function Shop() {
                       index={i}
                     />
                   ))}
+                  {Array(Math.max(0, 4 - groupedProducts.koozies.slice(0, 4).length))
+                    .fill(0)
+                    .map((_, i) => (
+                      <ComingSoonCard
+                        key={`placeholder-koozies-${i}`}
+                        index={groupedProducts.koozies.slice(0, 4).length + i}
+                      />
+                    ))}
                 </div>
               </div>
             )}
@@ -496,11 +523,11 @@ export default function Shop() {
                     Custom Insulated Tumblers
                   </h2>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
-                    {groupedProducts.tumblers.length} items
+                    4 items
                   </span>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {groupedProducts.tumblers.map((product, i) => (
+                  {groupedProducts.tumblers.slice(0, 4).map((product, i) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -508,6 +535,14 @@ export default function Shop() {
                       index={i}
                     />
                   ))}
+                  {Array(Math.max(0, 4 - groupedProducts.tumblers.slice(0, 4).length))
+                    .fill(0)
+                    .map((_, i) => (
+                      <ComingSoonCard
+                        key={`placeholder-tumblers-${i}`}
+                        index={groupedProducts.tumblers.slice(0, 4).length + i}
+                      />
+                    ))}
                 </div>
               </div>
             )}
@@ -520,11 +555,11 @@ export default function Shop() {
                     Other Concert Gear
                   </h2>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
-                    {groupedProducts.other.length} items
+                    4 items
                   </span>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {groupedProducts.other.map((product, i) => (
+                  {groupedProducts.other.slice(0, 4).map((product, i) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -532,6 +567,14 @@ export default function Shop() {
                       index={i}
                     />
                   ))}
+                  {Array(Math.max(0, 4 - groupedProducts.other.slice(0, 4).length))
+                    .fill(0)
+                    .map((_, i) => (
+                      <ComingSoonCard
+                        key={`placeholder-other-${i}`}
+                        index={groupedProducts.other.slice(0, 4).length + i}
+                      />
+                    ))}
                 </div>
               </div>
             )}
