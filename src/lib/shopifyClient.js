@@ -1,3 +1,5 @@
+import { MOCK_CUSTOM_PRODUCTS } from "./supabase";
+
 /**
  * Shopify Storefront API integration.
  *
@@ -14,15 +16,21 @@
 const SHOPIFY_STORE_URL = import.meta.env.VITE_SHOPIFY_STORE_URL;
 const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN;
 
-if (!SHOPIFY_STORE_URL || !SHOPIFY_STOREFRONT_TOKEN) {
-  console.warn("[shopify] VITE_SHOPIFY_STORE_URL / VITE_SHOPIFY_STOREFRONT_TOKEN not set");
+const isConfigured = 
+  SHOPIFY_STORE_URL && 
+  SHOPIFY_STOREFRONT_TOKEN && 
+  SHOPIFY_STORE_URL !== "https://your-store.myshopify.com" && 
+  SHOPIFY_STOREFRONT_TOKEN !== "your-token-here";
+
+if (!isConfigured) {
+  console.warn("[shopify] VITE_SHOPIFY_STORE_URL / VITE_SHOPIFY_STOREFRONT_TOKEN not set or placeholder — falling back to mock catalog.");
 }
 
 /**
  * Raw GraphQL fetch to Shopify Storefront API.
  */
 async function shopifyFetch(query, variables = {}) {
-  if (!SHOPIFY_STORE_URL || !SHOPIFY_STOREFRONT_TOKEN) {
+  if (!isConfigured) {
     throw new Error("[shopify] Not configured");
   }
 
@@ -101,9 +109,35 @@ function mapShopifyProduct(product) {
  * Drop-in replacement for getProducts() from supabase.js.
  */
 export const getProducts = async (filters = {}) => {
-  if (!SHOPIFY_STOREFRONT_TOKEN) {
-    console.warn("[shopify] Not configured, returning empty");
-    return [];
+  if (!isConfigured) {
+    // Apply filters on the mock catalog dataset so filter options work in dev mode
+    let products = [...MOCK_CUSTOM_PRODUCTS];
+
+    if (filters.category && filters.category !== "all") {
+      if (filters.category.startsWith("category_")) {
+        const catName = filters.category.replace("category_", "");
+        products = products.filter((p) => p.dbCategory === catName);
+      } else if (filters.category.startsWith("gender_")) {
+        const genderName = filters.category.replace("gender_", "");
+        products = products.filter((p) => p.dbGender === genderName || p.dbGender === "unisex");
+      } else {
+        products = products.filter((p) => p.category === filters.category);
+      }
+    }
+
+    if (filters.gender && filters.gender !== "all") {
+      products = products.filter((p) => p.dbGender === filters.gender || p.dbGender === "unisex");
+    }
+
+    if (filters.style && filters.style !== "all") {
+      if (filters.style === "normal") {
+        products = products.filter((p) => p.style === "normal" || !p.style);
+      } else {
+        products = products.filter((p) => p.style === filters.style);
+      }
+    }
+
+    return products;
   }
 
   let queryFilter = "status:active";
@@ -186,7 +220,9 @@ export const getProducts = async (filters = {}) => {
  * Drop-in replacement for getProduct() from supabase.js.
  */
 export const getProduct = async (id) => {
-  if (!SHOPIFY_STOREFRONT_TOKEN) return null;
+  if (!isConfigured) {
+    return MOCK_CUSTOM_PRODUCTS.find((p) => p.id === id) || null;
+  }
 
   const query = `
     query GetProduct($id: ID!) {
@@ -249,7 +285,14 @@ export const getProduct = async (id) => {
  * Store shows as products tagged "tour-show" with date/venue/city metafields.
  */
 export const getShopifyTourDates = async () => {
-  if (!SHOPIFY_STOREFRONT_TOKEN) return [];
+  if (!isConfigured) {
+    return [
+      { id: "mock-show-1", city: "Austin, TX", venue: "The Continental Club", show_date: "2026-07-14", ticket_url: "#" },
+      { id: "mock-show-2", city: "Dallas, TX", venue: "Deep Ellum Art Co.", show_date: "2026-07-21", ticket_url: "#" },
+      { id: "mock-show-3", city: "Houston, TX", venue: "White Oak Music Hall", show_date: "2026-07-28", ticket_url: "#" },
+      { id: "mock-show-4", city: "New Orleans, LA", venue: "Tipitina's", show_date: "2026-08-04", ticket_url: "#" },
+    ];
+  }
 
   const query = `
     query GetTourShows {
