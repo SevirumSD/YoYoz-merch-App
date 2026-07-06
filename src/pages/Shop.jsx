@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { getProducts } from "@/lib/supabase";
+import { getProducts } from "@/lib/shopifyClient";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../components/store/ProductCard";
 import ComingSoonCard from "../components/store/ComingSoonCard";

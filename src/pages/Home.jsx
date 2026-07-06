@@ -1,6 +1,6 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
-import { getProducts } from "@/lib/supabase";
+import { getProducts } from "@/lib/shopifyClient";
 import { useQuery } from "@tanstack/react-query";
 import HeroBanner from "../components/store/HeroBanner";
 import NewDropsSection from "../components/store/NewDropsSection";
