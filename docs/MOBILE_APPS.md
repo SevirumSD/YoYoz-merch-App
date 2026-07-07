@@ -52,13 +52,30 @@ real, but before a real store submission, ask whoever designed the logo for a
 - Adaptive icon background color: `android/app/src/main/res/values/ic_launcher_background.xml`
 - Splash screens: `ios/App/App/Assets.xcassets/Splash.imageset/*.png` and `android/app/src/main/res/drawable*/splash.png`
 
+## Product data source: Shopify, not Supabase
+
+This repo also contains `src/lib/supabase.js` and a provisioned Supabase project
+("SevirumSD's Project YoYoz", with a real `Products` table), but **nothing in the
+app currently reads from it** — `Shop.jsx`, `Home.jsx`, and `ProductDetail.jsx` all
+import from `src/lib/shopifyClient.js` instead, which talks to Shopify's Storefront
+API. Without `VITE_SHOPIFY_STORE_URL`/`VITE_SHOPIFY_STOREFRONT_TOKEN` set, it falls
+back to a hardcoded mock catalog (`MOCK_CUSTOM_PRODUCTS`, imported from
+`supabase.js` purely for its data, not its Supabase client) — that's what you see
+in the app today. `supabase.js`'s `getProducts`/`createOrder`/etc. are dead code.
+
+This was a deliberate choice (confirmed with the user 2026-07-07) — Shopify stays
+the intended backend. To go live with real inventory, set up a Shopify Storefront
+API token (Shopify admin → Settings → Apps and integrations → Develop apps) and
+add it as the two secrets above; no code changes needed since `shopifyClient.js`
+already implements the full integration.
+
 ## GitHub Actions secrets you need to add
 
 Go to the repo's **Settings → Secrets and variables → Actions** and add:
 
 | Secret | Used by | Required for |
 |---|---|---|
-| `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | both workflows | building the web bundle with real data instead of placeholders |
+| `VITE_SHOPIFY_STORE_URL`, `VITE_SHOPIFY_STOREFRONT_TOKEN` | both workflows | building the web bundle against your real Shopify catalog instead of the mock fallback — see the "Product data source" note below |
 | `ANDROID_KEYSTORE_BASE64` | android-release.yml | signed Android builds (`base64 -w0 release.keystore`) |
 | `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD` | android-release.yml | signed Android builds |
 | `PLAY_SERVICE_ACCOUNT_JSON` | android-release.yml | uploading directly to Google Play |
@@ -111,8 +128,9 @@ developing — it just can't produce a signed, submittable build yet.
 ## First-run checklist before either store submission
 
 - [ ] Replace placeholder app icon/splash art with final high-res brand assets
-- [ ] Fill in real `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` secrets (the app
-      currently falls back to mock product data without them)
+- [ ] Fill in real `VITE_SHOPIFY_STORE_URL` / `VITE_SHOPIFY_STOREFRONT_TOKEN` secrets
+      (the app currently falls back to mock product data without them — see
+      "Product data source" above)
 - [ ] Write a privacy policy and host it somewhere public (both stores require the URL)
 - [ ] Decide on push notifications / deep linking if you want them — `@capacitor/app`
       is already installed for basic lifecycle/back-button handling but nothing beyond that is wired up

@@ -32,8 +32,8 @@ jobs:
       - name: Build web app
         run: npm run build
         env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_SHOPIFY_STORE_URL: ${{ secrets.VITE_SHOPIFY_STORE_URL }}
+          VITE_SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.VITE_SHOPIFY_STOREFRONT_TOKEN }}
 
       - name: Sync Capacitor Android project
         run: npx cap sync android
