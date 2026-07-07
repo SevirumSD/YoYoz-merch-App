@@ -12,6 +12,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 if (Capacitor.isNativePlatform()) {
   StatusBar.setStyle({ style: Style.Dark })
-  StatusBar.setBackgroundColor({ color: '#0A0A0A' })
+  if (Capacitor.getPlatform() === 'android') {
+    StatusBar.setBackgroundColor({ color: '#0A0A0A' })
+  }
   SplashScreen.hide()
 }

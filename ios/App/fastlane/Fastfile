@@ -28,10 +28,23 @@ platform :ios do
       api_key: api_key
     )
 
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "App.xcodeproj",
+      team_id: ENV["APPLE_TEAM_ID"],
+      code_sign_identity: "iPhone Distribution",
+      profile_name: ENV["sigh_com.boogieyoyoz.merch_appstore_profile-name"]
+    )
+
     build_app(
       project: "App.xcodeproj",
       scheme: "App",
-      export_method: "app-store"
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.boogieyoyoz.merch" => ENV["sigh_com.boogieyoyoz.merch_appstore_profile-name"]
+        }
+      }
     )
 
     upload_to_testflight(
