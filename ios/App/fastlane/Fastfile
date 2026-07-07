@@ -1,0 +1,42 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build for the iOS Simulator with no code signing — proves the Capacitor/Xcode project compiles without needing an Apple Developer account"
+  lane :verify_simulator_build do
+    build_app(
+      project: "App.xcodeproj",
+      scheme: "App",
+      skip_package_ipa: true,
+      skip_archive: true,
+      destination: "generic/platform=iOS Simulator",
+      xcargs: "CODE_SIGNING_ALLOWED=NO"
+    )
+  end
+
+  desc "Build, sign and upload a release build to TestFlight. Requires Apple Developer Program secrets — see docs/MOBILE_APPS.md"
+  lane :beta do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_content: ENV["ASC_KEY_CONTENT"],
+      is_key_content_base64: true
+    )
+
+    match(
+      type: "appstore",
+      readonly: true,
+      api_key: api_key
+    )
+
+    build_app(
+      project: "App.xcodeproj",
+      scheme: "App",
+      export_method: "app-store"
+    )
+
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true
+    )
+  end
+end
