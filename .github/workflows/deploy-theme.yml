@@ -1,0 +1,25 @@
+name: Deploy Shopify Theme
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/app-review-g0nax9]
+    paths:
+      - scripts/deploy-theme.mjs
+      - .github/workflows/deploy-theme.yml
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy app-style theme to the Online Store
+        env:
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+        run: node scripts/deploy-theme.mjs
