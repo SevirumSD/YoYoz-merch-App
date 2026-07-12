@@ -15,7 +15,19 @@
 
 const STORE = "boogie-the-yo-yoz-merch.myshopify.com";
 const API_VERSION = "2026-07";
-const DAWN_ZIP = "https://github.com/Shopify/dawn/archive/refs/tags/v15.3.0.zip";
+// Resolved at runtime to the latest Dawn release tag; falls back to main.
+async function resolveDawnZip() {
+  try {
+    const r = await fetch("https://api.github.com/repos/Shopify/dawn/releases/latest", {
+      headers: { "User-Agent": "boogie-theme-deploy", Accept: "application/vnd.github+json" },
+    });
+    const j = await r.json();
+    if (j.tag_name) return `https://github.com/Shopify/dawn/archive/refs/tags/${j.tag_name}.zip`;
+  } catch (e) {
+    console.warn("Could not resolve latest Dawn release:", e.message);
+  }
+  return "https://github.com/Shopify/dawn/archive/refs/heads/main.zip";
+}
 const THEME_NAME = "Boogie & The Yo-Yoz (app style)";
 
 const CLIENT_ID = process.env.SHOPIFY_CLIENT_ID;
@@ -239,7 +251,8 @@ if (existing) {
   alreadyLive = existing.role === "MAIN";
   console.log(`Reusing existing theme: ${themeId} (role: ${existing.role})`);
 } else {
-  console.log("Creating theme from Dawn source (this takes a minute)...");
+  const dawnZip = await resolveDawnZip();
+  console.log(`Creating theme from Dawn source (${dawnZip}) — this takes a minute...`);
   const createData = await adminGql(
     `mutation($source: URL!, $name: String!) {
       themeCreate(source: $source, name: $name) {
@@ -247,7 +260,7 @@ if (existing) {
         userErrors { field message }
       }
     }`,
-    { source: DAWN_ZIP, name: THEME_NAME }
+    { source: dawnZip, name: THEME_NAME }
   );
   const createErrs = createData.themeCreate.userErrors;
   if (createErrs.length) {
