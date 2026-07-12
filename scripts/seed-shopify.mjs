@@ -137,12 +137,14 @@ function buildProductSetInput(item, locationId) {
   if (item.sizes?.length) options.push({ name: "Size", position: options.length + 1, values: item.sizes.map((s) => ({ name: s })) });
   if (item.colors?.length) options.push({ name: "Color", position: options.length + 1, values: item.colors.map((c) => ({ name: c })) });
 
-  const variantBase = {
-    price: String(item.price),
-    inventoryPolicy: "DENY",
-    inventoryItem: { tracked: true },
-    inventoryQuantities: [{ locationId, name: "available", quantity: 100 }],
-  };
+  const variantBase = locationId
+    ? {
+        price: String(item.price),
+        inventoryPolicy: "DENY",
+        inventoryItem: { tracked: true },
+        inventoryQuantities: [{ locationId, name: "available", quantity: 100 }],
+      }
+    : { price: String(item.price), inventoryPolicy: "CONTINUE", inventoryItem: { tracked: false } };
   let variants;
   if (options.length === 0) {
     options.push({ name: "Title", position: 1, values: [{ name: "Default Title" }] });
@@ -181,9 +183,18 @@ const publications = pubData.publications.nodes;
 console.log("Sales channels found:", publications.map((p) => p.name).join(", "));
 const pubInput = publications.map((p) => ({ publicationId: p.id }));
 
-const locData = await adminGql(`{ locations(first: 1) { nodes { id name } } }`);
-const locationId = locData.locations.nodes[0].id;
-console.log("Inventory location:", locData.locations.nodes[0].name);
+// Inventory needs the store's location ID (read_locations scope). If the app
+// hasn't been granted that scope yet, fall back to creating products without
+// tracked stock (sellable, "continue when out of stock") instead of dying.
+let locationId = null;
+try {
+  const locData = await adminGql(`{ locations(first: 1) { nodes { id name } } }`);
+  locationId = locData.locations.nodes[0].id;
+  console.log("Inventory location:", locData.locations.nodes[0].name);
+} catch (e) {
+  console.warn("Could not read inventory location (missing read_locations scope?).");
+  console.warn("Creating products WITHOUT tracked inventory — they'll still be purchasable.");
+}
 
 await ensureMetafieldDefinitions();
 
