@@ -15,7 +15,7 @@
 
 const STORE = "boogie-the-yo-yoz-merch.myshopify.com";
 const API_VERSION = "2026-07";
-const DAWN_ZIP = "https://github.com/Shopify/dawn/archive/refs/heads/main.zip";
+const DAWN_ZIP = "https://github.com/Shopify/dawn/archive/refs/tags/v15.3.0.zip";
 const THEME_NAME = "Boogie & The Yo-Yoz (app style)";
 
 const CLIENT_ID = process.env.SHOPIFY_CLIENT_ID;
@@ -110,8 +110,8 @@ const INDEX_TEMPLATE = {
         content_alignment: "center",
         color_scheme: "scheme-2",
         full_width: true,
-        padding_top: 104,
-        padding_bottom: 104,
+        padding_top: 100,
+        padding_bottom: 100,
       },
     },
     new_drops: {
@@ -227,30 +227,55 @@ console.log("Exchanging credentials for an Admin API token...");
 ADMIN_TOKEN = await getAdminToken();
 console.log("Token acquired.\n");
 
-console.log("Creating theme from Dawn source (this takes a minute)...");
-const createData = await adminGql(
-  `mutation($source: URL!, $name: String!) {
-    themeCreate(source: $source, name: $name) {
-      theme { id name role processing }
-      userErrors { field message }
-    }
-  }`,
-  { source: DAWN_ZIP, name: THEME_NAME }
-);
-const createErrs = createData.themeCreate.userErrors;
-if (createErrs.length) {
-  console.error("themeCreate failed:", JSON.stringify(createErrs, null, 2));
-  process.exit(1);
-}
-const themeId = createData.themeCreate.theme.id;
-console.log(`Theme created: ${themeId} (${createData.themeCreate.theme.name})`);
+// Re-running should update the existing theme, not pile up duplicates
+// (stores cap out around 20 themes).
+const listData = await adminGql(`{ themes(first: 50) { nodes { id name role } } }`);
+const existing = listData.themes.nodes.find((t) => t.name === THEME_NAME);
 
-// Wait for Shopify to finish ingesting the zip before we modify files.
-for (let i = 0; i < 30; i++) {
-  await sleep(4000);
-  const d = await adminGql(`query($id: ID!) { theme(id: $id) { processing } }`, { id: themeId });
-  if (!d.theme.processing) break;
-  console.log("  ...still processing");
+let themeId;
+let alreadyLive = false;
+if (existing) {
+  themeId = existing.id;
+  alreadyLive = existing.role === "MAIN";
+  console.log(`Reusing existing theme: ${themeId} (role: ${existing.role})`);
+} else {
+  console.log("Creating theme from Dawn source (this takes a minute)...");
+  const createData = await adminGql(
+    `mutation($source: URL!, $name: String!) {
+      themeCreate(source: $source, name: $name) {
+        theme { id name role }
+        userErrors { field message }
+      }
+    }`,
+    { source: DAWN_ZIP, name: THEME_NAME }
+  );
+  const createErrs = createData.themeCreate.userErrors;
+  if (createErrs.length) {
+    console.error("themeCreate failed:", JSON.stringify(createErrs, null, 2));
+    process.exit(1);
+  }
+  themeId = createData.themeCreate.theme.id;
+  console.log(`Theme created: ${themeId}`);
+
+  // Wait for Shopify to finish ingesting the zip before we modify files.
+  let ready = false;
+  for (let i = 0; i < 30; i++) {
+    await sleep(4000);
+    const d = await adminGql(
+      `query($id: ID!) { theme(id: $id) { processing processingFailed } }`,
+      { id: themeId }
+    );
+    if (d.theme?.processingFailed) {
+      console.error("Theme processing failed — Shopify could not ingest the Dawn zip.");
+      process.exit(1);
+    }
+    if (d.theme && !d.theme.processing) { ready = true; break; }
+    console.log("  ...still processing");
+  }
+  if (!ready) {
+    console.error("Timed out waiting for theme processing (2 minutes). Re-run the workflow to retry.");
+    process.exit(1);
+  }
 }
 console.log("Theme ready. Applying app-style design...\n");
 
@@ -274,18 +299,22 @@ if (upsertErrs.length) {
 }
 for (const f of upsertData.themeFilesUpsert.upsertedThemeFiles) console.log(`  updated: ${f.filename}`);
 
-console.log("\nPublishing theme (making it the live design)...");
-const pubData = await adminGql(
-  `mutation($id: ID!) {
-    themePublish(id: $id) { theme { id name role } userErrors { field message } }
-  }`,
-  { id: themeId }
-);
-const pubErrs = pubData.themePublish.userErrors;
-if (pubErrs.length) {
-  console.error("themePublish failed:", JSON.stringify(pubErrs, null, 2));
-  process.exit(1);
+if (alreadyLive) {
+  console.log("\nTheme is already the live design — files updated in place.");
+} else {
+  console.log("\nPublishing theme (making it the live design)...");
+  const pubData = await adminGql(
+    `mutation($id: ID!) {
+      themePublish(id: $id) { theme { id name role } userErrors { field message } }
+    }`,
+    { id: themeId }
+  );
+  const pubErrs = pubData.themePublish.userErrors;
+  if (pubErrs.length) {
+    console.error("themePublish failed:", JSON.stringify(pubErrs, null, 2));
+    process.exit(1);
+  }
+  console.log(`Live theme is now: ${pubData.themePublish.theme.name} (${pubData.themePublish.theme.role})`);
 }
-console.log(`Live theme is now: ${pubData.themePublish.theme.name} (${pubData.themePublish.theme.role})`);
 console.log(`\nDone. View it at https://${STORE}`);
 console.log("(If the store still has password protection, use the password from Shopify admin → Online Store → Preferences.)");

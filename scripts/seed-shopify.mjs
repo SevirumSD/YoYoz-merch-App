@@ -140,6 +140,7 @@ async function ensureMetafieldDefinitions() {
     { name: "Gender", key: "gender" },
     { name: "Style", key: "style" },
     { name: "Featured", key: "featured" },
+    { name: "Collection Type", key: "collection_type" },
   ];
   for (const def of defs) {
     const d = await adminGql(
@@ -233,12 +234,12 @@ const pubInput = publications.map((p) => ({ publicationId: p.id }));
 let locationId = null;
 try {
   const locData = await adminGql(`{ locations(first: 1) { nodes { id name } } }`);
-  locationId = locData.locations.nodes[0].id;
-  console.log("Inventory location:", locData.locations.nodes[0].name);
+  locationId = locData.locations.nodes[0]?.id ?? null;
+  if (locationId) console.log("Inventory location:", locData.locations.nodes[0].name);
 } catch (e) {
-  console.warn("Could not read inventory location (missing read_locations scope?).");
-  console.warn("Creating products WITHOUT tracked inventory — they'll still be purchasable.");
+  console.warn("Could not read inventory location:", e.message);
 }
+if (!locationId) console.warn("Creating products WITHOUT tracked inventory — they'll still be purchasable.");
 
 await ensureMetafieldDefinitions();
 
