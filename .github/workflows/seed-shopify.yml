@@ -2,6 +2,11 @@ name: Seed Shopify Store
 
 on:
   workflow_dispatch:
+  push:
+    branches: [claude/app-review-g0nax9]
+    paths:
+      - scripts/seed-shopify.mjs
+      - .github/workflows/seed-shopify.yml
 
 jobs:
   seed:
