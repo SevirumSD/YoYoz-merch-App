@@ -39,6 +39,9 @@ const IMG = {
   hat: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80",
   stickers: "https://images.unsplash.com/photo-1572375995501-4b0894d24330?w=800&q=80",
   wristband: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80",
+  jersey: "https://images.unsplash.com/photo-1580087433295-ab2600c1030e?w=800&q=80",
+  poster: "https://images.unsplash.com/photo-1499364615650-ec38552f4f34?w=800&q=80",
+  vinyl: "https://images.unsplash.com/photo-1539375665275-f9de415ef9ac?w=800&q=80",
 };
 
 const FIVE_COLORS = ["Black", "White", "Red", "Blue", "Pink"];
@@ -75,7 +78,30 @@ const CATALOG = [
     desc: "Retro mesh-back trucker hat with embroidered Yo-Yoz patch." },
   { title: "Boogie Sticker Pack (3-pack)", price: 8, collection: "Stickers", tags: [], gender: "unisex", image: IMG.stickers,
     desc: "Three die-cut vinyl stickers. Laptop, water bottle, guitar case — everywhere." },
+
+  // ---- Original catalog from the first store-setup session (Main + Limited Edition) ----
+  { title: "Classic Yo-Yoz T-Shirt", price: 24.99, collection: "Main Collection", sizes: ["XS", "S", "M", "L", "XL", "2XL"], colors: ["Black", "Red"],
+    tags: [], gender: "unisex", vendor: "Boogie Main", skuPrefix: "YZ-TSHIRT", priceOverrides: { "2XL": 26.99 }, collectionType: "main", image: IMG.classicTee,
+    desc: "Signature Yo-Yoz design in classic black and red." },
+  { title: "Yo-Yoz Hoodie", price: 54.99, collection: "Main Collection", sizes: ["XS", "S", "M", "L", "XL", "2XL"], colors: ["Black", "Red"],
+    tags: [], gender: "unisex", vendor: "Boogie Main", skuPrefix: "YZ-HOODIE", collectionType: "main", image: IMG.hoodie,
+    desc: "Cozy hoodie with embroidered Yo-Yoz logo." },
+  { title: "Yo-Yoz Cap", price: 29.99, collection: "Main Collection", colors: ["Black", "Red"],
+    tags: [], gender: "unisex", vendor: "Boogie Main", skuPrefix: "YZ-CAP", collectionType: "main", image: IMG.hat,
+    desc: "Classic snapback cap with woven Yo-Yoz patch." },
+  { title: "Tour Jersey - Can You Feel It 2026", price: 39.99, collection: "Limited Edition - Can You Feel It Tour 2026", sizes: ["XS", "S", "M", "L", "XL", "2XL"], colors: ["Black", "Gold"],
+    tags: ["tour-exclusive", "limited-edition"], gender: "unisex", vendor: "Boogie Limited", skuPrefix: "YZ-JERSEY", limited: true, collectionType: "limited", image: IMG.jersey,
+    desc: "Exclusive tour jersey. Only available during the Can You Feel It Tour 2026." },
+  { title: "Tour Poster - Signed", price: 24.99, collection: "Limited Edition - Can You Feel It Tour 2026", sizes: ["11x17", "18x24"],
+    tags: ["tour-exclusive", "limited-edition"], gender: "unisex", vendor: "Boogie Limited", skuPrefix: "YZ-POSTER", priceOverrides: { "18x24": 34.99 }, limited: true, collectionType: "limited", image: IMG.poster,
+    desc: "Limited edition tour poster hand-signed by the band." },
+  { title: "Tour Vinyl - Limited Run", price: 34.99, collection: "Limited Edition - Can You Feel It Tour 2026", colors: ["Black", "Gold"],
+    tags: ["tour-exclusive", "limited-edition"], gender: "unisex", vendor: "Boogie Limited", skuPrefix: "YZ-VINYL", priceOverrides: { "Gold": 39.99 }, limited: true, collectionType: "limited", image: IMG.vinyl,
+    desc: "Exclusive tour vinyl pressing. 500 copies only." },
 ];
+
+const COLOR_SKU_CODES = { Black: "BLK", White: "WHT", Red: "RED", Blue: "BLU", Pink: "PNK", Green: "GRN", Gold: "GLD", Clear: "CLR" };
+const skuCode = (name) => COLOR_SKU_CODES[name] || name.toUpperCase();
 
 // ---------- helpers ----------
 
@@ -137,29 +163,45 @@ function buildProductSetInput(item, locationId) {
   if (item.sizes?.length) options.push({ name: "Size", position: options.length + 1, values: item.sizes.map((s) => ({ name: s })) });
   if (item.colors?.length) options.push({ name: "Color", position: options.length + 1, values: item.colors.map((c) => ({ name: c })) });
 
-  const variantBase = locationId
-    ? {
-        price: String(item.price),
-        inventoryPolicy: "DENY",
-        inventoryItem: { tracked: true },
-        inventoryQuantities: [{ locationId, name: "available", quantity: 100 }],
-      }
-    : { price: String(item.price), inventoryPolicy: "CONTINUE", inventoryItem: { tracked: false } };
+  const buildVariant = (optionValues) => {
+    // Per-option-value price overrides (e.g. 2XL upcharge, larger poster size).
+    let price = item.price;
+    for (const v of optionValues) {
+      if (item.priceOverrides?.[v.name] !== undefined) price = item.priceOverrides[v.name];
+    }
+    const variant = { optionValues, price: String(price) };
+    if (item.skuPrefix) {
+      const parts = [item.skuPrefix, ...optionValues.filter((v) => v.optionName !== "Title").map((v) => skuCode(v.name))];
+      if (item.limited) parts.push("LTD");
+      variant.sku = parts.join("-");
+    }
+    if (locationId) {
+      variant.inventoryPolicy = "DENY";
+      variant.inventoryItem = { tracked: true };
+      variant.inventoryQuantities = [{ locationId, name: "available", quantity: 100 }];
+    } else {
+      variant.inventoryPolicy = "CONTINUE";
+      variant.inventoryItem = { tracked: false };
+    }
+    return variant;
+  };
+
   let variants;
   if (options.length === 0) {
     options.push({ name: "Title", position: 1, values: [{ name: "Default Title" }] });
-    variants = [{ optionValues: [{ optionName: "Title", name: "Default Title" }], ...variantBase }];
+    variants = [buildVariant([{ optionName: "Title", name: "Default Title" }])];
   } else {
     const axes = options.map((o) => o.values.map((v) => ({ optionName: o.name, name: v.name })));
     let combos = [[]];
     for (const axis of axes) combos = combos.flatMap((c) => axis.map((v) => [...c, v]));
-    variants = combos.map((optionValues) => ({ optionValues, ...variantBase }));
+    variants = combos.map(buildVariant);
   }
 
   const metafields = [{ namespace: "custom", key: "gender", value: item.gender || "unisex", type: "single_line_text_field" }];
   if (item.style) metafields.push({ namespace: "custom", key: "style", value: item.style, type: "single_line_text_field" });
+  if (item.collectionType) metafields.push({ namespace: "custom", key: "collection_type", value: item.collectionType, type: "single_line_text_field" });
 
-  return {
+  const input = {
     title: item.title,
     descriptionHtml: `<p>${item.desc}</p>`,
     status: "ACTIVE",
@@ -170,6 +212,8 @@ function buildProductSetInput(item, locationId) {
     variants,
     metafields,
   };
+  if (item.vendor) input.vendor = item.vendor;
+  return input;
 }
 
 // ---------- main ----------

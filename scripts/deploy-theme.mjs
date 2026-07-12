@@ -76,7 +76,7 @@ const SETTINGS_DATA = {
       "scheme-2": SCHEME("#000000", "#FFFFFF", "#DC2626", "#FFFFFF"),
       "scheme-3": SCHEME("#DC2626", "#FFFFFF", "#000000", "#FFFFFF"),
       "scheme-4": SCHEME("#18181B", "#FFFFFF", "#DC2626", "#FFFFFF"),
-      "scheme-5": SCHEME("#FFFFFF", "#0A0A0A", "#DC2626", "#FFFFFF"),
+      "scheme-5": SCHEME("#0A0A0A", "#F5E1A4", "#D4AF37", "#000000"), // gold: limited edition tour gear
     },
     type_header_font: "oswald_n4",
     type_body_font: "assistant_n4",
@@ -123,6 +123,21 @@ const INDEX_TEMPLATE = {
         products_to_show: 4,
         columns_desktop: 4,
         color_scheme: "scheme-1",
+        show_view_all: true,
+        image_ratio: "adapt",
+        show_secondary_image: false,
+        show_vendor: false,
+      },
+    },
+    limited_edition: {
+      type: "featured-collection",
+      settings: {
+        title: "LIMITED EDITION — CAN YOU FEEL IT TOUR 2026",
+        heading_size: "h1",
+        collection: "limited-edition-can-you-feel-it-tour-2026",
+        products_to_show: 3,
+        columns_desktop: 3,
+        color_scheme: "scheme-5",
         show_view_all: true,
         image_ratio: "adapt",
         show_secondary_image: false,
@@ -181,8 +196,9 @@ const INDEX_TEMPLATE = {
         c5: { type: "featured_collection", settings: { collection: "koozies" } },
         c6: { type: "featured_collection", settings: { collection: "accessories" } },
         c7: { type: "featured_collection", settings: { collection: "stickers" } },
+        c8: { type: "featured_collection", settings: { collection: "limited-edition-can-you-feel-it-tour-2026" } },
       },
-      block_order: ["c1", "c2", "c3", "c4", "c5", "c6", "c7"],
+      block_order: ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"],
       settings: {
         title: "SHOP BY CATEGORY",
         heading_size: "h1",
@@ -202,7 +218,7 @@ const INDEX_TEMPLATE = {
       settings: { color_scheme: "scheme-4", full_width: true },
     },
   },
-  order: ["hero", "new_drops", "tour_banner", "tour_gear", "categories", "newsletter"],
+  order: ["hero", "new_drops", "limited_edition", "tour_banner", "tour_gear", "categories", "newsletter"],
 };
 
 // ---------- main ----------
