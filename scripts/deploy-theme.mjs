@@ -15,18 +15,23 @@
 
 const STORE = "boogie-the-yo-yoz-merch.myshopify.com";
 const API_VERSION = "2026-07";
-// Resolved at runtime to the latest Dawn release tag; falls back to main.
-async function resolveDawnZip() {
+// Shopify's fetcher doesn't follow redirects, so github.com/.../archive URLs
+// fail with "Src is empty" — use direct codeload URLs like Shopify's own CLI
+// does, with Shopify's CDN-hosted Dawn zip as a last resort.
+async function dawnZipCandidates() {
+  const candidates = [];
   try {
     const r = await fetch("https://api.github.com/repos/Shopify/dawn/releases/latest", {
       headers: { "User-Agent": "boogie-theme-deploy", Accept: "application/vnd.github+json" },
     });
     const j = await r.json();
-    if (j.tag_name) return `https://github.com/Shopify/dawn/archive/refs/tags/${j.tag_name}.zip`;
+    if (j.tag_name) candidates.push(`https://codeload.github.com/Shopify/dawn/zip/refs/tags/${j.tag_name}`);
   } catch (e) {
     console.warn("Could not resolve latest Dawn release:", e.message);
   }
-  return "https://github.com/Shopify/dawn/archive/refs/heads/main.zip";
+  candidates.push("https://codeload.github.com/Shopify/dawn/zip/refs/tags/v15.0.0"); // Shopify CLI's DEFAULT_THEME_ZIP
+  candidates.push("https://cdn.shopify.com/theme-store/uhrdefhlndzaoyrgylhto59sx2i7.jpg"); // Shopify CLI's FALLBACK_THEME_ZIP (a Dawn zip)
+  return candidates;
 }
 const THEME_NAME = "Boogie & The Yo-Yoz (app style)";
 
@@ -251,23 +256,30 @@ if (existing) {
   alreadyLive = existing.role === "MAIN";
   console.log(`Reusing existing theme: ${themeId} (role: ${existing.role})`);
 } else {
-  const dawnZip = await resolveDawnZip();
-  console.log(`Creating theme from Dawn source (${dawnZip}) — this takes a minute...`);
-  const createData = await adminGql(
-    `mutation($source: URL!, $name: String!) {
-      themeCreate(source: $source, name: $name) {
-        theme { id name role }
-        userErrors { field message }
-      }
-    }`,
-    { source: dawnZip, name: THEME_NAME }
-  );
-  const createErrs = createData.themeCreate.userErrors;
-  if (createErrs.length) {
-    console.error("themeCreate failed:", JSON.stringify(createErrs, null, 2));
+  const candidates = await dawnZipCandidates();
+  for (const source of candidates) {
+    console.log(`Creating theme from Dawn source (${source})...`);
+    const createData = await adminGql(
+      `mutation($source: URL!, $name: String!) {
+        themeCreate(source: $source, name: $name) {
+          theme { id name role }
+          userErrors { field message }
+        }
+      }`,
+      { source, name: THEME_NAME }
+    );
+    const createErrs = createData.themeCreate.userErrors;
+    if (!createErrs.length) {
+      themeId = createData.themeCreate.theme.id;
+      break;
+    }
+    console.warn("themeCreate failed for this source:", JSON.stringify(createErrs));
+    await sleep(1500);
+  }
+  if (!themeId) {
+    console.error("All Dawn source URLs failed — see errors above.");
     process.exit(1);
   }
-  themeId = createData.themeCreate.theme.id;
   console.log(`Theme created: ${themeId}`);
 
   // Wait for Shopify to finish ingesting the zip before we modify files.
