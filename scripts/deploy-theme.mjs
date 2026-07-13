@@ -20,6 +20,7 @@ const API_VERSION = "2026-07";
 // does, with Shopify's CDN-hosted Dawn zip as a last resort.
 async function dawnZipCandidates() {
   const candidates = [];
+  if (process.env.DAWN_SOURCE_URL) candidates.push(process.env.DAWN_SOURCE_URL);
   try {
     const r = await fetch("https://api.github.com/repos/Shopify/dawn/releases/latest", {
       headers: { "User-Agent": "boogie-theme-deploy", Accept: "application/vnd.github+json" },
@@ -251,11 +252,25 @@ const existing = listData.themes.nodes.find((t) => t.name === THEME_NAME);
 
 let themeId;
 let alreadyLive = false;
-if (existing) {
+if (existing && existing.role === "MAIN") {
+  // Live theme: update its files in place rather than recreating.
   themeId = existing.id;
-  alreadyLive = existing.role === "MAIN";
-  console.log(`Reusing existing theme: ${themeId} (role: ${existing.role})`);
+  alreadyLive = true;
+  console.log(`Reusing live theme: ${themeId}`);
 } else {
+  if (existing) {
+    // Unpublished leftover from a failed/partial earlier run (possibly built
+    // from a stale Dawn source) — delete and rebuild fresh.
+    console.log(`Deleting stale unpublished theme ${existing.id}...`);
+    const del = await adminGql(
+      `mutation($id: ID!) { themeDelete(id: $id) { deletedThemeId userErrors { field message } } }`,
+      { id: existing.id }
+    );
+    if (del.themeDelete.userErrors.length) {
+      console.error("themeDelete failed:", JSON.stringify(del.themeDelete.userErrors));
+      process.exit(1);
+    }
+  }
   const candidates = await dawnZipCandidates();
   for (const source of candidates) {
     console.log(`Creating theme from Dawn source (${source})...`);
