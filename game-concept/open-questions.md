@@ -49,6 +49,18 @@
     want? Why does his black/gold palette rhyme with the demons'? Who ran the
     Old War Black Archive, and is XIIX its successor program? (All
     deliberately unexplained — the setting's top-shelf mystery.)
+11c. **The Central Mind** — what was it, and what caused its fall? (The
+    Exzerai lineage hinges on this unrevealed event.)
+11d. **"The Fall of Sevirum"** — Luxorus lore: "After the Fall of Sevirum,
+    they went dormant"; sheet footer titled "SEVIRUM — THE FALL." What
+    happened to Sevirum? Is the game's story his fall, or its aftermath?
+    Is the universe named after him or is he named after something older?
+11e. **Exzerai splinters** — Hegemony vs Remnant Network vs Apostles: rivals,
+    branches, or castes? Luxorus is called Apostle-class but flagged
+    Hegemony — which is it?
+11f. Requiem's deployment against Helticors ("When Requiem walks,
+    civilizations kneel" — Helticor War Chronicle): which Helticor
+    civilization knelt, and when?
 
 ## World mechanics
 

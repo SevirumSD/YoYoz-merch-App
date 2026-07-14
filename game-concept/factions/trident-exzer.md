@@ -79,6 +79,14 @@ frames existed as **crewed exosuits before full autonomy**, and that
 "the pinnacle of pre-Sevirum warfare… humanity's ultimate asset."
 → "pre-Sevirum" dates the Ghosts era as *after* the frames. Timeline hook.
 
+## What the Collective became
+
+The Old War frames are only the ancestors. The Collective unified into the
+**Central Mind** ("perfect order"), the Central Mind fell, and its surviving
+fragments evolved through six stages into the **Exzerai** — Hegemony, Remnant
+Network, and the Apostles. Full lineage and current-era units:
+[`exzerai.md`](exzerai.md).
+
 ## Present-day faction behavior (design space)
 - The Collective: networked machine enemies — kill one, the rest learn.
   Escalating AI difficulty as a *mechanic* (Caesar's absorption).
