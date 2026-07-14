@@ -61,6 +61,16 @@
 11f. Requiem's deployment against Helticors ("When Requiem walks,
     civilizations kneel" — Helticor War Chronicle): which Helticor
     civilization knelt, and when?
+11g. **The disappearance of the Ghosts** (Stray lore) — where did they go?
+    Related to the Fall of Sevirum? Did any survive into the Vanguard eras?
+11h. **"The truth behind the ExZerSuit-Frames"** that humanity uncovered
+    after the Zeniths fell (Seraph lore) — what truth? Azrael-0?
+11i. **"The coming war that would dwarf all previous threats"** (Seraph) —
+    against whom? And what are the "technologies ancient even the Apostles
+    could not master"?
+11j. Which era does the *game* take place in — the Ghosts era, the Vanguard
+    eras, or multiple? (The bible currently assumes the Ghosts era is the
+    playable "now.")
 
 ## World mechanics
 

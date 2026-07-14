@@ -36,6 +36,7 @@ hack-and-slash action (*Implosion: Never Lose Hope* DNA) built in **Unreal Engin
 | [`factions/helticor-empire.md`](factions/helticor-empire.md) | King Zanmer, Odion's lineage, Helticor Prime |
 | [`factions/trident-exzer.md`](factions/trident-exzer.md) | Trident Industries + the ExZer frames / ExZer Collective uprising |
 | [`factions/exzerai.md`](factions/exzerai.md) | The Exzerai — evolved AI (Hegemony, Remnant Network, Apostles) |
+| [`factions/vanguard-initiative.md`](factions/vanguard-initiative.md) | Vanguard/Ascendant Initiative — post-Ghost human frames (Stray, Sigma Knight, Seraph) |
 | [`factions/aegis-syndicate.md`](factions/aegis-syndicate.md) | Aegis Syndicate, Aria, Kail Squad |
 | [`entities/azrael-0.md`](entities/azrael-0.md) | AZRAEL-0, the First Frame — Subject Zero (entity, not faction) |
 | [`art-direction.md`](art-direction.md) | Palette system, silhouette rules, redesign notes |
@@ -64,8 +65,9 @@ descends from is still active: **AZRAEL-0, the First Frame.**
 **OMEGA-PRIME** (AZRAEL-0 — "unknown superior entity," threat to all factions).
 Machines run a parallel ladder: `Omega Black` → `Omega Black+` →
 `Omega Black++` (Requiem), plus Luxorus' unique **Extinction Class**.
-Ghost-class combatants are the human-scale benchmark both ladders measure
-against.
+Later human frames run a third: `Omega Human` → `Omega Human+` →
+`Omega+ (Existential)` (Seraph). Ghost-class combatants are the benchmark
+all ladders measure against.
 
 ## Status
 
@@ -76,7 +78,8 @@ against.
 - [x] Aegis Syndicate: Aria
 - [x] AZRAEL-0 / Subject Zero (entity — deliberately unexplained)
 - [x] Exzerai evolved-AI units (6: Luxorus, Shardclaw, Longshadow, Nightshade, Ironmaw, Requiem)
-- [ ] Human military ("The Faction"?) sheets — not yet delivered
+- [x] Vanguard/Ascendant Initiative human frames (Stray, Sigma Knight, Seraph)
+- [ ] "The Faction" from the original pitch — identity still unconfirmed
 - [ ] ChatGPT lore archive import (`conversations.json`)
 - [ ] Sevirum redesign (v2 sheet)
 - [ ] King Zanmer head/crown redesign
