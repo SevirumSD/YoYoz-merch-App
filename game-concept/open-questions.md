@@ -8,6 +8,9 @@
 
 - ✅ **Zenith origin is unknown to everyone in-universe, including the
   wearers.** Deliberate mystery-box. Sevirum's is the only adaptive one.
+  *(Refined by AZRAEL-0 sheet: Zeniths derive from fragments of the First
+  Frame — but the mystery relocates to Azrael-0 himself, who is deliberately
+  unexplained.)*
 - ✅ The 7 sheet-holders (Linora, Xin/X, Sevirum, Comedian, Odion, Gustave,
   Conor) are one team: **the Ghosts**.
 - ✅ Sevirum is the **main character** and served in hidden squad **XIIX**.
@@ -41,6 +44,11 @@
     or only with humanity?
 11. "Pre-Sevirum warfare" (ExZer overview sheet) implies eras are dated by
     Sevirum. Why is the main character era-defining?
+11b. **AZRAEL-0** — who built Subject Zero, and why does his timeline read
+    "Pre Old War" when he's called humanity's Old War creation? What does he
+    want? Why does his black/gold palette rhyme with the demons'? Who ran the
+    Old War Black Archive, and is XIIX its successor program? (All
+    deliberately unexplained — the setting's top-shelf mystery.)
 
 ## World mechanics
 

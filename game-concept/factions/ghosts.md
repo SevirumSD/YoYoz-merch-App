@@ -10,8 +10,12 @@
 - Apex nanotechnology; name means "highest point."
 - **Origin: unknown — canonically, no one knows how the Zeniths were made,
   including the wearers.** (Creator decision, deliberate. Do not resolve.)
+- Genealogy (per the AZRAEL-0 dossier): all Zenith/Ghost/XIIX adaptive tech
+  derives from **fragments of AZRAEL-0's architecture** — but who built the
+  fragments into suits, and Azrael-0's own origin, remain unknown. See
+  `../entities/azrael-0.md`.
 - **Sevirum's Zenith is the only fully *adaptive* suit** — unique even among
-  Zeniths.
+  Zeniths; Azrael-0's sheet names Sevirum's frame as its direct TEMPLATE.
 - Demon intelligence rates "high-rank Ghost nanotech suits" as the benchmark
   for regeneration/speed comparisons (see Belthizar dossier).
 
