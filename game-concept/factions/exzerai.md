@@ -121,6 +121,18 @@ New canon entities this establishes:
   *"When Requiem walks, civilizations kneel."* → proof the Helticors have
   fought the Apostles.
 
+## Game-structure canon (creator-confirmed)
+
+- The Zenith/Ghost era treats the AI and ExZerSuit-Frames as **Old War
+  history**. The Exzerai — "the red and black AIs" — are **all that remains**
+  of that lineage, and they are **DORMANT for most of the game**.
+- **They awaken much later in the campaign, when the player and the Ghost
+  team return to Earth.** (Luxorus lore agrees: "After the Fall of Sevirum,
+  they went dormant" — dormancy bookends unknown.)
+- Design consequence: the Exzerai are a mid/late-game faction reveal — Earth
+  is a sleeping machine graveyard, and the Ghosts' homecoming is the alarm
+  clock.
+
 ## Cross-faction implications
 
 - **The Exzerai hunt Ghosts by design.** Shardclaw's role is literally

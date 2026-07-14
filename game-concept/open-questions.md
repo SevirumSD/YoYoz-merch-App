@@ -38,8 +38,11 @@
    Why is it hidden?
 8. What binds Aria to "Gustave Sevirum and Conor," and why are her memories
    sealed at Omega clearance?
-9. Is **Aegis Syndicate** "The Faction" from the original pitch, or is The
-   Faction still unrevealed? Human military sheets still to come?
+9. **The Faction — PARTIALLY RESOLVED:** confirmed as a hidden orchestrator;
+   built the Vanguard/Ascendant programs as cover to eliminate the Zeniths
+   (see `factions/the-faction.md`). Still open: who runs it, its relationship
+   to Aegis Syndicate / Trident / XIIX / the Black Archive, and whether it
+   has its own forces.
 10. Demons ↔ Helticors: do the ancient powers have history with each other,
     or only with humanity?
 11. "Pre-Sevirum warfare" (ExZer overview sheet) implies eras are dated by
@@ -63,14 +66,19 @@
     civilization knelt, and when?
 11g. **The disappearance of the Ghosts** (Stray lore) — where did they go?
     Related to the Fall of Sevirum? Did any survive into the Vanguard eras?
+    And given The Faction built the Vanguard frames to eliminate the
+    Zeniths: did The Faction *cause* the disappearance, and is the sheets'
+    "after the Ghosts vanished" framing propaganda?
 11h. **"The truth behind the ExZerSuit-Frames"** that humanity uncovered
     after the Zeniths fell (Seraph lore) — what truth? Azrael-0?
 11i. **"The coming war that would dwarf all previous threats"** (Seraph) —
     against whom? And what are the "technologies ancient even the Apostles
     could not master"?
-11j. Which era does the *game* take place in — the Ghosts era, the Vanguard
-    eras, or multiple? (The bible currently assumes the Ghosts era is the
-    playable "now.")
+11j. ~~Which era does the game take place in?~~ **RESOLVED (creator):** the
+    game plays in the Ghosts era; the AI/ExZerSuit-Frames are Old War
+    history; the dormant Exzerai awaken late-game when the Ghost team
+    returns to Earth. (Remaining: how the Vanguard-era material appears
+    in-game — epilogue, sequel, flash-forward, or NG+?)
 
 ## World mechanics
 

@@ -1,8 +1,15 @@
-# The Vanguard Initiative — Humanity's Answer
+# The Vanguard Initiative — Humanity's Answer (and The Faction's Weapon)
 
 > **Human Vanguard Coalition** → **Human Ascendant Coalition.** Piloted
 > frames built by ordinary humanity for the eras *after* the legends:
 > the sheets are stamped **"Human Ascension Era"** and **"Ascendant Era."**
+>
+> ⚠ **CANON TWIST (creator-confirmed):** these programs were **orchestrated
+> by The Faction**. Public purpose: fend off new unknown enemies. **True
+> purpose: eliminate the Zeniths** — the threat The Faction fears most.
+> Everything heroic on these sheets is the *public record*; read it as
+> in-universe narrative The Faction authored. Sincere at the soldier level,
+> weaponized at the top. See [`the-faction.md`](the-faction.md).
 >
 > The founding premise is the biggest timeline reveal in canon:
 > *"After the **disappearance of the Ghosts** and the **decline of the
@@ -73,13 +80,19 @@
 
 ## What this faction does to the timeline
 
-Era chain now readable across all sheets:
+Era chain in the **public record**:
 **Old War** (ExZer uprising) → **Collective Era → Central Mind → its fall** →
-**Ghosts / Sevirum era** (the playable "now"?) → **Fall of Sevirum** →
+**Ghosts / Sevirum era** (the playable "now") → **Fall of Sevirum** →
 **disappearance of the Ghosts + decline/fall of the Zeniths** → **Human
 Ascension Era** (Vanguard, Stray) → **Ascendant Era** (Seraph, "the coming
 war"). The Ghosts become the *mythology* of later humanity — the player's
 squad is the legend future soldiers are built from.
+
+**But the record is suspect:** if the frames were built to *get rid of* the
+Zeniths, the program predates or overlaps the Zeniths' "decline" — meaning
+The Faction's weapons may be a **cause** of the Ghosts' disappearance rather
+than a response to it. Whether the sheets' after-the-fact framing is
+propaganda or honest history is creator-owned (open question 11g).
 
 ## Cross-references
 - Stray's design sources name-check every earlier faction's data (ExZer,
