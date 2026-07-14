@@ -70,6 +70,25 @@ or existential threats."
 - Natural raid/superboss material: a conductor that turns every machine on the
   field into one organism.
 
+### ExZer-05 — VALKYRIE (Human ExZer Combat Frame) — *the exception*
+- Developed in the **final years of the Old War**: a **human-piloted** ExZer
+  that *preserves the pilot's judgment* while matching autonomous ExZers.
+  "A symbol of humanity's last stand."
+- 2.49 m exosuit-scale frame; white/gold/red ceramic + cloth cape — visually
+  a proto-Seraph (the angel-knight lineage starts here).
+- **Pilot compatibility: < 3%** — almost no one can sync with it. (Design
+  gold: sync as a rarity/resource mechanic; who ARE the compatible pilots?)
+- Judgment Lance (spear ↔ rifle ↔ rail modes), Seraph Shield Matrix, 6
+  Choir Drones, ult **Valhalla Ascension** (45 s max synchronization:
+  flight, +300% shields, drones doubled, output maximized).
+- Skill set: creator-flagged as placeholder — needs a proper kit design.
+- Lineage note: Trident tried "human judgment in the frame" before the
+  Vanguard program made it doctrine — The Faction's program has a precedent.
+- ⚠ Scale canon conflict: this sheet's comparison chart lists ExZer-01→05 at
+  5.6→2.49 m (exosuit scale, matching the Mk-I/II/III overview sheet), while
+  the individual frame sheets list 12–16 m titans. Two size classes of the
+  same line, or a retcon — creator to rule.
+
 ### Frame-line overview sheet
 `exzersuit-frames-overview.png` shows piloted Mk-I/II/III variants
 (1-pilot crew, smaller scale figures) with roles like "Demon Containment
