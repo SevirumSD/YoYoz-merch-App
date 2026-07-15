@@ -81,6 +81,12 @@
 11l. Who were the rare compatible pilots of the human ExZer frames
     (Valkyrie <3%, Seraphim <2%, Revenant ≤1% with <7% survival)? A
     bloodline/precursor link to the later Ghosts?
+11m. **Who is "The Doctor"?** — the first named Faction figure ("We do not
+    serve humanity. We shape it."). Leader, chief scientist, or the public
+    face of something else? Any link to the Ernest Group, Aria's sealed
+    memories, or the Black Archive?
+11n. Where do the FCT forced-sync pilots come from — volunteers, conscripts,
+    prisoners, or grown? (Rescue-arc potential.)
 11j. ~~Which era does the game take place in?~~ **RESOLVED (creator):** the
     game plays in the Ghosts era; the AI/ExZerSuit-Frames are Old War
     history; the dormant Exzerai awaken late-game when the Ghost team
