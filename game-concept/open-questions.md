@@ -74,6 +74,13 @@
 11i. **"The coming war that would dwarf all previous threats"** (Seraph) —
     against whom? And what are the "technologies ancient even the Apostles
     could not master"?
+11k. **The Ernest Group** (built ExZer-07 Revenant) — who are they? Trident
+    rival, subsidiary, or front? Any link to The Faction or the Black
+    Archive? Their bio-adaptive "Virulent" tech is the closest human work
+    to living nanotech — connection to Zenith/Azrael-0 lineage?
+11l. Who were the rare compatible pilots of the human ExZer frames
+    (Valkyrie <3%, Seraphim <2%, Revenant ≤1% with <7% survival)? A
+    bloodline/precursor link to the later Ghosts?
 11j. ~~Which era does the game take place in?~~ **RESOLVED (creator):** the
     game plays in the Ghosts era; the AI/ExZerSuit-Frames are Old War
     history; the dormant Exzerai awaken late-game when the Ghost team

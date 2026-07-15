@@ -89,6 +89,41 @@ or existential threats."
   the individual frame sheets list 12–16 m titans. Two size classes of the
   same line, or a retcon — creator to rule.
 
+### ExZer-06 — SERAPHIM (Human ExZer Combat Frame)
+- Trident, final years of the Old War: high-mobility assault frame built as
+  a **direct response to autonomous ExZer threats** — anti-ExZer operations
+  and rapid strike. *"When protection is not enough — SERAPHIM delivers
+  judgment."*
+- 2.47 m, pilot compatibility **< 2%**, threat Omega. Neural Sync with
+  Full-Dive Immersion.
+- **Longinus Lance** (lance ↔ rifle ↔ beam ↔ stored drone mode) + wing
+  binder system (combat / flight / defense configurations).
+- Ult **Heaven's Reckoning**: 30 s max synchronization — "Seraphim becomes a
+  living missile" (+400% damage, unlimited weapons).
+- Gunmetal + gold; the angel-knight lineage between Valkyrie and the
+  Vanguard era's SX-01 **Seraph** — the name itself is an heirloom, which
+  strengthens the precedent The Faction built on.
+
+### ExZer-07 — REVENANT / TN-11 "Virulent" (Adaptive Extermination Frame)
+- **NOT Trident: built by the ERNEST GROUP** (Advanced ExZer Development
+  Division) — a second human military corporation, previously unseen.
+- Classified hunter-killer, last-resort weapon **against runaway ExZer units
+  and autonomous war machines**. Never mass-produced; records sealed under
+  **Omega Black** (the machine-threat classification, on a human weapon).
+- 8.9 m, threat **Omega+**. Bio-adaptive nanomachine lattice; Virulent Core
+  Mk.VII is "partially organic, partially mechanical, and extremely unstable
+  by design."
+- Pilot compatibility **≤ 1%**, pilot survival rate **< 7%** — "interface
+  designed for combat efficiency, not comfort." A frame that kills most of
+  its own pilots.
+- Virulent claws + Corruptor cannon; assault/predator/ranged/**burrow**
+  modes; ult **Virulent Overdrive** (40 s, all stats +300%, "ignores most
+  defensive systems").
+- Reading: Ernest Group's answer to the machine uprising was to build
+  something half-alive and barely controllable — the bio-mechanical bridge
+  between human engineering and what nanotech becomes when it's unbound.
+  Pre-echo of Zenith-style living tech? (Creator owns.)
+
 ### Frame-line overview sheet
 `exzersuit-frames-overview.png` shows piloted Mk-I/II/III variants
 (1-pilot crew, smaller scale figures) with roles like "Demon Containment
