@@ -95,6 +95,16 @@
     building with flesh what the machines built with code (and the Central
     Mind FELL). Does he know? Is he copying it, competing with it, or
     continuing it? Deliberate parallel or convergence?
+11p. **"ZENITH PRIME" (4.80 m)** — appears in three elite-sheet scale charts
+    but has no sheet. The Faction's captured/replicated Zenith? Their
+    ultimate unit?
+11q. **Skyward Sentinel's "Neural Link (GHOST Sync)"** — unique among FCT
+    units (all others: Forced Sync). Typo or terrible truth (a converted
+    Ghost / Ghost-derived tech)?
+11r. **FCT-10** — the missing number between Tarantula (09) and Aegis
+    Sentinel (11). What is it?
+11s. Is the **"Faction Leader"** the elite units guard The Doctor himself,
+    or someone above/beside him?
 11j. ~~Which era does the game take place in?~~ **RESOLVED (creator):** the
     game plays in the Ghosts era; the AI/ExZerSuit-Frames are Old War
     history; the dormant Exzerai awaken late-game when the Ghost team

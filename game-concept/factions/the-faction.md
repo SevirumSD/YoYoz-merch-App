@@ -34,9 +34,36 @@ public (and to the player, first time through).
 | **FCT-04 SILENT REAPER** (2.20 m) | Assassination drone | Retractable monoblades, multi-spectrum cloak. "No witnesses. No evidence. No mercy." |
 | **FCT-05 VOIDSTALKER** (2.35 m) | Infiltration drone — recon, sabotage | Horned bone-mantle silhouette, phase-cloak, tendril latchers. *"It does not hunt. It erases."* |
 | **FCT-06 RAVEN ZERO** (2.90 m quad) | Recon assault unit | Rail cannon + vibro-blade, hive mode, Execution Protocol ("guaranteed kill sequence"). *"We observe. We decide. We eliminate."* |
-| **FCT-07 RAVEN HOUND** (2.65 m quad; two sheet variants — grey and black/white) | Recon assault drone — flanker | Rail cannons + retractable spinal spike lances, Predator Protocol. *"You won't hear it coming. You won't even know it was there."* |
+| **FCT-07 RAVEN HOUND** (2.65 m quad; two liveries — grey and black/white) | Recon assault drone — flanker | Rail cannons + retractable spinal spike lances, Predator Protocol. *"You won't hear it coming. You won't even know it was there."* |
 | **FCT-08 ARACHNID HUNTER** (3.20 m, 6-leg) | Recon assault drone — vanguard/swarm | Dual rail cannons, micro-missile pods, Spider Climb, Swarm Sync |
 | **FCT-09 TARANTULA** (1.35 m low-profile) | Recon assault drone — area suppression | Turret rail cannon, micro-missile swarm saturation, Swarm Mode |
+
+### The elite tier — the Faction Leader's guard (anti-Zenith by design)
+
+| Unit | Threat | Role | Signature |
+|---|---|---|---|
+| **FCT-11 AEGIS SENTINEL** (3.85 m) | Omega+ | Elite defense — "unwavering shield and spear **for the Faction Leader**" | Plasma cannons, defense drones, vibro-blade; "can assess, learn, and **counter even Zenith-class threats** in real time." *"Its presence is a declaration: the Faction's leader is untouchable."* |
+| **FCT-12 TITAN PALADIN** (4.25 m) | Omega+ | Elite defense — "**personal guardian of the Faction Leader**" | Rail + plasma cannons, vibro-blade; "built to withstand extreme hostile environments and **counter Zenith-class threats**" |
+| **FCT-13 BLACK BULL** (3.85 m, 4.6 m to horn tip) | **Omega++** | Elite offense — shock dominance | Thermal lance, ion cannon, Bull Charge, Berserker Mode; horned, **black + gold** — a Faction elite wearing the demons' colors |
+| **FCT-14 VANGUARD AEGIS** (4.85 m) | **Omega++** | Pinnacle of Faction defensive engineering — "unshakable **protector of the Faction Leader**" | Aegis Lance (phase penetration + shield disruption), phalanx formations, Aegis Barrier; "withstand and **counter Zenith-class** threats in any combat scenario" |
+| **FCT-AF SKYWARD SENTINEL** (4.65 m, flight 1,280 km/h) | **Omega++** | Air defense / airforce — "Dominate the skies. Protect the order." | Anti-air railgun, swarm missiles, VTOL; "precision elimination of aerial threats **including Ghosts, Zeniths**, and hostile aircraft." Massive wing binders — **creator note: can also serve as a dual-shield unit** (wings redeploy as twin shields for ground combat / escort phalanx). |
+
+**What the elite sheets confirm in print:** the anti-Zenith purpose is no
+longer hidden subtext — "counter Zenith-class threats" is written on four of
+five sheets, and Skyward Sentinel names **Ghosts and Zeniths** as its
+targets outright. The elite tier exists to protect one person — the
+**Faction Leader** (The Doctor? unconfirmed) — and to kill the player.
+
+**Two anomalies to flag:**
+1. **"ZENITH PRIME — 4.80 m"** appears in the scale-comparison charts of
+   Aegis Sentinel, Titan Paladin, and Black Bull — an unsheeted unit. The
+   Faction has (or fears) something *called a Zenith* at elite scale. Sheet
+   presumably incoming; potentially their captured/replicated Zenith.
+2. **Skyward Sentinel's AI/OS reads "Neural Link (GHOST Sync)"** — every
+   other FCT unit says *Forced* Sync. Typo, or something far worse (a
+   converted Ghost? Ghost-derived sync tech?). Creator to rule.
+3. Numbering gap: **FCT-10 is missing** between Tarantula (09) and Aegis
+   Sentinel (11).
 
 ### The drone tier and the hive
 
@@ -45,11 +72,18 @@ recon packs, swarm coordination (Hive Link / Swarm Sync / Server Link), the
 refrain *"It sees. It hunts. It reports. It does not think. It obeys."*
 **Chilling detail:** even these "drones" list their AI/OS as **Neural Link
 (Forced Sync)** — the same conversion signature as the humanoid units.
-Implication (creator to confirm): the beasts may be converted humans too —
-minds repurposed as wetware processors in animal frames, the cruelest rung
-of The Doctor's one-mind architecture. Raven Zero "operates autonomously or
-as part of The Faction's **hive network**" — the one mind is literally
-under construction on every sheet.
+**CONFIRMED (creator): the beasts are converted humans too** — minds
+repurposed as wetware processors in animal frames, the cruelest rung of The
+Doctor's one-mind architecture. Raven Zero "operates autonomously or as
+part of The Faction's **hive network**" — the one mind is literally under
+construction on every sheet.
+
+**Story beat (creator-confirmed):** the Ghosts discover the truth in-story —
+that every Faction unit they've been destroying is a converted human — and
+**it is a broken moment even for them.** The squad that has faced demons,
+machine apostles, and gods gets broken by a fact, not a fight. Protect this
+beat: it should land mid-campaign, after the player has personally killed
+hundreds of them.
 
 ## The units ARE people (creator-confirmed — the core horror)
 
