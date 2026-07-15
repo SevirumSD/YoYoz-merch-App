@@ -41,6 +41,7 @@ hack-and-slash action (*Implosion: Never Lose Hope* DNA) built in **Unreal Engin
 | [`factions/aegis-syndicate.md`](factions/aegis-syndicate.md) | Aegis Syndicate, Aria, Kail Squad |
 | [`entities/azrael-0.md`](entities/azrael-0.md) | AZRAEL-0, the First Frame — Subject Zero (entity, not faction) |
 | [`art-direction.md`](art-direction.md) | Palette system, silhouette rules, redesign notes |
+| [`systems-armor-macros.md`](systems-armor-macros.md) | Nanite armor morph (Mystique-style) + FFXI-evolved macro chain system |
 | [`open-questions.md`](open-questions.md) | Canon gaps & decisions still owned by the creator |
 | [`prototype-plan.md`](prototype-plan.md) | UE5 prototype scope (Implosion-style vertical slice) |
 | [`reference-sheets/`](reference-sheets/) | All original concept sheets (images), organized by faction |
