@@ -34,17 +34,44 @@ public (and to the player, first time through).
 | **FCT-04 SILENT REAPER** (2.20 m) | Assassination drone | Retractable monoblades, multi-spectrum cloak. "No witnesses. No evidence. No mercy." |
 | **FCT-05 VOIDSTALKER** (2.35 m) | Infiltration drone — recon, sabotage | Horned bone-mantle silhouette, phase-cloak, tendril latchers. *"It does not hunt. It erases."* |
 
-## The pilots are prisoners
+## The units ARE people (creator-confirmed — the core horror)
 
-The single darkest detail, consistent across sheets: pilot interface =
-**Neural Link (Forced Sync)**. Warden: "Locked neural link with **zero user
-freedom**… all critical functions are controlled by The Faction." Wraith:
-"obedience conditioning… emotional dampeners reduce hesitation and increase
-operational loyalty." Passives include **Total Obedience** ("cannot disobey
-direct Faction commands") and **Pain Suppression** ("ensures continued
-operation"). The Faction's enforcement units are crewed by people who
-cannot say no. Rescue-the-pilot mission material; also the thematic inverse
-of the Ghosts (Zeniths amplify their wearers' will — FCT frames erase it).
+**Every Faction enemy is a human being converted into these things.** Not
+pilots strapped into machines — *humans turned into the units themselves*,
+processed until "they just don't feel anything." The sheet language reads
+back as understatement: "Forced Sync," "zero user freedom," "emotional
+dampeners," **Total Obedience**, Pain Suppression — that's the residue of a
+person being overwritten.
+
+**This is how The Doctor works: human enslavement, at scale, toward control
+of everything through ONE MIND.** Every converted human is another neuron in
+the mind The Doctor is assembling.
+
+Thematic inverse of the Ghosts stands, sharpened: Zeniths amplify their
+wearers' will — The Faction *deletes* the will and keeps the body.
+
+Combat-design consequence: the player spends the early game killing
+"monsters" that are enslaved humans in nightmare costumes. The reveal
+retroactively poisons every early victory — protect this twist; never
+foreshadow it cheaply. (The suit danger-sense system can whisper it:
+Zeniths may react *strangely* — grief-like, confused — to FCT units,
+because they sense something human inside.)
+
+## Why The Doctor hates Sevirum and the Ghosts (creator-confirmed)
+
+**They gave hope to the world.** The Doctor's project is total control
+through a single mind; hope makes people believe in something other than
+order — it is the one contagion his conversion process cannot remove and
+his false-flag theater cannot script. The Ghosts aren't a military threat
+to him first; they're a *narrative* threat. His hatred of Sevirum is the
+hatred of an author for a character who writes back.
+
+Note the doctrine echo (creator to confirm if deliberate): the Exzerai
+reached the same conclusion — Longshadow exists to "remove the leaders,
+remove hope, remove resistance"; Nightshade to "terminate legends before
+they can inspire others to rise." **The Doctor and the machines
+independently declared war on hope itself.** If intentional, this rhyme is
+the spine of the entire antagonist roster.
 
 ## Confirmed canon (from creator)
 

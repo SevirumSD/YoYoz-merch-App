@@ -85,8 +85,16 @@
     serve humanity. We shape it."). Leader, chief scientist, or the public
     face of something else? Any link to the Ernest Group, Aria's sealed
     memories, or the Black Archive?
-11n. Where do the FCT forced-sync pilots come from — volunteers, conscripts,
-    prisoners, or grown? (Rescue-arc potential.)
+11n. ~~Where do the FCT pilots come from?~~ **RESOLVED (creator):** there
+    are no pilots — the units ARE humans converted by The Doctor's
+    enslavement process, stripped of feeling, nodes toward his "one mind."
+    Remaining: where are the humans taken from (missing persons? "casualties"
+    of the false-flag attacks — a self-supplying harvest loop?), and is the
+    conversion reversible? (Rescue/mercy arc hinges on that answer.)
+11o. **The Doctor's "one mind" vs the Central Mind** — the Doctor is
+    building with flesh what the machines built with code (and the Central
+    Mind FELL). Does he know? Is he copying it, competing with it, or
+    continuing it? Deliberate parallel or convergence?
 11j. ~~Which era does the game take place in?~~ **RESOLVED (creator):** the
     game plays in the Ghosts era; the AI/ExZerSuit-Frames are Old War
     history; the dormant Exzerai awaken late-game when the Ghost team
