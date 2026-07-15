@@ -82,7 +82,7 @@ all ladders measure against.
 - [x] Exzerai evolved-AI units (6: Luxorus, Shardclaw, Longshadow, Nightshade, Ironmaw, Requiem)
 - [x] Vanguard/Ascendant Initiative human frames (Stray, Sigma Knight, Seraph)
 - [x] The Faction confirmed as hidden orchestrator (anti-Zenith Vanguard program)
-- [x] Faction FCT enforcement line (5 false-flag units: Warden, Wraith, Juggernaut, Silent Reaper, Voidstalker) + The Doctor named
+- [x] Faction FCT enforcement line (9 false-flag units: Warden, Wraith, Juggernaut, Silent Reaper, Voidstalker, Raven Zero, Raven Hound ×2 variants, Arachnid Hunter, Tarantula) + The Doctor named
 - [x] Game structure: Ghosts-era campaign; dormant Exzerai wake on late-game return to Earth
 - [ ] ChatGPT lore archive import (`conversations.json`)
 - [ ] Sevirum redesign (v2 sheet)

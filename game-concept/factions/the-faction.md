@@ -33,6 +33,23 @@ public (and to the player, first time through).
 | **FCT-03 JUGGERNAUT** (3.45 m) | Heavy suppression / area denial | Twin impact cannons, Fortress Mode, Target Crush — "deployed where intimidation alone is not enough" |
 | **FCT-04 SILENT REAPER** (2.20 m) | Assassination drone | Retractable monoblades, multi-spectrum cloak. "No witnesses. No evidence. No mercy." |
 | **FCT-05 VOIDSTALKER** (2.35 m) | Infiltration drone — recon, sabotage | Horned bone-mantle silhouette, phase-cloak, tendril latchers. *"It does not hunt. It erases."* |
+| **FCT-06 RAVEN ZERO** (2.90 m quad) | Recon assault unit | Rail cannon + vibro-blade, hive mode, Execution Protocol ("guaranteed kill sequence"). *"We observe. We decide. We eliminate."* |
+| **FCT-07 RAVEN HOUND** (2.65 m quad; two sheet variants — grey and black/white) | Recon assault drone — flanker | Rail cannons + retractable spinal spike lances, Predator Protocol. *"You won't hear it coming. You won't even know it was there."* |
+| **FCT-08 ARACHNID HUNTER** (3.20 m, 6-leg) | Recon assault drone — vanguard/swarm | Dual rail cannons, micro-missile pods, Spider Climb, Swarm Sync |
+| **FCT-09 TARANTULA** (1.35 m low-profile) | Recon assault drone — area suppression | Turret rail cannon, micro-missile swarm saturation, Swarm Mode |
+
+### The drone tier and the hive
+
+The quadruped/arachnid units (06–09) are the Faction's *animal* layer —
+recon packs, swarm coordination (Hive Link / Swarm Sync / Server Link), the
+refrain *"It sees. It hunts. It reports. It does not think. It obeys."*
+**Chilling detail:** even these "drones" list their AI/OS as **Neural Link
+(Forced Sync)** — the same conversion signature as the humanoid units.
+Implication (creator to confirm): the beasts may be converted humans too —
+minds repurposed as wetware processors in animal frames, the cruelest rung
+of The Doctor's one-mind architecture. Raven Zero "operates autonomously or
+as part of The Faction's **hive network**" — the one mind is literally
+under construction on every sheet.
 
 ## The units ARE people (creator-confirmed — the core horror)
 
