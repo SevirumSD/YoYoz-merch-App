@@ -1,7 +1,7 @@
-# System Design — Nanite Armor Morph & Macro Chains
+# System Design — Living Suit Systems (Morph, Macros, Danger Sense)
 
-> Creator idea (2026-07). Status: concept approved for design bible; visual
-> treatment pending.
+> Creator ideas (2026-07). Status: concepts approved for design bible; visual
+> treatments pending.
 
 ## 1. Nanite armor transformation (the "Mystique morph")
 
@@ -57,6 +57,32 @@ Loadout-system depth can differ per Ghost: fixed quick-sets for most
 members, with **Sevirum's adaptive Zenith allowing full unrestricted
 chaining** — the only suit that can truly re-imagine itself mid-fight.
 System design as characterization.
+
+## 3. Suit danger sense (diegetic threat detection)
+
+Creator concept: if the player pays close attention, the suit itself
+**shivers and moves** when it senses danger or a very dangerous enemy — the
+living nanite armor reacting like a prey animal before the player sees
+anything.
+
+- **No UI. The suit IS the UI.** Rewards observation; inattentive players
+  walk into the ambush. Doubles as free horror/dread (the suit flinches
+  before anything appears on screen).
+- **Tiered to the threat ladders:**
+  - Minor threats → faint nanite shimmer.
+  - Elites → directional ripple (nanites lean toward/away from the threat's
+    bearing — an organic compass for attentive players).
+  - Omega-class → full bristle: half-formed spikes, glow drops to embers.
+  - Boss-specific reactions as enemy characterization (dead-still freeze for
+    Longshadow; frantic ripple for Shardclaw packs; etc.).
+- **Sense layering:** visual shiver + sub-audible nanite whisper +
+  heartbeat-pattern haptic rumble (the suit's fear felt in the hands).
+- **Lore/story hooks:** danger-sense as per-suit personality. Sevirum's
+  adaptive Zenith reacts to things no other suit registers (Azrael-0,
+  Belthizar). A suit reacting to a *friendly* NPC = silent foreshadowing
+  tool (The Faction arc).
+- **Accessibility guardrail:** optional subtle HUD pulse mirroring the cue
+  so hearing/vision-impaired players receive the same information.
 
 ## Open items
 - Final visual treatment of the morph (creator: "still pending").
