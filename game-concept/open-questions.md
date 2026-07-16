@@ -113,7 +113,16 @@
     how deep does that go? Was Sevirum's old squad a Faction asset without
     knowing it? Does the Doctor know Sevirum from the XIIX era?
 11u. Aegis Prime "chose loyalty" with granted free will — can it choose
-    again? (Redemption/defection potential for the Doctor's confidant.)
+    again? (Redemption/defection potential for the Doctor's confidant —
+    same question applies to Oracle Prime and Oracle-17.)
+11v. **GHS-01 through GHS-08** — Specter is GHS-09 of a "Ghost Hunter
+    Series." What were the first eight? Failures, prototypes, or active
+    units not yet seen?
+11w. **Oracle-17's number** — were there sixteen Oracles before her? What
+    happened to them?
+11x. **SkyNet Sync** (Skyward Guardian) — third sync variant after Forced
+    and Ghost. Does the Faction run separate sync networks per domain
+    (ground hive / Ghost-tech program / air network)?
 11j. ~~Which era does the game take place in?~~ **RESOLVED (creator):** the
     game plays in the Ghosts era; the AI/ExZerSuit-Frames are Old War
     history; the dormant Exzerai awaken late-game when the Ghost team

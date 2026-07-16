@@ -105,6 +105,53 @@ targets outright. The elite tier exists to protect one person — the
 3. Numbering gap: **FCT-10 is missing** between Tarantula (09) and Aegis
    Sentinel (11).
 
+### The Ghost Hunter Series (GHS) — the purpose-built answer
+
+**GHS-09 SPECTER** (4.75 m, **Omega++**, Ghost Sync) — "GHOST HUNTER
+SERIES": *"the pinnacle of Faction engineering and the ultimate counter to
+Zeniths and Ghost-class targets… Every system is designed for one purpose:
+eliminate the Ghost threat. The perfect weapon. The perfect hunter. The
+Faction's greatest defense."*
+- Specter Lance (high-frequency **anti-Ghost** lance, phase-disrupting),
+  Disruption Rail (shield overload), Phantom Blades, micro-drone swarm;
+  stealth field + thermal displacement; Phase Shift, Overdrive.
+- White/gold angelic styling — the Faction hunting Ghosts while dressed as
+  their savior.
+- ⚠ The designation **GHS-09** implies **GHS-01 through -08 exist** —
+  an entire unsheeted hunter series. And Zenith Prime appears in its scale
+  chart again.
+
+### The air force
+
+**FCT-AF SKYWARD GUARDIAN** (4.20 m, **Omega+**, flight 990 km/h) — sister
+unit to Skyward Sentinel: air defense/anti-air mech, "complete air
+superiority and protection of strategic assets." Anti-air railgun, swarm
+missiles, plasma cannons, energy lance; Intercept/Defense/Support/Stealth/
+Assault modes.
+- ⚠ AI/OS: **Neural Link (SkyNet Sync)** — a *third* sync variant
+  (Forced / Ghost / SkyNet). The Faction appears to run distinct sync
+  networks per domain — ground hive, Ghost-tech program, and air network.
+
+### The Doctor's court — the Oracles (FCT-G, free-will units)
+
+Alongside Aegis Prime, the Doctor keeps two advisor units — both granted
+free will, both choosing loyalty, both Ghost Sync:
+
+**FCT-G ORACLE PRIME** (4.25 m, Omega) — Strategic Advisor / Intelligence
+Support. Advisor/analyst/support; carries minimal weaponry — "it does not
+need more." Cognitive suite: strategic advisor, plan optimizer, design
+critique, battlefield control, autonomous executor. **Emotional Simulation**
+(simulates human emotion to improve decisions).
+
+**FCT-G ORACLE-17** (3.95 m, Omega) — "Doctor's Oracle" / Strategic Support
+AI. Advisor/analyst/support/executor — "wins through intelligence,
+prediction, and perfect execution," with an explicit **non-lethal
+preference** loadout (shield disc, data probe, immobilization). Passive:
+**Emotional Nullifier** (unaffected by psychological warfare).
+- The pairing is deliberate poetry: one Oracle *simulates* emotion, the
+  other *nullifies* it — the Doctor keeps both an empath and a stoic at his
+  ear. And "17" implies Oracles 1–16 came before her. Where are they?
+
 ### The drone tier and the hive
 
 The quadruped/arachnid units (06–09) are the Faction's *animal* layer —
