@@ -82,8 +82,8 @@ all ladders measure against.
 - [x] Exzerai evolved-AI units (6: Luxorus, Shardclaw, Longshadow, Nightshade, Ironmaw, Requiem)
 - [x] Vanguard/Ascendant Initiative human frames (Stray, Sigma Knight, Seraph)
 - [x] The Faction confirmed as hidden orchestrator (anti-Zenith Vanguard program)
-- [x] Faction FCT line (14 sheets): starters 01–05, beast tier 06–09 (Raven Hound ×2 liveries), elite Leader-guard 11–14 + FCT-AF Skyward Sentinel; The Doctor named
-- [ ] FCT-10 and "Zenith Prime" — referenced but unsheeted
+- [x] Faction FCT line (17 sheets): starters 01–05, beast tier 06–09 (Raven Hound ×2 liveries), elite guard 10–14, FCT-AF Skyward Sentinel, FCT-G Aegis Prime; The Doctor named + puppet-master canon
+- [ ] "Zenith Prime" — referenced in scale charts but unsheeted
 - [x] Game structure: Ghosts-era campaign; dormant Exzerai wake on late-game return to Earth
 - [ ] ChatGPT lore archive import (`conversations.json`)
 - [ ] Sevirum redesign (v2 sheet)

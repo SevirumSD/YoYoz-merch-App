@@ -7,12 +7,52 @@
 > build its weapons for it — and now it has its own hardware: the FCT
 > enforcement line.
 
-## The Doctor
+## The Doctor — the chess master (creator-confirmed)
 
 First named Faction individual, quoted on their unit sheets:
 - *"WE DO NOT SERVE HUMANITY. WE SHAPE IT."*
 - *"We do not negotiate. We overwhelm."*
-Identity, role, and origin: unknown (open question).
+
+**Scope of manipulation:** The Doctor / The Faction has manipulated the
+other factions, the military, **XIIX** (⚠ spoiler thread — Sevirum's hidden
+squad was a Faction pawn), colonies — everything on the board.
+
+**The Zenith obsession:** The Faction wants, needs, MUST have the Ghosts'
+suit technology — doctrine: *"NO ONE SHALL HAVE THAT MUCH POWER!"* And the
+key nuance: **The Doctor has no idea what the suits are or what they're
+called. He just knows he wants them.** (The "Zenith-class" label on FCT
+sheets is archive/retroactive terminology — in-story, the Faction is
+chasing something it can't even name. Wanting the unnameable is the
+obsession at its purest.)
+
+**Above the Doctor (creator-confirmed, deep spoiler):** the Doctor is not
+the top of the board. A very hidden character exists above him — and
+**another hidden character is running the Doctor as a puppet**, to be
+revealed late. The chess master is a chess piece.
+
+## The Doctor's two most trusted guards
+
+### FCT-10 OBSIDIAN SENTINEL — Elite Guard Unit (the "missing number")
+- 3.45 m, **Omega+**, black/gold with violet optics. Personal protector of
+  the Faction Leader; "built to neutralize Zenith-class threats and secure
+  absolute dominance on any battlefield."
+- Plasma cannons, vibro-blade, micro-missiles; Overdrive, Phase Shift,
+  Shield Matrix. AI/OS: Neural Link (**Forced Sync**) — a converted human,
+  like the rest.
+
+### FCT-G AEGIS PRIME — Autonomous Protector / Strategic Advisor
+- 4.60 m, **Omega++**. "LOYALTY: THE DOCTOR." Personal guard / executor /
+  strategist — *the Doctor's most trusted protector and confidant.*
+- **AI/OS: Neural Link (GHOST Sync)** — and the sheet explains what that
+  means: *"Granted the action of free will, it chose loyalty to The Faction
+  above all else."* A **true autonomous thought engine** with emotional
+  simulation, strategic insight, design critique, autonomous execution.
+- Creator canon: **Ghost Sync is for what's to come — not the Ghost team.**
+  Aegis Prime (and Skyward Sentinel) are the prototypes of that future.
+- The inversion that makes it art: The Doctor strips feeling from every
+  human he converts — then builds a machine and *gives* it emotions and
+  free will. The only Faction member who can say no… and it chooses not to.
+  An army of the unwilling, advised by the sole volunteer.
 
 ## The false-flag doctrine (creator-confirmed)
 

@@ -98,13 +98,22 @@
 11p. **"ZENITH PRIME" (4.80 m)** — appears in three elite-sheet scale charts
     but has no sheet. The Faction's captured/replicated Zenith? Their
     ultimate unit?
-11q. **Skyward Sentinel's "Neural Link (GHOST Sync)"** — unique among FCT
-    units (all others: Forced Sync). Typo or terrible truth (a converted
-    Ghost / Ghost-derived tech)?
-11r. **FCT-10** — the missing number between Tarantula (09) and Aegis
-    Sentinel (11). What is it?
-11s. Is the **"Faction Leader"** the elite units guard The Doctor himself,
-    or someone above/beside him?
+11q. ~~Ghost Sync anomaly~~ **PARTIALLY RESOLVED (creator):** Ghost Sync is
+    "for what's to come," not the Ghost team — Aegis Prime and Skyward
+    Sentinel are prototypes of a future capability. Remaining: what IS
+    coming?
+11r. ~~FCT-10 missing~~ **RESOLVED:** FCT-10 Obsidian Sentinel — elite guard,
+    one of the Doctor's two most trusted alongside FCT-G Aegis Prime.
+11s. The elite units guard "the Faction Leader" — presumably The Doctor,
+    but creator confirms a hidden character exists ABOVE him, **running the
+    Doctor as a puppet** (late reveal). Who is the puppet master? Is the
+    "very hidden person above the Doctor" the same character as the
+    puppeteer, or two separate hidden figures?
+11t. **XIIX was manipulated by The Faction** (creator, spoiler thread) —
+    how deep does that go? Was Sevirum's old squad a Faction asset without
+    knowing it? Does the Doctor know Sevirum from the XIIX era?
+11u. Aegis Prime "chose loyalty" with granted free will — can it choose
+    again? (Redemption/defection potential for the Doctor's confidant.)
 11j. ~~Which era does the game take place in?~~ **RESOLVED (creator):** the
     game plays in the Ghosts era; the AI/ExZerSuit-Frames are Old War
     history; the dormant Exzerai awaken late-game when the Ghost team
