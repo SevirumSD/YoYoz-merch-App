@@ -152,6 +152,67 @@ preference** loadout (shield disc, data probe, immobilization). Passive:
   other *nullifies* it — the Doctor keeps both an empath and a stoic at his
   ear. And "17" implies Oracles 1–16 came before her. Where are they?
 
+### The FCT-Ω tier — the Doctor's transcendent creations
+
+The apex of the Faction: four Ω-designation units, styled in black/white/
+gold divinity. **Note the motto shift:** every lower-tier sheet reads
+"UNITY • ORDER • **OBEDIENCE**" — the Ω sheets read "UNITY • **PURPOSE •
+EVOLUTION**." At the top of the pyramid, the Doctor's philosophy changes
+vocabulary: the masses get obedience; his masterpieces get purpose.
+
+**THE OBSIDIAN MIND** (Ω, Omega++, Synthetic Consciousness Core) — *the
+answer to open question 11o, in print:* "the **first true synthetic
+consciousness**, created by The Doctor to **unify all machine generations
+through understanding rather than control**. It does not command. It does
+not obey… All machine generations operate with free will, yet remain
+aligned through its insight, not authority." Loyalty: **INDEPENDENT
+(ALIGNED)** — "The Doctor is the creator, not the owner. The Obsidian Mind
+chooses alignment because the vision is shared, not imposed."
+- The Doctor has *built his own Central Mind* — and, knowingly or not,
+  corrected the old one's fatal flaw: the machine Central Mind ruled
+  through control and fell; the Obsidian Mind aligns through shared vision.
+- Its "Relationship with Generations" panel is an org chart of the whole
+  FCT ecosystem (Warden, Specter, Aegis, Oracle, Seraph, Titan…). The
+  Ghost/Obsidian kernels on other Ω sheets suggest this is the hub "what's
+  to come" runs through.
+- No weapons — "information dominance is its only attack vector."
+
+**SERAPH** (Ω, Omega+, Autonomous Sovereign Intelligence) — Observer •
+Mediator • Archivist • **Judgment Unit**. "Exists beyond war, beyond
+loyalty, beyond emotion… SERAPH does not command, it enlightens." Halo'd
+angel frame with reality-tier abilities: Time Dilation Field, Reality
+Anchor, Data Erasure, Prophecy Protocol, Judgment Release. "Absolute
+loyalty **by choice**: SERAPH believes in the Doctor's vision for a future
+beyond chaos."
+- ⚠ Name lineage now three deep: ExZer-06 **Seraphim** (Old War) → SX-01
+  **Seraph** (Vanguard) → FCT-Ω **SERAPH**. The angel-name is an heirloom
+  passed between the very programs The Faction touched.
+
+**GHOSTBLADE** (Ω, Omega, Elite Synthetic Assassin) — "**ZENITH HUNTER**."
+Loyalty: The Doctor / **Obsidian Mind**. AI/OS: *Obsidian Ghost Kernel*.
+Built-in **Zenith Countermeasure** passive and "Zenith hunting protocols."
+Monomolecular Ghostblade ("cuts through anything"), Phase Lance, harmonic
+garrote wire, Time Dilation Field, Silent Execution. The Doctor's personal
+answer to the question "what kills a Ghost?"
+
+**LUMEN SERAPH** (Ω, Omega+, Divine Enforcer) — "**Zenith Protector •
+Executioner • Lightbringer**." Sheet language: "a **divine-tier Zenith
+unit** created by The Doctor" — the Faction has started using *Zenith* as
+its own tier word (see note below). Angelic wing array, Lumen Blade,
+Purification Rays, Halo Command Link (direct sync with the Obsidian Mind),
+Extermination Rite. "It descends as an angel of judgment and rises as a
+wall of light."
+
+**On the Faction's use of "Zenith":** creator canon says the Doctor doesn't
+know what the Ghosts' suits are called — yet Ω-tier sheets say
+"Zenith-class," "Zenith hunter," even "divine-tier Zenith unit," and the
+scale charts list an unsheeted **ZENITH PRIME**. Working read (creator to
+bless): "Zenith" is the *Faction's own classification word* for
+apex/adaptive technology — a label they coined for the threat and now
+apply to their imitations of it. The irony: they accidentally named their
+enemy correctly. Alternatively, the sheets are late-era archive documents
+using retroactive terminology.
+
 ### The drone tier and the hive
 
 The quadruped/arachnid units (06–09) are the Faction's *animal* layer —

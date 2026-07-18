@@ -91,10 +91,28 @@
     Remaining: where are the humans taken from (missing persons? "casualties"
     of the false-flag attacks — a self-supplying harvest loop?), and is the
     conversion reversible? (Rescue/mercy arc hinges on that answer.)
-11o. **The Doctor's "one mind" vs the Central Mind** — the Doctor is
-    building with flesh what the machines built with code (and the Central
-    Mind FELL). Does he know? Is he copying it, competing with it, or
-    continuing it? Deliberate parallel or convergence?
+11o. **The Doctor's "one mind" vs the Central Mind** — **PARTIALLY
+    RESOLVED:** the Obsidian Mind sheet confirms he built one — "the first
+    true synthetic consciousness… unify all machine generations through
+    understanding rather than control," loyalty "Independent (Aligned)."
+    He corrected the old Central Mind's flaw (control → shared vision).
+    Remaining: does he KNOW he's recreating the thing that fell? Do the
+    Exzerai know it exists (a new Central Mind is sacrilege or salvation
+    to the Apostles)? And the human-conversion hive vs the free-machine
+    Obsidian Mind — which one is the real "one mind" project, or do they
+    merge?
+11y. **The Ω motto shift** — lower tiers: "Unity • Order • Obedience"; Ω
+    tier: "Unity • Purpose • Evolution." Deliberate philosophy layering,
+    or an evolution of The Faction over time?
+11z. **The Faction's "Zenith" vocabulary** — Ω sheets call units "Zenith
+    hunter" and even "divine-tier Zenith unit" while the Doctor canonically
+    doesn't know the Ghost suits' name. Is "Zenith" the Faction's own
+    coined classification (accidentally matching the true name), or
+    retroactive archive labeling? And is ZENITH PRIME their completed
+    imitation?
+11aa. **Three Seraphs** — ExZer-06 Seraphim → SX-01 Seraph (Vanguard) →
+    FCT-Ω Seraph. Same inheritance line? Who keeps passing the angel name
+    between programs — The Faction?
 11p. **"ZENITH PRIME" (4.80 m)** — appears in three elite-sheet scale charts
     but has no sheet. The Faction's captured/replicated Zenith? Their
     ultimate unit?
