@@ -113,6 +113,13 @@
 11aa. **Three Seraphs** — ExZer-06 Seraphim → SX-01 Seraph (Vanguard) →
     FCT-Ω Seraph. Same inheritance line? Who keeps passing the angel name
     between programs — The Faction?
+11ab. **The Faction's origins (AGS archive)** — every 1st-gen prototype is
+    a neutral *guardian* (defense/escort/support, no forced sync). Did the
+    Faction begin as a genuine defensive program that the Doctor (or his
+    puppet master) later corrupted? Who founded it? And which motto era did
+    the corruption begin in (Control•Evolve•Ascend → Obedience)?
+11ac. AGS numbering gaps — no AGS-001/002 base units, nothing between 006
+    and the FCT line. Lost generations?
 11p. **"ZENITH PRIME" (4.80 m)** — appears in three elite-sheet scale charts
     but has no sheet. The Faction's captured/replicated Zenith? Their
     ultimate unit?

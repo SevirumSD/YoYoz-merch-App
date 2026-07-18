@@ -83,7 +83,8 @@ all ladders measure against.
 - [x] Vanguard/Ascendant Initiative human frames (Stray, Sigma Knight, Seraph)
 - [x] The Faction confirmed as hidden orchestrator (anti-Zenith Vanguard program)
 - [x] Faction FCT line (25 sheets): starters 01–05, beast tier 06–09 (Raven Hound ×2 liveries), elite guard 10–14, air force (Skyward Sentinel + Guardian), Doctor's court (Aegis Prime, Oracle Prime, Oracle-17), GHS-09 Specter, Ω tier (Obsidian Mind, Seraph, Ghostblade, Lumen Seraph); The Doctor named + puppet-master canon
-- [ ] "Zenith Prime" (scale charts), GHS-01–08, Oracles 1–16 — referenced but unsheeted
+- [x] Faction AGS Prototype Archives (8 sheets: 00X, 00Y, 002A ×2, 003–006) — the guardian-era origins
+- [ ] "Zenith Prime" (scale charts), GHS-01–08, Oracles 1–16, AGS-001/002 — referenced but unsheeted
 - [x] Game structure: Ghosts-era campaign; dormant Exzerai wake on late-game return to Earth
 - [ ] ChatGPT lore archive import (`conversations.json`)
 - [ ] Sevirum redesign (v2 sheet)

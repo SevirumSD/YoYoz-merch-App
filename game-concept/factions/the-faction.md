@@ -274,6 +274,48 @@ the spine of the entire antagonist roster.
 
 ## Confirmed canon (from creator)
 
+## The Prototype Archives — the AGS Sentinel series (1st Gen, ARCHIVED)
+
+Eight sheets from "**The Faction Prototype Archives**" (stasis vaults,
+"The Faction Eyes Only") document the program's *origins* — and quietly
+tell the Faction's own tragedy:
+
+| Unit | Class / Role | Notes |
+|---|---|---|
+| **AGS-00X** | Prototype Guardian — combat/defense/recon | Earliest successful Guardian-program iteration; adaptive combat blade that transforms (blade ↔ crossbow ↔ shotgun ↔ dual crossbow) |
+| **AGS-00Y** | Prototype Scout — long-range recon | Modular payload testbed (sniper / EW-jammer / designator / light assault) |
+| **AGS-002A** (×2 sheet variants) | Defense / Support | Area denial, adaptive barriers, deployment cloak; proof-of-concept for all later defensive frames |
+| **AGS-003** | Defense / Escort | Transition from utilitarian to refined adaptive frames |
+| **AGS-004** | Defense / Support | "Stepping stone toward autonomous guardian frames… the Faction's pursuit of perfection through evolution" |
+| **AGS-005** | Defense / Escort | "A major evolution in autonomous warfare technology" |
+| **AGS-006** | Tank / Strategist | Heavy command platform — "designed to lead from the front" |
+
+**What the archive reveals:**
+1. **A fourth motto:** the AGS sheets read "**CONTROL. EVOLVE. ASCEND.**" —
+   with a *different insignia* (starburst, not the winged sigil). Motto
+   archaeology across eras: Control•Evolve•Ascend (prototype era) → Unity•
+   Order•Obedience (FCT mass-production era) → Unity•Purpose•Evolution
+   (Ω era). The Faction's slogans are strata — you can carbon-date a unit
+   by its letterhead.
+2. **The palette evolution is visible:** 00X/00Y/002A wear sand-beige and
+   black field colors; 003–006 shift to pearl-white and royal gold. You can
+   watch the "angel savior" aesthetic being *invented* across six frames.
+   The white-gold divinity of Specter and Lumen Seraph was a design
+   decision someone made, generations ago, on these prototypes.
+3. **Alignment: NEUTRAL. Roles: defense, escort, support, protection.**
+   Every early frame is a *guardian*. F-Core OS (not Neural Link — no
+   forced sync anywhere in the archive). The early Faction built
+   protectors with conventional AI. The conversion of humans came later.
+   **Implication (creator to bless): The Faction may have begun as
+   something genuinely defensive — and became the Doctor's machine.**
+   Same arc as the ExZers, same arc as everything in this universe:
+   the guardian that stopped guarding.
+4. Numbering rosetta: 00X/00Y (testbeds) → 002A → 003–006 (no 001 or 002
+   base unit sheeted; no 007–009 before the FCT line begins). Gaps noted.
+5. Threat levels LOW–MODERATE, status ARCHIVED, kept in stasis vaults —
+   museum pieces. Game-design gift: a **stasis vault level** where the
+   player fights (or awakens) the Faction's gentle ancestors.
+
 ## Confirmed canon (from creator)
 
 - The FCT enforcement line exists as **false-flag starter enemies**: deployed
