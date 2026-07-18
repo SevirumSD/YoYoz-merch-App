@@ -47,6 +47,7 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import BandSite from './pages/BandSite';
 import Checkout from './pages/Checkout';
 import Home from './pages/Home';
 import Notifications from './pages/Notifications';
@@ -58,6 +59,7 @@ import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "BandSite": BandSite,
     "Checkout": Checkout,
     "Home": Home,
     "Notifications": Notifications,
