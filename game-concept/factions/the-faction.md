@@ -203,6 +203,28 @@ Purification Rays, Halo Command Link (direct sync with the Obsidian Mind),
 Extermination Rite. "It descends as an angel of judgment and rises as a
 wall of light."
 
+**VEILSTRIKE** (Ω, **OMEGA+++**, Autonomous Sovereign Assassin) — "The
+Last Thing You Never See." Loyalty: The Doctor / Obsidian Mind. **The
+first Faction unit to reach Omega+++ — the demon Queen's tier.**
+- *"The Doctor's final masterpiece. An assassin without equal. Built from
+  the data, combat patterns, and memories of **the Ghosts, XIIX, and the
+  Long Bow Hunters**. It executes with perfect efficiency and absolute
+  certainty. It does not hesitate. It does not question. It completes."*
+- Knowledge & Combat Database (the terrifying part): **Ghost Archives**
+  (complete combat logs), **XIIX Database** ("all XIIX units, tactics,
+  formations, and mission data" — hard proof the Faction absorbed XIIX),
+  **Long Bow Records** ("every hunter, every mission, every shot
+  recorded"), **Zenith Intel** (unit weaknesses and countermeasures), The
+  Doctor's Files.
+- **Hunter's Reflection: mimics any observed fighting style** — she fights
+  the player with the player's own moves (the Faction's answer to
+  Azrael-0's Threat Replication, at boss scale).
+- Monomolecular katanas, phantom needles, quantum wire, Shadow Step,
+  Final Directive ("all limitations removed"). Frame: "**Obsidian
+  Generation** Synthetic Body" — her generation is *named after Obsidian*.
+- ⚠ **The Long Bow Hunters** — a completely new, unsheeted group. Veilstrike
+  holds their every recorded shot; nobody has ever mentioned them before.
+
 **On the Faction's use of "Zenith":** creator canon says the Doctor doesn't
 know what the Ghosts' suits are called — yet Ω-tier sheets say
 "Zenith-class," "Zenith hunter," even "divine-tier Zenith unit," and the

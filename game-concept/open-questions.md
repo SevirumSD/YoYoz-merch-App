@@ -126,9 +126,13 @@
     ageless (centuries of challenging his ideology)?
 11ae. **Obsidian & Sevirum** — "two who carry history… shares her past."
     Where do their histories cross — the Old War? XIIX? Something older?
-11af. **Veilstrike** — named in Obsidian's relationship panel (also
-    referenced on the Obsidian frame sheet: "Veilstrike acknowledges").
-    Unsheeted Faction unit/character — who?
+11af. ~~Veilstrike~~ **RESOLVED:** FCT-Ω Veilstrike, the Doctor's final
+    masterpiece — Omega+++ sovereign assassin built from Ghost/XIIX/Long
+    Bow data. Remaining: why does she "recognize Obsidian's authority,"
+    and can Obsidian actually stop her?
+11ah. **The Long Bow Hunters** — Veilstrike carries "every hunter, every
+    mission, every shot recorded." A whole unseen group (human hunter
+    corps? Zenith-era snipers? Linora's lineage?). Who were they?
 11ag. **Absolute Virtue timing** — is Obsidian's ascension an in-game event
     (endgame beat?), and does her Absolution Field ("nullifies corruption,
     restores humanity") mean converted humans CAN be restored — answering
