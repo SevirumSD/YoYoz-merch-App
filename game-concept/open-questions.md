@@ -120,6 +120,19 @@
     the corruption begin in (Control•Evolve•Ascend → Obedience)?
 11ac. AGS numbering gaps — no AGS-001/002 base units, nothing between 006
     and the FCT line. Lost generations?
+11ad. **Obsidian & the Doctor** — she "remembers the man before the title."
+    What is the Doctor's real name and story? What did the Faction "swear
+    to prevent" at its founding? And what makes both of them functionally
+    ageless (centuries of challenging his ideology)?
+11ae. **Obsidian & Sevirum** — "two who carry history… shares her past."
+    Where do their histories cross — the Old War? XIIX? Something older?
+11af. **Veilstrike** — named in Obsidian's relationship panel (also
+    referenced on the Obsidian frame sheet: "Veilstrike acknowledges").
+    Unsheeted Faction unit/character — who?
+11ag. **Absolute Virtue timing** — is Obsidian's ascension an in-game event
+    (endgame beat?), and does her Absolution Field ("nullifies corruption,
+    restores humanity") mean converted humans CAN be restored — answering
+    the mercy question in 11n?
 11p. **"ZENITH PRIME" (4.80 m)** — appears in three elite-sheet scale charts
     but has no sheet. The Faction's captured/replicated Zenith? Their
     ultimate unit?

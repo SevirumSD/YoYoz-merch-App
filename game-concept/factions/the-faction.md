@@ -274,6 +274,67 @@ the spine of the entire antagonist roster.
 
 ## Confirmed canon (from creator)
 
+## OBSIDIAN — FCT-001, "The Last Witness" (4-sheet character set)
+
+The Faction's **first designation is a human being** — and its conscience.
+Classification: Human Operative • Prototype Vanguard • Strategic Analyst •
+**Origin Witness**. Status ACTIVE, threat level UNKNOWN, clearance HIGHEST.
+*"I don't fight for the future. I guard the truth of the past. Without
+memory, even the strongest machine forgets why it exists."*
+
+**She bridges three eras** (sheet-verbatim): Humanity ("she never
+abandoned"), The Faction ("she witnessed its birth"), The Old War ("she
+remembers it all"). Historical timeline: survived the Old War → worked
+alongside the Doctor → **helped establish the Faction** → witnessed the
+creation of the Obsidian Mind (helped shape its philosophical core) →
+oversaw the early machine generations → **continues to challenge the
+Doctor's direction** → *remains fully human by choice*. She has been
+challenging his ideology **for centuries** (she and the Doctor are both
+functionally ageless — mechanism unstated).
+
+**Key role:** "Witness to the truth. **EQUAL to The Doctor.** Guardian of
+the past. Counterbalance to the future." Banner text: **"NOT A MACHINE.
+NOT CONVERTED. STILL HUMAN. STILL CHOOSING."** — she is the living
+refutation of the Doctor's entire thesis, standing inside his own house.
+
+**Relationships (sheet panel):**
+- **The Doctor — EQUAL.** "Challenges him. **Remembers the man before the
+  title.**" (The Doctor was once someone with a name. She knew him.)
+- Obsidian Mind — origin witness; the Mind is *named after her*.
+- Oracle consults her; Seraph respects her; **Veilstrike** (⚠ new,
+  unsheeted name) recognizes her authority.
+- **SEVIRUM — "UNDERSTANDS. Two who carry history… shares her past."**
+  Obsidian and Sevirum know each other. The Faction's conscience and the
+  Ghosts' leader share an untold history.
+
+**Notes from the Doctor (his most human writing in canon):** *"Obsidian is
+the anchor. Without her, the Mind drifts. Without her, I forget. Without
+her… we become what we swore to prevent."* — an admission that (a) he knows
+what he's becoming, (b) the Faction was founded to PREVENT something, and
+(c) one woman's memory is the only brake he respects.
+
+**Hardware:** FCT Vanguard MK-I — the original *human-compatible* Faction
+frame: pilot-based, **no neural replacement, no consciousness transfer, no
+cybernetic assimilation** (the anti-conversion suit — proof the Faction
+knows how to arm a human without enslaving them). Upgrade platform MK-IV
+"Ascendant," personally modified, not replicable. **PULSAR PV-01** vanguard
+unit (crew: 1 human pilot, black ops; hyper-agile S-class strategist frame).
+Primary weapon: **Pulsar Hammer Ax** (hammer ↔ axe energy weapon, built by
+Obsidian herself; "Legacy Old War Tech"). *"The strongest weapon I carry…
+is not the Hammer Ax. It is memory."*
+
+**ASCENSION PROTOCOL → ABSOLUTE VIRTUE, "The Guiding Light."** Her destined
+ascended form: white-gold winged frame with halo (FCT-001 // Ascended).
+*"When the past has been seen, and the future has been chosen… virtue
+becomes absolute."* Lore summary: she transcends the witness role and
+becomes **a symbol of hope leading humanity forward** — "SHE IS THE BRIDGE.
+SHE IS THE HOPE." Ascended abilities include Absolution Field ("nullifies
+corruption, **restores humanity**" — possibly the reversal mechanism for
+the converted) and Final Intervention (reality-altering last resort).
+- Design note: her black→white ascension is the visual *inverse* of the
+  Faction's false angels — they costume machines as saviors; she earns the
+  form they counterfeit.
+
 ## The Prototype Archives — the AGS Sentinel series (1st Gen, ARCHIVED)
 
 Eight sheets from "**The Faction Prototype Archives**" (stasis vaults,
