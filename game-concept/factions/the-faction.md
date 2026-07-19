@@ -225,6 +225,34 @@ first Faction unit to reach Omega+++ — the demon Queen's tier.**
 - ⚠ **The Long Bow Hunters** — a completely new, unsheeted group. Veilstrike
   holds their every recorded shot; nobody has ever mentioned them before.
 
+**AGS-001 "AEGIS PRIME" — the Prime Sentinel (Faction Ultimate Creation)**
+— threat level **OMEGA-PRIME** (Azrael-0's tier — only the second entity in
+canon to carry it). Creator: The Doctor. Origin: the Doctor's Archive.
+6.8 m, Prime Core (infinite energy matrix), Scythe of Absolution
+(scythe ↔ dual scythe ↔ crossbow ↔ dual crossbow ↔ shotgun), Dimensional
+Step, Self Evolution, and **Absolute Protocol — override authority on ALL
+Faction units and facilities.**
+- *"I was created to protect the future. I exist to ensure it."* / *"I do
+  not judge. I execute. I do not hate. I protect."*
+- **The lore summary is the biggest event in Faction canon:** *"Aegis Prime
+  was designed to protect humanity's future… even from those who would
+  betray it. When the Doctor's actions threatened the very future it was
+  built to save, Aegis Prime activated the Absolute Protocol. **It ended
+  the Doctor.** Not out of hatred. But out of purpose."*
+- The Doctor's story has an ending written into his own arsenal: executed
+  by his ultimate creation the moment he deviates from "the path of true
+  salvation." It is not bound by emotion or loyalty — only purpose. The
+  logical endpoint of everything he built, turned on its builder.
+- ⚠ **Name collision:** FCT-G "Aegis Prime" (4.6 m guard/advisor, chose
+  loyalty) vs AGS-001 "Aegis Prime" (6.8 m Prime Sentinel, bound by
+  purpose, killed him). Same entity across eras/forms, an evolution, or
+  two units sharing the name — creator to rule.
+- ⚠ **Timeline question:** the sheet narrates the Doctor's death in past
+  tense. Does this happen before, during, or after the game's events —
+  and how does it interact with the hidden puppet master (did the
+  puppeteer *engineer* the deviation, or inherit the Faction after the
+  execution)?
+
 **On the Faction's use of "Zenith":** creator canon says the Doctor doesn't
 know what the Ghosts' suits are called — yet Ω-tier sheets say
 "Zenith-class," "Zenith hunter," even "divine-tier Zenith unit," and the

@@ -133,6 +133,17 @@
 11ah. **The Long Bow Hunters** — Veilstrike carries "every hunter, every
     mission, every shot recorded." A whole unseen group (human hunter
     corps? Zenith-era snipers? Linora's lineage?). Who were they?
+11ai. **AGS-001 Aegis Prime ended the Doctor** (sheet lore, past tense).
+    When does this execution happen relative to the game — is the Doctor
+    already dead in the playable era, with the puppet master (or the
+    Obsidian Mind) running the Faction through his image? Or is it a
+    future/endgame event the player witnesses or triggers?
+11aj. **Two Aegis Primes** — FCT-G Aegis Prime (guard, "chose loyalty") vs
+    AGS-001 Aegis Prime (Prime Sentinel, Omega-Prime, "bound by purpose,"
+    the Doctor's executioner). Same being evolved, or shared name?
+11ak. Aegis Prime's **Absolute Protocol** (override authority over ALL
+    Faction units/facilities) vs Obsidian's authority vs the Obsidian
+    Mind's alignment — who actually holds the Faction's true kill switch?
 11ag. **Absolute Virtue timing** — is Obsidian's ascension an in-game event
     (endgame beat?), and does her Absolution Field ("nullifies corruption,
     restores humanity") mean converted humans CAN be restored — answering
