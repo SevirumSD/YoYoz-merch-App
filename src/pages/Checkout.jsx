@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
+import { resolveShopifyCheckoutUrl, isShopifyConfigured } from "@/lib/shopifyClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,6 +37,15 @@ export default function Checkout() {
   const { data: cartItems = [] } = useQuery({
     queryKey: ["cart-checkout"],
     queryFn: () => base44.entities.CartItem.list(),
+  });
+
+  // When every cart item maps to a real Shopify variant, checkout is handed
+  // off to Shopify (real payments, shipping, taxes). Otherwise the in-app
+  // sandbox flow below remains as the fallback.
+  const { data: shopifyCheckoutUrl } = useQuery({
+    queryKey: ["shopify-checkout-url", cartItems.map((i) => i.id).join(",")],
+    queryFn: () => resolveShopifyCheckoutUrl(cartItems),
+    enabled: isShopifyConfigured && cartItems.length > 0,
   });
 
   // Calculation Logic
@@ -455,6 +465,32 @@ export default function Checkout() {
                   transition={{ duration: 0.3 }}
                   className="space-y-6"
                 >
+                  {shopifyCheckoutUrl ? (
+                    <div className="space-y-5">
+                      <div className="bg-zinc-950/20 border border-zinc-900 rounded-3xl p-6 md:p-8 space-y-4">
+                        <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
+                          <h2 className="text-white font-black text-xl tracking-tight uppercase">Secure Checkout</h2>
+                          <div className="flex items-center gap-1 bg-red-650/10 border border-red-500/20 px-2.5 py-1 rounded-full text-red-500 text-[10px] font-black uppercase tracking-widest">
+                            <Lock className="w-3 h-3" />
+                            Shopify
+                          </div>
+                        </div>
+                        <p className="text-zinc-400 text-sm leading-relaxed">
+                          Your cart is ready. You'll finish paying on our official Boogie &amp; The Yo-Yo'z
+                          Shopify checkout — cards, Shop Pay, Apple Pay, and Google Pay all work there.
+                          Shipping and tax are calculated at checkout.
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        onClick={() => { window.location.href = shopifyCheckoutUrl; }}
+                        className="w-full bg-red-600 hover:bg-red-700 text-white font-black text-sm uppercase py-7 rounded-xl transition-all hover:scale-[1.01] hover:shadow-[0_0_35px_rgba(220,38,38,0.4)]"
+                      >
+                        <Lock className="w-4 h-4 mr-2 inline" />
+                        Pay Securely on Shopify — ${subtotal.toFixed(2)} + tax/shipping
+                      </Button>
+                    </div>
+                  ) : (
                   <form onSubmit={handlePlaceOrder} className="space-y-5">
                     {/* Secure Badge */}
                     <div className="bg-zinc-950/20 border border-zinc-900 rounded-3xl p-6 md:p-8 space-y-4">
@@ -537,6 +573,7 @@ export default function Checkout() {
                       )}
                     </Button>
                   </form>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>

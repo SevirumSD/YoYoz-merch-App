@@ -13,14 +13,18 @@ import { MOCK_CUSTOM_PRODUCTS } from "./supabase";
  * The shape matches getProducts from supabase.js so no component changes needed.
  */
 
-const SHOPIFY_STORE_URL = import.meta.env.VITE_SHOPIFY_STORE_URL;
+const SHOPIFY_STORE_URL =
+  import.meta.env.VITE_SHOPIFY_STORE_URL || "https://boogie-the-yo-yoz-merch.myshopify.com";
 const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN;
 
-const isConfigured = 
-  SHOPIFY_STORE_URL && 
-  SHOPIFY_STOREFRONT_TOKEN && 
-  SHOPIFY_STORE_URL !== "https://your-store.myshopify.com" && 
+const isConfigured =
+  SHOPIFY_STORE_URL &&
+  SHOPIFY_STOREFRONT_TOKEN &&
+  SHOPIFY_STORE_URL !== "https://your-store.myshopify.com" &&
   SHOPIFY_STOREFRONT_TOKEN !== "your-token-here";
+
+export const isShopifyConfigured = Boolean(isConfigured);
+export { SHOPIFY_STORE_URL };
 
 if (!isConfigured) {
   console.warn("[shopify] VITE_SHOPIFY_STORE_URL / VITE_SHOPIFY_STOREFRONT_TOKEN not set or placeholder — falling back to mock catalog.");
@@ -58,6 +62,15 @@ async function shopifyFetch(query, variables = {}) {
  */
 function mapShopifyProduct(product) {
   const variant = product.variants.nodes?.[0] || {};
+
+  const variants = (product.variants.nodes || []).map((v) => ({
+    id: v.id,
+    title: v.title,
+    price: parseFloat(v.price?.amount || 0),
+    available: (v.quantityAvailable ?? 0) > 0,
+    size: v.selectedOptions?.find((o) => o.name.toLowerCase() === "size")?.value || null,
+    color: v.selectedOptions?.find((o) => o.name.toLowerCase() === "color")?.value || null,
+  }));
 
   const category =
     product.collections?.nodes?.[0]?.handle ||
@@ -101,8 +114,54 @@ function mapShopifyProduct(product) {
     is_featured: product.metafields?.find((m) => m.key === "featured")?.value === "true",
     tour_exclusive: product.tags?.includes("tour-exclusive") || false,
     isCustom: product.tags?.includes("customizable") || false,
+    variants,
   };
 }
+
+/**
+ * Find the Shopify variant matching a cart item's size/color selection.
+ * Falls back to the first variant when the product has no size/color options.
+ */
+export function findVariant(product, size, color) {
+  const variants = product?.variants || [];
+  if (variants.length === 0) return null;
+  const match = variants.find(
+    (v) =>
+      (!v.size || !size || v.size.toLowerCase() === size.toLowerCase()) &&
+      (!v.color || !color || v.color.toLowerCase() === color.toLowerCase())
+  );
+  return match || variants[0];
+}
+
+/**
+ * Build a Shopify cart permalink so checkout (payment, shipping, taxes)
+ * happens on Shopify. Returns null when the cart can't be fully resolved
+ * to Shopify variants (e.g. custom/mock items) — callers should fall back
+ * to the in-app flow in that case.
+ */
+export const resolveShopifyCheckoutUrl = async (cartItems) => {
+  if (!isConfigured || !cartItems?.length) return null;
+
+  const shopifyItems = cartItems.filter(
+    (i) => typeof i.product_id === "string" && i.product_id.startsWith("gid://shopify/Product/")
+  );
+  if (shopifyItems.length !== cartItems.length) return null;
+
+  const productIds = [...new Set(shopifyItems.map((i) => i.product_id))];
+  const products = await Promise.all(productIds.map((id) => getProduct(id)));
+  const byId = Object.fromEntries(productIds.map((id, idx) => [id, products[idx]]));
+
+  const parts = [];
+  for (const item of shopifyItems) {
+    const product = byId[item.product_id];
+    const variant = product ? findVariant(product, item.size, item.color) : null;
+    if (!variant) return null;
+    const numericId = variant.id.split("/").pop();
+    parts.push(`${numericId}:${item.quantity || 1}`);
+  }
+
+  return `${SHOPIFY_STORE_URL}/cart/${parts.join(",")}`;
+};
 
 /**
  * Get all products, optionally filtered.
