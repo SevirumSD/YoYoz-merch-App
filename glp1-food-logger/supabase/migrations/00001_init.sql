@@ -51,7 +51,9 @@ CREATE POLICY "read confidence scores" ON food_confidence_scores
 
 -- Keep updated_at fresh on profile edits.
 CREATE OR REPLACE FUNCTION set_updated_at()
-RETURNS TRIGGER LANGUAGE plpgsql AS $$
+RETURNS TRIGGER LANGUAGE plpgsql
+SET search_path = public
+AS $$
 BEGIN
   NEW.updated_at = now();
   RETURN NEW;
@@ -102,6 +104,7 @@ END;
 $$;
 
 REVOKE ALL ON FUNCTION record_food_feedback(TEXT, BOOLEAN, INT) FROM public;
+REVOKE EXECUTE ON FUNCTION record_food_feedback(TEXT, BOOLEAN, INT) FROM anon;
 GRANT EXECUTE ON FUNCTION record_food_feedback(TEXT, BOOLEAN, INT) TO authenticated;
 
 -- Storage ------------------------------------------------------------------

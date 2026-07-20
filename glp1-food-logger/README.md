@@ -34,40 +34,44 @@ over time.
 
 ## Setup
 
-### 1. Supabase project
+### Live project
+
+The backend is already provisioned on the **Protein-Lens** Supabase project
+(ref `uwbqhzjdpzyvdxencokq`): migration applied, `analyze-meal` edge function
+deployed, `.env.example` contains the live URL + publishable key. One manual
+step remains — give the edge function an Anthropic API key:
+
+```sh
+supabase secrets set ANTHROPIC_API_KEY=sk-ant-... --project-ref uwbqhzjdpzyvdxencokq
+```
+
+(or dashboard → Edge Functions → Secrets). Then:
+
+```sh
+cp .env.example .env
+npm install
+npx expo start
+```
+
+In the Supabase dashboard, make sure **Email** auth is enabled
+(Authentication → Sign In / Providers). For quick testing you can disable
+"Confirm email".
+
+### Provisioning a fresh project instead
 
 ```sh
 # from glp1-food-logger/
 supabase link --project-ref <your-project-ref>
 supabase db push                 # applies supabase/migrations/00001_init.sql
+supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+supabase functions deploy analyze-meal
 ```
 
 The migration creates `user_glp1_state`, `user_meals`, and
 `food_confidence_scores` with row-level security, the
 `record_food_feedback()` function, and a private `meal-photos` storage
-bucket.
-
-In the Supabase dashboard, make sure **Email** auth is enabled
-(Authentication → Providers). For quick local testing you can disable
-"Confirm email".
-
-### 2. Edge function
-
-```sh
-supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
-supabase functions deploy analyze-meal
-```
-
-The Anthropic key lives only in the edge function — it is never shipped in
-the app bundle.
-
-### 3. App
-
-```sh
-cp .env.example .env   # fill in EXPO_PUBLIC_SUPABASE_URL + EXPO_PUBLIC_SUPABASE_ANON_KEY
-npm install
-npx expo start
-```
+bucket. The Anthropic key lives only in the edge function — it is never
+shipped in the app bundle.
 
 Run it on a physical device with Expo Go (the camera needs real hardware;
 simulators show a black preview).
