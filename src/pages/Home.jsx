@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { addToCart } from "@/lib/shopifyCart";
 import { getProducts } from "@/lib/shopifyClient";
 import { useQuery } from "@tanstack/react-query";
 import HeroBanner from "../components/store/HeroBanner";
@@ -18,14 +18,10 @@ export default function Home() {
   });
 
   const handleQuickAdd = async (product) => {
-    await base44.entities.CartItem.create({
-      product_id: product.id,
-      product_name: product.name,
-      price: product.price,
-      quantity: 1,
+    await addToCart(product, {
       size: product.selectedSize || product.sizes?.[0] || "",
       color: product.selectedColor || product.colors?.[0] || "",
-      image_url: product.image_url,
+      quantity: 1,
     });
     window.dispatchEvent(new Event("cart-updated"));
   };

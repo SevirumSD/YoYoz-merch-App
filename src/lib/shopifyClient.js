@@ -16,7 +16,7 @@ import { MOCK_CUSTOM_PRODUCTS } from "./supabase";
 const SHOPIFY_STORE_URL = import.meta.env.VITE_SHOPIFY_STORE_URL;
 const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN;
 
-const isConfigured = 
+export const isConfigured =
   SHOPIFY_STORE_URL && 
   SHOPIFY_STOREFRONT_TOKEN && 
   SHOPIFY_STORE_URL !== "https://your-store.myshopify.com" && 
@@ -29,7 +29,7 @@ if (!isConfigured) {
 /**
  * Raw GraphQL fetch to Shopify Storefront API.
  */
-async function shopifyFetch(query, variables = {}) {
+export async function shopifyFetch(query, variables = {}) {
   if (!isConfigured) {
     throw new Error("[shopify] Not configured");
   }
@@ -84,9 +84,18 @@ function mapShopifyProduct(product) {
     ),
   ];
 
+  const variants = (product.variants.nodes || []).map((v) => ({
+    id: v.id,
+    available: v.availableForSale !== false,
+    price: parseFloat(v.price?.amount || 0),
+    size: v.selectedOptions?.find((o) => o.name.toLowerCase() === "size")?.value || null,
+    color: v.selectedOptions?.find((o) => o.name.toLowerCase() === "color")?.value || null,
+  }));
+
   return {
     id: product.id,
     name: product.title,
+    variants,
     description: product.description || "",
     price: parseFloat(variant.price?.amount || 0),
     image_url: product.featuredImage?.url || "",
@@ -170,6 +179,7 @@ export const getProducts = async (filters = {}) => {
                 amount
               }
               quantityAvailable
+              availableForSale
               selectedOptions {
                 name
                 value
@@ -248,6 +258,7 @@ export const getProduct = async (id) => {
               amount
             }
             quantityAvailable
+            availableForSale
             selectedOptions {
               name
               value
