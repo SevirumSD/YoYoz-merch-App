@@ -476,7 +476,7 @@ export default function Checkout() {
                           </div>
                         </div>
                         <p className="text-zinc-400 text-sm leading-relaxed">
-                          Your cart is ready. You'll finish paying on our official Boogie &amp; The Yo-Yo'z
+                          Your cart is ready. You'll finish paying on our official Boogie &amp; The Yo-Yoz
                           Shopify checkout — cards, Shop Pay, Apple Pay, and Google Pay all work there.
                           Shipping and tax are calculated at checkout.
                         </p>
