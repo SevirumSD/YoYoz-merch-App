@@ -272,6 +272,72 @@ export const getProducts = async (filters = {}) => {
 };
 
 /**
+ * The manual "Limited Edition - CAN YOU FEEL IT 2026 Tour" collection,
+ * repurposed as the Red & Black app-promo set (see getRedBlackCollection).
+ */
+export const RED_BLACK_COLLECTION_HANDLE = "limited-edition-can-you-feel-it-2026-tour";
+
+/**
+ * Get products from one specific, known collection by handle. Unlike
+ * getProducts()'s category filter (which has to guess a product's "primary"
+ * category across overlapping collections), this queries an explicit
+ * collection directly — no ambiguity, since there's only one collection
+ * being asked about.
+ */
+export const getCollectionProducts = async (handle) => {
+  if (!isConfigured) return [];
+
+  const query = `
+    query GetCollectionProducts($handle: String!, $first: Int!) {
+      collection(handle: $handle) {
+        products(first: $first) {
+          nodes {
+            id
+            title
+            description
+            handle
+            tags
+            productType
+            featuredImage {
+              url
+            }
+            variants(first: 100) {
+              nodes {
+                id
+                title
+                price {
+                  amount
+                }
+                quantityAvailable
+                availableForSale
+                selectedOptions {
+                  name
+                  value
+                }
+              }
+            }
+            metafields(identifiers: [
+              { namespace: "custom", key: "featured" }
+            ]) {
+              key
+              value
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await shopifyFetch(query, { handle, first: 50 });
+    return (data.collection?.products?.nodes || []).map(mapShopifyProduct);
+  } catch (error) {
+    console.error("Error fetching collection products:", error);
+    return [];
+  }
+};
+
+/**
  * Get a single product by ID.
  * Drop-in replacement for getProduct() from supabase.js.
  */

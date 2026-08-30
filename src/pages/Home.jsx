@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import HeroBanner from "../components/store/HeroBanner";
 import NewDropsSection from "../components/store/NewDropsSection";
 import FeaturedBanner from "../components/store/FeaturedBanner";
+import RedBlackPromoBanner from "../components/store/RedBlackPromoBanner";
 import ProductCard from "../components/store/ProductCard";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -35,6 +36,8 @@ export default function Home() {
       <NewDropsSection products={products} onQuickAdd={handleQuickAdd} />
 
       <FeaturedBanner />
+
+      <RedBlackPromoBanner />
 
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
