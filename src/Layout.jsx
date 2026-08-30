@@ -5,6 +5,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ShoppingCart, Home, Store, Bell, Package, Menu, X, Flame, QrCode, ChevronRight, ChevronDown, Sparkles } from "lucide-react";
 import CartDrawer from "./components/store/CartDrawer";
+import { listCartItems, updateCartItem, removeCartItem, getCheckoutUrl } from "@/lib/shopifyCart";
 import { cn } from "@/lib/utils";
 import ConcertQRCodeCard from "./components/store/ConcertQRCodeCard";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -48,7 +49,7 @@ export default function Layout({ children, currentPageName }) {
 
   const { data: cartItems = [], refetch: refetchCart } = useQuery({
     queryKey: ["cart-items"],
-    queryFn: () => base44.entities.CartItem.list(),
+    queryFn: () => listCartItems(),
   });
 
   useEffect(() => {
@@ -58,13 +59,24 @@ export default function Layout({ children, currentPageName }) {
   }, [refetchCart]);
 
   const handleUpdateQuantity = async (id, quantity) => {
-    await base44.entities.CartItem.update(id, { quantity });
+    await updateCartItem(id, quantity);
     refetchCart();
   };
 
   const handleRemove = async (id) => {
-    await base44.entities.CartItem.delete(id);
+    await removeCartItem(id);
     refetchCart();
+  };
+
+  // Real Shopify checkout when configured; in-app sandbox checkout otherwise
+  const handleCheckout = async () => {
+    const url = await getCheckoutUrl();
+    if (url) {
+      window.location.href = url;
+    } else {
+      setCartOpen(false);
+      navigate(createPageUrl("Checkout"));
+    }
   };
 
   const navItems = [
@@ -573,6 +585,7 @@ export default function Layout({ children, currentPageName }) {
         cartItems={cartItems}
         onUpdateQuantity={handleUpdateQuantity}
         onRemove={handleRemove}
+        onCheckout={handleCheckout}
       />
     </div>
   );

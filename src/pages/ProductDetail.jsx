@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { base44 } from "@/api/base44Client";
+import { addToCart } from "@/lib/shopifyCart";
 import { getProduct } from "@/lib/shopifyClient";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -75,27 +75,28 @@ export default function ProductDetail() {
 
   const handleAddToCart = async () => {
     if (!product) return;
-    
-    // Construct descriptive name indicating custom prints
+
+    // Custom-print details ride along as Shopify line attributes so they
+    // appear on the order in the Shopify admin
+    const attributes = [];
+    if (customText) attributes.push({ key: "Custom Text", value: customText });
+    if (customText && selectedFont !== "modern") attributes.push({ key: "Font", value: selectedFont });
+    if (printPosition !== "front") attributes.push({ key: "Print Position", value: printPosition });
+    if (uploadedLogo) attributes.push({ key: "Custom Logo", value: "Uploaded in app" });
+
+    // Descriptive name for mock-mode carts
     let displayName = product.name;
-    const details = [];
-    if (customText) details.push(`Text: "${customText}"`);
-    if (uploadedLogo) details.push("Custom Logo Printed");
-    if (printPosition !== "front") details.push(`Position: ${printPosition}`);
-    if (selectedFont !== "modern" && customText) details.push(`Font: ${selectedFont}`);
-    
+    const details = attributes.map((a) => `${a.key}: ${a.value}`);
     if (details.length > 0) {
       displayName += ` (Custom: ${details.join(", ")})`;
     }
 
-    await base44.entities.CartItem.create({
-      product_id: product.id,
-      product_name: displayName,
-      price: unitPrice,
-      quantity: quantity,
+    await addToCart(product, {
       size: selectedSize || product.sizes?.[0] || "",
       color: selectedColor || product.colors?.[0] || "",
-      image_url: product.image_url,
+      quantity,
+      attributes,
+      displayName,
     });
 
     window.dispatchEvent(new Event("cart-updated"));

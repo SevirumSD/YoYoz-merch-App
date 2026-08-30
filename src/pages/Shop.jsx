@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
-import { getProducts } from "@/lib/shopifyClient";
+import { addToCart } from "@/lib/shopifyCart";
+import { getProducts, getCollectionProducts, RED_BLACK_COLLECTION_HANDLE } from "@/lib/shopifyClient";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../components/store/ProductCard";
 import ComingSoonCard from "../components/store/ComingSoonCard";
@@ -31,6 +31,7 @@ export default function Shop() {
   const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const initialFilter = urlParams.get("filter") || "";
+  const collectionHandle = urlParams.get("collection") || null;
   const location = useLocation();
 
   // Unified filter state supporting category, gender, and style
@@ -55,10 +56,12 @@ export default function Shop() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
 
-  // Dynamically query Supabase based on unified filter state
+  // Dynamically query Supabase based on unified filter state, or a specific
+  // curated collection (e.g. the Red & Black app-promo set) when navigated
+  // to with ?collection=<handle>
   const { data: products = [], isLoading } = useQuery({
-    queryKey: ["products", filters],
-    queryFn: () => getProducts(filters),
+    queryKey: collectionHandle ? ["collection-products", collectionHandle] : ["products", filters],
+    queryFn: () => (collectionHandle ? getCollectionProducts(collectionHandle) : getProducts(filters)),
   });
 
   const filteredProducts = useMemo(() => {
@@ -91,14 +94,10 @@ export default function Shop() {
   }, [products, search, sort, initialFilter]);
 
   const handleQuickAdd = async (product) => {
-    await base44.entities.CartItem.create({
-      product_id: product.id,
-      product_name: product.name,
-      price: product.price,
-      quantity: 1,
+    await addToCart(product, {
       size: product.selectedSize || product.sizes?.[0] || "",
       color: product.selectedColor || product.colors?.[0] || "",
-      image_url: product.image_url,
+      quantity: 1,
     });
     window.dispatchEvent(new Event("cart-updated"));
   };
@@ -178,7 +177,9 @@ export default function Shop() {
             <img src={logoFull} alt="Band Logo" className="w-10 h-10 md:w-16 md:h-16 object-contain inline-block select-none invert brightness-200" />
           </h1>
           <p className="text-zinc-400 mt-2.5 text-xs md:text-sm font-medium max-w-md mx-auto uppercase tracking-wide">
-            {initialFilter === "tour_exclusive" ? "Exclusive Tour Merch" : initialFilter === "new" ? "Fresh New Drops" : "Shop the Gig Collection"}
+            {collectionHandle === RED_BLACK_COLLECTION_HANDLE
+              ? "App Exclusive: Red & Black Collection"
+              : initialFilter === "tour_exclusive" ? "Exclusive Tour Merch" : initialFilter === "new" ? "Fresh New Drops" : "Shop the Gig Collection"}
           </p>
           <div className="mt-4 flex items-center justify-center gap-2 text-zinc-600 text-xs font-bold uppercase tracking-wider">
             <span>{filteredProducts.length} Items Available</span>

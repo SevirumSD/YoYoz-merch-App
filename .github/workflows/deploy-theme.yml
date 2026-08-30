@@ -1,0 +1,49 @@
+name: Deploy Shopify Theme
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/app-review-g0nax9]
+    paths:
+      - scripts/deploy-theme.mjs
+      - .github/workflows/deploy-theme.yml
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Shopify's theme fetcher can't follow GitHub's redirects and codeload
+      # rate-limits it, so vendor the Dawn zip into this repo where
+      # raw.githubusercontent.com serves it directly.
+      - name: Vendor latest Dawn zip for Shopify to fetch
+        run: |
+          set -e
+          TAG=$(curl -s https://api.github.com/repos/Shopify/dawn/releases/latest | jq -r .tag_name)
+          echo "Latest Dawn release: $TAG"
+          mkdir -p vendor
+          curl -sL -o vendor/dawn.zip "https://github.com/Shopify/dawn/archive/refs/tags/$TAG.zip"
+          ls -la vendor/dawn.zip
+          if [ -n "$(git status --porcelain vendor/dawn.zip)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add vendor/dawn.zip
+            git commit -m "Vendor Dawn $TAG for theme deploy"
+            git push
+          fi
+          echo "DAWN_SOURCE_URL=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/vendor/dawn.zip" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy app-style theme to the Online Store
+        env:
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+          DAWN_SOURCE_URL: ${{ env.DAWN_SOURCE_URL }}
+        run: node scripts/deploy-theme.mjs

@@ -1,11 +1,20 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Trash } from "lucide-react";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "@/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantity, onRemove }) {
+export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantity, onRemove, onCheckout }) {
+  const [checkingOut, setCheckingOut] = React.useState(false);
+
+  const handleCheckoutClick = async () => {
+    setCheckingOut(true);
+    try {
+      await onCheckout();
+    } finally {
+      setCheckingOut(false);
+    }
+  };
+
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleClearAll = async () => {
@@ -157,12 +166,20 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                     ${subtotal.toFixed(2)}
                   </span>
                 </div>
-                <Link to={createPageUrl("Checkout")} onClick={onClose}>
-                  <Button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-6 rounded-xl text-base transition-all hover:shadow-[0_0_30px_rgba(220,38,38,0.3)]">
-                    Checkout
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
+                <Button
+                  onClick={handleCheckoutClick}
+                  disabled={checkingOut}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-6 rounded-xl text-base transition-all hover:shadow-[0_0_30px_rgba(220,38,38,0.3)]"
+                >
+                  {checkingOut ? (
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      Checkout
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </>
+                  )}
+                </Button>
                 <p className="text-zinc-600 text-xs text-center">
                   Shipping calculated at checkout
                 </p>

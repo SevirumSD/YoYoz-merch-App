@@ -1,10 +1,11 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { addToCart } from "@/lib/shopifyCart";
 import { getProducts } from "@/lib/shopifyClient";
 import { useQuery } from "@tanstack/react-query";
 import HeroBanner from "../components/store/HeroBanner";
 import NewDropsSection from "../components/store/NewDropsSection";
 import FeaturedBanner from "../components/store/FeaturedBanner";
+import RedBlackPromoBanner from "../components/store/RedBlackPromoBanner";
 import ProductCard from "../components/store/ProductCard";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -18,14 +19,10 @@ export default function Home() {
   });
 
   const handleQuickAdd = async (product) => {
-    await base44.entities.CartItem.create({
-      product_id: product.id,
-      product_name: product.name,
-      price: product.price,
-      quantity: 1,
+    await addToCart(product, {
       size: product.selectedSize || product.sizes?.[0] || "",
       color: product.selectedColor || product.colors?.[0] || "",
-      image_url: product.image_url,
+      quantity: 1,
     });
     window.dispatchEvent(new Event("cart-updated"));
   };
@@ -39,6 +36,8 @@ export default function Home() {
       <NewDropsSection products={products} onQuickAdd={handleQuickAdd} />
 
       <FeaturedBanner />
+
+      <RedBlackPromoBanner />
 
       {/* Featured Products */}
       {featuredProducts.length > 0 && (

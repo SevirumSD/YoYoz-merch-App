@@ -1,0 +1,57 @@
+name: iOS Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      upload_to_testflight:
+        description: "Also sign and upload to TestFlight (requires Apple Developer secrets)"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install web dependencies
+        run: npm ci
+
+      - name: Build web app
+        run: npm run build
+        env:
+          VITE_SHOPIFY_STORE_URL: ${{ secrets.VITE_SHOPIFY_STORE_URL }}
+          VITE_SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.VITE_SHOPIFY_STOREFRONT_TOKEN }}
+
+      - name: Sync Capacitor iOS project
+        run: npx cap sync ios
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: ios/App
+
+      - name: Verify simulator build (no signing required)
+        working-directory: ios/App
+        run: bundle exec fastlane verify_simulator_build
+
+      - name: Build and upload to TestFlight
+        if: ${{ inputs.upload_to_testflight && secrets.ASC_KEY_CONTENT != '' }}
+        working-directory: ios/App
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_CONTENT: ${{ secrets.ASC_KEY_CONTENT }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APP_STORE_CONNECT_TEAM_ID: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+        run: bundle exec fastlane beta
