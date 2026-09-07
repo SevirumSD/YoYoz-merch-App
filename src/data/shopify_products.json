@@ -1,10 +1,266 @@
 [
   {
-    "id": "gid://shopify/Product/9202156699786",
-    "name": "Yo-Yoz Comfort Tee — Garment-Dyed",
-    "description": "The Boogie & The Yo-Yoz design on garment-dyed Comfort Colors cotton — soft-washed, heavyweight, and available in a full color range. Fan favorite for a reason.Printed on demand. Slightly oversized fit.",
+    "id": "gid://shopify/Product/9246234935434",
+    "name": "Boogie & The Yo-Yoz Ribbed Knit Beanie",
+    "description": "Cozy ribbed knit beanie with a low-profile cuff and embroidered Boogie &amp; The Yo-Yoz emblem. Double-layer construction keeps you warm through the whole set.One size fits most. Printed on demand.",
+    "price": 29.65,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/18408928939061754288_2048.jpg?v=1788519185",
+    "category": "accessories",
+    "dbCategory": "accessories",
+    "dbGender": "women",
+    "style": "normal",
+    "sizes": [
+      "One size"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "stock": 50,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": true,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9246224318602",
+    "name": "Can You Feel It V-Neck Tee",
+    "description": "Fitted v-neck with the retro Boogie graphic and vertical Can You Feel It tour text down the side. Low-key at soundcheck, loud at the show.Printed on demand. True to size.",
+    "price": 45,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/11033161547201103013_2048.jpg?v=1786391701",
+    "category": "vnecks",
+    "dbCategory": "vnecks",
+    "dbGender": "women",
+    "style": "v-neck",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "stock": 50,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": true,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9246205739146",
+    "name": "Can You Feel It Wine Tumbler (12oz)",
+    "description": "12oz stainless steel wine tumbler with the Can You Feel It Tour design — double-wall insulated, festival-proof.Printed on demand.",
+    "price": 45,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/16602863009471401731_2048.jpg?v=1786394369",
+    "category": "tumblers",
+    "dbCategory": "tumblers",
+    "dbGender": "unisex",
+    "style": "normal",
+    "sizes": [
+      "12oz"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "stock": 50,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": true,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9246164123786",
+    "name": "Can You Feel It Racerback Tank",
+    "description": "Slim-fit racerback tank with the Can You Feel It Tour graphic — built for hot rooms and long sets.Printed on demand. Women's sizing.",
     "price": 30,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/14754522537281939487_2048.jpg?v=1785780790",
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/8652001035174424105_2048.jpg?v=1786390276",
+    "category": "tanks",
+    "dbCategory": "tanks",
+    "dbGender": "women",
+    "style": "normal",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "colors": [
+      "Solid Black"
+    ],
+    "stock": 50,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": true,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9246118707338",
+    "name": "Can You Feel It Tour Hoodie",
+    "description": "The official Can You Feel It Tour 2026 hoodie — retro tour-poster graphic, soft heavyweight fleece. The one everyone's asking about after the show.Printed on demand. Unisex sizing.",
+    "price": 65,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/12962631995643704198_2048.jpg?v=1786388643",
+    "category": "hoodies",
+    "dbCategory": "hoodies",
+    "dbGender": "women",
+    "style": "normal",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL",
+      "4XL",
+      "5XL"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "stock": 50,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": true,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9231316713610",
+    "name": "Yo-Yoz Faded Half-Zip Sweatshirt",
+    "description": "Premium relaxed-fit half-zip with that worn-in faded look — the Boogie &amp; The Yo-Yoz pick for cool nights at outdoor shows. Heavyweight, easy layering, built to last a hundred gigs.Printed on demand. Unisex sizing — size down for a closer fit.",
+    "price": 75,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/6813108154001730737_2048.jpg?v=1786311900",
+    "category": "hoodies",
+    "dbCategory": "hoodies",
+    "dbGender": "women",
+    "style": "normal",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL"
+    ],
+    "colors": [
+      "Faded Black",
+      "Faded Grey"
+    ],
+    "stock": 50,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": false,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9244706701450",
+    "name": "Boogie All Night Crop Tank",
+    "description": "Fitted spaghetti-strap crop tank with the Boogie &amp; The Yo-Yoz design. Light, playful, made for dancing all night.Printed on demand. Women's sizing.",
+    "price": 45,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/16339354033029747711_2048.jpg?v=1786313473",
+    "category": "tanks",
+    "dbCategory": "tanks",
+    "dbGender": "women",
+    "style": "normal",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "colors": [
+      "Solid Black Blend",
+      "Solid Red Blend",
+      "Solid Pink Blend",
+      "Athletic Heather",
+      "Solid White Blend",
+      "Solid Baby Blue Blend",
+      "Solid Navy Blend"
+    ],
+    "stock": 50,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": false,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9244677996682",
+    "name": "Yo-Yoz Racerback Tank",
+    "description": "Slim-fit racerback tank with the Boogie &amp; The Yo-Yoz design. Breathable, built for hot rooms and long sets.Printed on demand. Women's sizing.",
+    "price": 25,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/10206539151956639854_2048.jpg?v=1786309206",
+    "category": "tanks",
+    "dbCategory": "tanks",
+    "dbGender": "women",
+    "style": "normal",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "colors": [
+      "Solid Black",
+      "Solid Hot Pink",
+      "Solid Indigo",
+      "Solid Kelly Green",
+      "Solid Midnight Navy",
+      "Solid Red",
+      "Solid Tahiti Blue",
+      "Solid White",
+      "Solid Cardinal Red",
+      "Solid Dark Gray"
+    ],
+    "stock": 50,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": false,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9231426715786",
+    "name": "Yo-Yoz Women's Relaxed V-Neck Tee",
+    "description": "Relaxed-fit women's v-neck with the Boogie &amp; The Yo-Yoz design. Soft cotton-blend jersey that feels broken-in from day one — wear it to the show, keep it on all week.Printed on demand just for you. True to size.",
+    "price": 28,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/12513045822636816317_2048.jpg?v=1785797123",
+    "category": "vnecks",
+    "dbCategory": "vnecks",
+    "dbGender": "women",
+    "style": "v-neck",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "colors": [
+      "Solid White Blend",
+      "Solid Black Blend",
+      "Black Heather",
+      "Dark Grey Heather",
+      "Heather Dust",
+      "Heather Mauve",
+      "Heather Red",
+      "Heather Slate"
+    ],
+    "stock": 50,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": false,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9231012069514",
+    "name": "Boogie Classic Logo Tee — Garment-Dyed",
+    "description": "The Boogie &amp; The Yo-Yoz logo on a garment-dyed Comfort Colors 1717 — 100% ring-spun cotton with that soft-washed, lived-in feel. The one you saw at the show.Printed on demand. Slightly oversized fit.",
+    "price": 30,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/4958321336143738605_2048_custom.jpg?v=1785782878",
     "category": "shirts",
     "dbCategory": "shirts",
     "dbGender": "women",
@@ -13,20 +269,82 @@
       "S",
       "M",
       "L",
-      "XL"
+      "XL",
+      "2XL",
+      "3XL",
+      "4XL"
     ],
     "colors": [
-      "Black",
-      "White",
-      "Berry",
-      "Grey",
-      "Orchid",
-      "True Navy",
-      "Pepper",
-      "Blossom"
+      "Black"
     ],
     "stock": 50,
-    "is_new": false,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": false,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9230928642186",
+    "name": "Yo-Yoz Wine Tumbler (12oz)",
+    "description": "12oz stainless steel wine tumbler with the Boogie &amp; The Yo-Yoz design — double-wall insulated so your drink survives the whole set. Festival-proof, tailgate-approved.",
+    "price": 35,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/14948519196953343189_2048.jpg?v=1786394509",
+    "category": "tumblers",
+    "dbCategory": "tumblers",
+    "dbGender": "unisex",
+    "style": "normal",
+    "sizes": [
+      "12oz"
+    ],
+    "colors": [
+      "Dark Purple",
+      "Iron Gray",
+      "Black",
+      "Maroon",
+      "Navy",
+      "Orange",
+      "Pink",
+      "Red",
+      "Teal",
+      "White",
+      "Yellow"
+    ],
+    "stock": 50,
+    "is_new": true,
+    "is_featured": true,
+    "tour_exclusive": false,
+    "isCustom": true
+  },
+  {
+    "id": "gid://shopify/Product/9230915305610",
+    "name": "Yo-Yoz V-Neck Tee",
+    "description": "Classic Bella+Canvas v-neck with the Boogie &amp; The Yo-Yoz design. Airlume combed cotton, retail fit, all-day comfort — from the front row to the after-party.Printed on demand. True to size.",
+    "price": 32,
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/16023340536549356818_2048.jpg?v=1785779919",
+    "category": "vnecks",
+    "dbCategory": "vnecks",
+    "dbGender": "women",
+    "style": "v-neck",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "colors": [
+      "Asphalt",
+      "Athletic Heather",
+      "Black",
+      "Dark Grey Heather",
+      "Deep Heather",
+      "Navy",
+      "Red",
+      "White",
+      "Ash"
+    ],
+    "stock": 50,
+    "is_new": true,
     "is_featured": true,
     "tour_exclusive": false,
     "isCustom": true
@@ -34,11 +352,11 @@
   {
     "id": "gid://shopify/Product/9202620727434",
     "name": "Yo-Yoz Embroidered Quarter-Zip — adidas",
-    "description": "The premium piece: an adidas performance quarter-zip with embroidered Boogie & The Yo-Yoz detailing. Lightweight, breathable, and sharp enough for the golf course between tour stops.Embroidered on demand. Unisex sizing.",
+    "description": "The premium piece: an adidas performance quarter-zip with embroidered Boogie &amp; The Yo-Yoz detailing. Lightweight, breathable, and sharp enough for the golf course between tour stops.Embroidered on demand. Unisex sizing.",
     "price": 89,
     "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/272817521846309582_2048.jpg?v=1784595946",
-    "category": "mens",
-    "dbCategory": "mens",
+    "category": "hoodies",
+    "dbCategory": "hoodies",
     "dbGender": "women",
     "style": "normal",
     "sizes": [
@@ -62,75 +380,11 @@
     "isCustom": true
   },
   {
-    "id": "gid://shopify/Product/9230915305610",
-    "name": "Yo-Yoz V-Neck Tee",
-    "description": "Classic Bella+Canvas v-neck with the Boogie & The Yo-Yoz design. Airlume combed cotton, retail fit, all-day comfort — from the front row to the after-party.Printed on demand. True to size.",
-    "price": 25,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/16023340536549356818_2048.jpg?v=1785779919",
-    "category": "shirts",
-    "dbCategory": "shirts",
-    "dbGender": "women",
-    "style": "v-neck",
-    "sizes": [
-      "S",
-      "M",
-      "L"
-    ],
-    "colors": [
-      "Asphalt",
-      "Athletic Heather",
-      "Black",
-      "Dark Grey Heather",
-      "Deep Heather",
-      "Navy",
-      "Red",
-      "White",
-      "Ash"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": false,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9230928642186",
-    "name": "Yo-Yoz Wine Tumbler (12oz)",
-    "description": "12oz stainless steel wine tumbler with the Boogie & The Yo-Yoz design — double-wall insulated so your drink survives the whole set. Festival-proof, tailgate-approved.",
-    "price": 35,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/14948519196953343189_2048.jpg?v=1786394509",
-    "category": "drinkware-1",
-    "dbCategory": "drinkware-1",
-    "dbGender": "unisex",
-    "style": "normal",
-    "sizes": [
-      "12oz"
-    ],
-    "colors": [
-      "Dark Purple",
-      "Iron Gray",
-      "Black",
-      "Maroon",
-      "Navy",
-      "Orange",
-      "Pink",
-      "Red",
-      "Teal",
-      "White",
-      "Yellow"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": false,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9231012069514",
-    "name": "Boogie Classic Logo Tee — Garment-Dyed",
-    "description": "The Boogie & The Yo-Yoz logo on a garment-dyed Comfort Colors 1717 — 100% ring-spun cotton with that soft-washed, lived-in feel. The one you saw at the show.Printed on demand. Slightly oversized fit.",
+    "id": "gid://shopify/Product/9202156699786",
+    "name": "Yo-Yoz Comfort Tee — Garment-Dyed",
+    "description": "The Boogie &amp; The Yo-Yoz design on garment-dyed Comfort Colors cotton — soft-washed, heavyweight, and available in a full color range. Fan favorite for a reason.Printed on demand. Slightly oversized fit.",
     "price": 30,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/4958321336143738605_2048_custom.jpg?v=1785782878",
+    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/14754522537281939487_2048.jpg?v=1785780790",
     "category": "shirts",
     "dbCategory": "shirts",
     "dbGender": "women",
@@ -145,260 +399,19 @@
       "4XL"
     ],
     "colors": [
-      "Black"
+      "Black",
+      "White",
+      "Berry",
+      "Grey",
+      "Orchid",
+      "True Navy",
+      "Pepper",
+      "Blossom"
     ],
     "stock": 50,
     "is_new": false,
     "is_featured": true,
     "tour_exclusive": false,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9231316713610",
-    "name": "Yo-Yoz Faded Half-Zip Sweatshirt",
-    "description": "Premium relaxed-fit half-zip with that worn-in faded look — the Boogie & The Yo-Yoz pick for cool nights at outdoor shows. Heavyweight, easy layering, built to last a hundred gigs.Printed on demand. Unisex sizing — size down for a closer fit.",
-    "price": 75,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/6813108154001730737_2048.jpg?v=1786311900",
-    "category": "mens",
-    "dbCategory": "mens",
-    "dbGender": "women",
-    "style": "normal",
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "colors": [
-      "Faded Black",
-      "Faded Grey"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": false,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9231426715786",
-    "name": "Yo-Yoz Women's Relaxed V-Neck Tee",
-    "description": "Relaxed-fit women's v-neck with the Boogie & The Yo-Yoz design. Soft cotton-blend jersey that feels broken-in from day one — wear it to the show, keep it on all week.Printed on demand just for you. True to size.",
-    "price": 28,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/12513045822636816317_2048.jpg?v=1785797123",
-    "category": "shirts",
-    "dbCategory": "shirts",
-    "dbGender": "women",
-    "style": "v-neck",
-    "sizes": [
-      "S",
-      "M",
-      "L"
-    ],
-    "colors": [
-      "Solid White Blend",
-      "Solid Black Blend",
-      "Black Heather",
-      "Dark Grey Heather",
-      "Heather Dust",
-      "Heather Mauve",
-      "Heather Red",
-      "Heather Slate"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": false,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9244677996682",
-    "name": "Yo-Yoz Racerback Tank",
-    "description": "Slim-fit racerback tank with the Boogie & The Yo-Yoz design. Breathable, built for hot rooms and long sets.Printed on demand. Women's sizing.",
-    "price": 25,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/10206539151956639854_2048.jpg?v=1786309206",
-    "category": "womens",
-    "dbCategory": "womens",
-    "dbGender": "women",
-    "style": "normal",
-    "sizes": [
-      "XS",
-      "S",
-      "M"
-    ],
-    "colors": [
-      "Solid Black",
-      "Solid Hot Pink",
-      "Solid Indigo",
-      "Solid Kelly Green",
-      "Solid Midnight Navy",
-      "Solid Red",
-      "Solid Tahiti Blue",
-      "Solid White",
-      "Solid Cardinal Red",
-      "Solid Dark Gray"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": false,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9244706701450",
-    "name": "Boogie All Night Crop Tank",
-    "description": "Fitted spaghetti-strap crop tank with the Boogie & The Yo-Yoz design. Light, playful, made for dancing all night.Printed on demand. Women's sizing.",
-    "price": 45,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/16339354033029747711_2048.jpg?v=1786313473",
-    "category": "womens",
-    "dbCategory": "womens",
-    "dbGender": "women",
-    "style": "normal",
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL"
-    ],
-    "colors": [
-      "Solid Black Blend",
-      "Solid Red Blend",
-      "Solid Pink Blend",
-      "Athletic Heather"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": false,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9246118707338",
-    "name": "Can You Feel It Tour Hoodie",
-    "description": "The official Can You Feel It Tour 2026 hoodie — retro tour-poster graphic, soft heavyweight fleece. The one everyone's asking about after the show.Printed on demand. Unisex sizing.",
-    "price": 65,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/12962631995643704198_2048.jpg?v=1786388643",
-    "category": "limited-edition-can-you-feel-it-tour-2026",
-    "dbCategory": "limited-edition-can-you-feel-it-tour-2026",
-    "dbGender": "women",
-    "style": "normal",
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL",
-      "4XL",
-      "5XL"
-    ],
-    "colors": [
-      "Black"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": true,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9246164123786",
-    "name": "Can You Feel It Racerback Tank",
-    "description": "Slim-fit racerback tank with the Can You Feel It Tour graphic — built for hot rooms and long sets.Printed on demand. Women's sizing.",
-    "price": 30,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/8652001035174424105_2048.jpg?v=1786390276",
-    "category": "limited-edition-can-you-feel-it-tour-2026",
-    "dbCategory": "limited-edition-can-you-feel-it-tour-2026",
-    "dbGender": "women",
-    "style": "normal",
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL"
-    ],
-    "colors": [
-      "Solid Black"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": true,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9246205739146",
-    "name": "Can You Feel It Wine Tumbler (12oz)",
-    "description": "12oz stainless steel wine tumbler with the Can You Feel It Tour design — double-wall insulated, festival-proof.Printed on demand.",
-    "price": 35,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/16602863009471401731_2048.jpg?v=1786394369",
-    "category": "limited-edition-can-you-feel-it-tour-2026",
-    "dbCategory": "limited-edition-can-you-feel-it-tour-2026",
-    "dbGender": "unisex",
-    "style": "normal",
-    "sizes": [
-      "12oz"
-    ],
-    "colors": [
-      "Black"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": true,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9246224318602",
-    "name": "Can You Feel It V-Neck Tee",
-    "description": "Fitted v-neck with the retro Boogie graphic and vertical Can You Feel It tour text down the side. Low-key at soundcheck, loud at the show.Printed on demand. True to size.",
-    "price": 45,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/11033161547201103013_2048.jpg?v=1786391701",
-    "category": "limited-edition-can-you-feel-it-tour-2026",
-    "dbCategory": "limited-edition-can-you-feel-it-tour-2026",
-    "dbGender": "women",
-    "style": "v-neck",
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL"
-    ],
-    "colors": [
-      "Black"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": true,
-    "isCustom": true
-  },
-  {
-    "id": "gid://shopify/Product/9246234935434",
-    "name": "Boogie & The Yo-Yoz Ribbed Knit Beanie",
-    "description": "Cozy ribbed knit beanie with a low-profile cuff and embroidered Boogie & The Yo-Yoz emblem. Double-layer construction keeps you warm through the whole set.One size fits most. Printed on demand.",
-    "price": 30,
-    "image_url": "https://cdn.shopify.com/s/files/1/0784/8316/1226/files/10839078546789323220_2048.jpg?v=1786392042",
-    "category": "limited-edition-can-you-feel-it-tour-2026",
-    "dbCategory": "limited-edition-can-you-feel-it-tour-2026",
-    "dbGender": "women",
-    "style": "normal",
-    "sizes": [
-      "One size"
-    ],
-    "colors": [
-      "Black"
-    ],
-    "stock": 50,
-    "is_new": false,
-    "is_featured": true,
-    "tour_exclusive": true,
     "isCustom": true
   }
 ]
