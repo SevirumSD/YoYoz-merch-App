@@ -60,29 +60,40 @@ async function main() {
   await page.mouse.wheel(0, 1000);
   await shot(page, "05-shop-categories.png");
 
-  // 6. Product detail — click the first product card
-  await page.goto(BASE_URL + "/Shop", { waitUntil: "networkidle" });
-  const firstProductLink = page.locator('a[href*="/ProductDetail"]').first();
-  await firstProductLink.click();
-  await page.waitForLoadState("networkidle");
-  await shot(page, "06-product-detail.png");
+  // 6. Product detail — click the first product card (reuse the already-
+  // loaded Shop page instead of reloading, and wait generously since this
+  // depends on the live Shopify product fetch completing)
+  try {
+    const firstProductLink = page.locator('a[href*="/ProductDetail"]').first();
+    await firstProductLink.waitFor({ state: "visible", timeout: 45000 });
+    await firstProductLink.click();
+    await page.waitForLoadState("networkidle");
+    await shot(page, "06-product-detail.png");
 
-  // 7. Add to cart, then open the cart drawer
-  const addButton = page.getByRole("button", { name: /add.*cart/i }).first();
-  await addButton.click();
-  await sleep(800);
-  const cartButton = page.locator('button:has(svg.lucide-shopping-cart)').first();
-  await cartButton.click();
-  await shot(page, "07-cart-drawer.png");
+    // 7. Add to cart, then open the cart drawer
+    const addButton = page.getByRole("button", { name: /add.*cart/i }).first();
+    await addButton.click();
+    await sleep(800);
+    const cartButton = page.locator('button:has(svg.lucide-shopping-cart)').first();
+    await cartButton.click();
+    await shot(page, "07-cart-drawer.png");
 
-  // 8. Checkout (populated, since we just added an item)
-  const checkoutButton = page.getByRole("button", { name: /checkout/i }).first();
-  await checkoutButton.click();
-  await page.waitForLoadState("networkidle");
-  await shot(page, "08-checkout.png");
+    // 8. Checkout (populated, since we just added an item)
+    const checkoutButton = page.getByRole("button", { name: /checkout/i }).first();
+    await checkoutButton.click();
+    await page.waitForLoadState("networkidle");
+    await shot(page, "08-checkout.png");
+  } catch (e) {
+    console.error("\nCouldn't find a product to click through — dumping page state for diagnosis:");
+    console.error("URL:", page.url());
+    console.error("Title:", await page.title());
+    console.error("Visible text (first 500 chars):", (await page.locator("body").innerText()).slice(0, 500));
+    await page.screenshot({ path: path.join(OUT_DIR, "debug-shop-state.png") });
+    console.error("Saved debug-shop-state.png for inspection. Screenshots 1-5 are still good to use.");
+  }
 
   await browser.close();
-  console.log("\nAll 8 screenshots saved to:", OUT_DIR);
+  console.log("\nDone. Check", OUT_DIR);
 }
 
 main().catch((e) => {
