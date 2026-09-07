@@ -1,4 +1,9 @@
 import { MOCK_CUSTOM_PRODUCTS } from "./supabase";
+import liveShopifyProducts from "../data/shopify_products.json";
+import liveShopifyCatalog from "../data/live_shopify_catalog.json";
+
+const MOCK_OR_LIVE_PRODUCTS = liveShopifyProducts && liveShopifyProducts.length > 0 ? liveShopifyProducts : MOCK_CUSTOM_PRODUCTS;
+
 
 /**
  * Shopify Storefront API integration.
@@ -111,7 +116,7 @@ function mapShopifyProduct(product) {
 export const getProducts = async (filters = {}) => {
   if (!isConfigured) {
     // Apply filters on the mock catalog dataset so filter options work in dev mode
-    let products = [...MOCK_CUSTOM_PRODUCTS];
+    let products = [...MOCK_OR_LIVE_PRODUCTS];
 
     if (filters.category && filters.category !== "all") {
       if (filters.category.startsWith("category_")) {
@@ -210,8 +215,34 @@ export const getProducts = async (filters = {}) => {
 
     return products;
   } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
+    console.error("Error fetching products, falling back to mock catalog:", error);
+    let products = [...MOCK_OR_LIVE_PRODUCTS];
+
+    if (filters.category && filters.category !== "all") {
+      if (filters.category.startsWith("category_")) {
+        const catName = filters.category.replace("category_", "");
+        products = products.filter((p) => p.dbCategory === catName);
+      } else if (filters.category.startsWith("gender_")) {
+        const genderName = filters.category.replace("gender_", "");
+        products = products.filter((p) => p.dbGender === genderName || p.dbGender === "unisex");
+      } else {
+        products = products.filter((p) => p.category === filters.category);
+      }
+    }
+
+    if (filters.gender && filters.gender !== "all") {
+      products = products.filter((p) => p.dbGender === filters.gender || p.dbGender === "unisex");
+    }
+
+    if (filters.style && filters.style !== "all") {
+      if (filters.style === "normal") {
+        products = products.filter((p) => p.style === "normal" || !p.style);
+      } else {
+        products = products.filter((p) => p.style === filters.style);
+      }
+    }
+
+    return products;
   }
 };
 
@@ -221,7 +252,7 @@ export const getProducts = async (filters = {}) => {
  */
 export const getProduct = async (id) => {
   if (!isConfigured) {
-    return MOCK_CUSTOM_PRODUCTS.find((p) => p.id === id) || null;
+    return MOCK_OR_LIVE_PRODUCTS.find((p) => p.id === id) || null;
   }
 
   const query = `
@@ -275,8 +306,8 @@ export const getProduct = async (id) => {
     const data = await shopifyFetch(query, { id });
     return data.product ? mapShopifyProduct(data.product) : null;
   } catch (error) {
-    console.error("Error fetching product:", error);
-    return null;
+    console.error("Error fetching product, falling back to mock catalog:", error);
+    return MOCK_OR_LIVE_PRODUCTS.find((p) => p.id === id) || null;
   }
 };
 
@@ -330,7 +361,73 @@ export const getShopifyTourDates = async () => {
       })
       .filter((s) => s.show_date);
   } catch (error) {
-    console.error("Error fetching tour dates:", error);
-    return [];
+    console.error("Error fetching tour dates, falling back to mock dates:", error);
+    return [
+      { id: "mock-show-1", city: "Austin, TX", venue: "The Continental Club", show_date: "2026-07-14", ticket_url: "#" },
+      { id: "mock-show-2", city: "Dallas, TX", venue: "Deep Ellum Art Co.", show_date: "2026-07-21", ticket_url: "#" },
+      { id: "mock-show-3", city: "Houston, TX", venue: "White Oak Music Hall", show_date: "2026-07-28", ticket_url: "#" },
+      { id: "mock-show-4", city: "New Orleans, LA", venue: "Tipitina's", show_date: "2026-08-04", ticket_url: "#" },
+    ];
   }
 };
+
+/**
+ * Generate a direct Shopify checkout permalink URL for cart items.
+ * Redirects user directly to Shopify checkout with all selected items and variants.
+ */
+export function getShopifyCheckoutUrl(cartItems) {
+  if (!cartItems || cartItems.length === 0) {
+    return "https://www.boogieandtheyoyozmerch.com";
+  }
+
+  const parts = [];
+
+  for (const item of cartItems) {
+    const qty = item.quantity || 1;
+    let variantId = item.variant_id;
+
+    if (!variantId && liveShopifyCatalog) {
+      const cleanName = (item.product_name || "")
+        .toLowerCase()
+        .replace(/\s*\(custom:.*\)/i, "")
+        .trim();
+
+      const product = liveShopifyCatalog.find((p) =>
+        String(p.id) === String(item.product_id).replace(/\D/g, "") ||
+        p.title.toLowerCase().includes(cleanName) ||
+        cleanName.includes(p.title.toLowerCase())
+      );
+
+      if (product && product.variants && product.variants.length > 0) {
+        const matched = product.variants.find((v) => {
+          const opt1 = (v.option1 || "").toLowerCase();
+          const opt2 = (v.option2 || "").toLowerCase();
+          const color = (item.color || "").toLowerCase();
+          const size = (item.size || "").toLowerCase();
+          const hasColor = !color || opt1 === color || opt2 === color;
+          const hasSize = !size || opt1 === size || opt2 === size;
+          return hasColor && hasSize;
+        });
+        variantId = matched ? matched.id : product.variants[0].id;
+      }
+    }
+
+    if (variantId) {
+      parts.push(`${variantId}:${qty}`);
+    }
+  }
+
+  if (parts.length === 0) {
+    return "https://www.boogieandtheyoyozmerch.com/cart";
+  }
+
+  return `https://www.boogieandtheyoyozmerch.com/cart/${parts.join(",")}`;
+}
+
+/**
+ * Trigger immediate browser redirect to Shopify checkout
+ */
+export function redirectToShopifyCheckout(cartItems) {
+  const url = getShopifyCheckoutUrl(cartItems);
+  window.location.href = url;
+}

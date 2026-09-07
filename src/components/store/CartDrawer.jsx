@@ -4,6 +4,7 @@ import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Trash } from "lucide-r
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { redirectToShopifyCheckout } from "@/lib/shopifyClient";
 
 export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantity, onRemove }) {
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -150,22 +151,23 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
 
             {/* Footer */}
             {cartItems.length > 0 && (
-              <div className="border-t border-zinc-800 p-5 space-y-4">
+              <div className="border-t border-zinc-800 p-5 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-zinc-400 text-sm">Subtotal</span>
                   <span className="text-white font-black text-xl">
                     ${subtotal.toFixed(2)}
                   </span>
                 </div>
-                <Link to={createPageUrl("Checkout")} onClick={onClose}>
-                  <Button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-6 rounded-xl text-base transition-all hover:shadow-[0_0_30px_rgba(220,38,38,0.3)]">
-                    Checkout
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
-                <p className="text-zinc-600 text-xs text-center">
-                  Shipping calculated at checkout
-                </p>
+                <Button
+                  onClick={() => redirectToShopifyCheckout(cartItems)}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-6 rounded-xl text-base transition-all hover:shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:scale-[1.01]"
+                >
+                  Proceed to Checkout
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+                <div className="flex items-center justify-center gap-2 text-zinc-500 text-[11px]">
+                  <span>🔒 Powered by Shopify Secure Checkout</span>
+                </div>
               </div>
             )}
           </motion.div>
