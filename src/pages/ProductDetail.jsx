@@ -291,7 +291,7 @@ export default function ProductDetail() {
               {product.name}
             </h1>
             <p className="text-red-500 font-black text-3xl mt-3">
-              ${product.price}
+              ${Number(product.price).toFixed(2)}
             </p>
 
             {product.description && (

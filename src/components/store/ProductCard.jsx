@@ -214,7 +214,7 @@ export default function ProductCard({ product, onQuickAdd, onAddToCart, index = 
               textShadow: isHovered ? `0 0 15px ${accent.glow}` : "none",
             }}
           >
-            ${product.price}
+            ${Number(product.price).toFixed(2)}
           </span>
 
           <button

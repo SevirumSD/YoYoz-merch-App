@@ -2,7 +2,94 @@ import { MOCK_CUSTOM_PRODUCTS } from "./supabase";
 import liveShopifyProducts from "../data/shopify_products.json";
 import liveShopifyCatalog from "../data/live_shopify_catalog.json";
 
-const MOCK_OR_LIVE_PRODUCTS = liveShopifyProducts && liveShopifyProducts.length > 0 ? liveShopifyProducts : MOCK_CUSTOM_PRODUCTS;
+export let dynamicLiveProducts = liveShopifyProducts && liveShopifyProducts.length > 0 ? liveShopifyProducts : MOCK_CUSTOM_PRODUCTS;
+export let dynamicLiveCatalog = liveShopifyCatalog || [];
+
+export function mapRawShopifyProduct(p) {
+  const firstVariant = p.variants?.[0] || {};
+  const price = parseFloat(firstVariant.price || 0);
+
+  let category = (p.product_type || "merch").toLowerCase();
+  const tags = (p.tags || []).map((t) => (typeof t === "string" ? t.toLowerCase() : ""));
+  const fullText = `${p.title} ${p.body_html || ""} ${tags.join(" ")}`.toLowerCase();
+
+  if (tags.includes("hoodie") || tags.includes("hoodies") || fullText.includes("hoodie") || fullText.includes("sweatshirt")) {
+    category = "hoodies";
+  } else if (tags.includes("v-neck") || tags.includes("vneck") || fullText.includes("v-neck")) {
+    category = "vnecks";
+  } else if (tags.includes("tank") || tags.includes("tanks") || fullText.includes("tank") || fullText.includes("crop")) {
+    category = "tanks";
+  } else if (tags.includes("tumbler") || tags.includes("tumblers") || fullText.includes("tumbler") || fullText.includes("drinkware")) {
+    category = "tumblers";
+  } else if (tags.includes("beanie") || tags.includes("hat") || tags.includes("accessories") || fullText.includes("beanie")) {
+    category = "accessories";
+  } else if (category === "merch" || tags.includes("shirts") || fullText.includes("tee") || fullText.includes("shirt")) {
+    category = "shirts";
+  }
+
+  const sizeOpt = p.options?.find((o) => o.name.toLowerCase() === "size");
+  const colorOpt = p.options?.find((o) => o.name.toLowerCase() === "color");
+  const sizes = sizeOpt ? sizeOpt.values : ["S", "M", "L", "XL", "2XL"];
+  const colors = colorOpt ? colorOpt.values : ["Black", "White"];
+
+  let dbGender = "unisex";
+  if (fullText.includes("women's") || fullText.includes("womens") || fullText.includes("women") || fullText.includes("ladies") || fullText.includes("racerback")) {
+    dbGender = "women";
+  } else if (fullText.includes("men's") || fullText.includes("mens")) {
+    dbGender = "men";
+  }
+
+  const imageUrl = p.images?.[0]?.src || "";
+
+  return {
+    id: `gid://shopify/Product/${p.id}`,
+    name: p.title,
+    description: (p.body_html || "").replace(/<[^>]*>?/gm, ""),
+    price: price > 0 ? price : 28.00,
+    image_url: imageUrl,
+    category,
+    dbCategory: category,
+    dbGender,
+    style: fullText.includes("v-neck") ? "v-neck" : "normal",
+    sizes,
+    colors,
+    stock: 50,
+    is_new: tags.includes("new") || tags.includes("new-drop"),
+    is_featured: true,
+    tour_exclusive: tags.includes("tour-exclusive") || tags.includes("tour"),
+    isCustom: true,
+  };
+}
+
+let isFetchingLive = false;
+let lastFetchTime = 0;
+
+export async function fetchLiveShopifyProducts() {
+  const now = Date.now();
+  // Cache for 15 seconds to allow fast updates while preventing API abuse
+  if (now - lastFetchTime < 15000 && dynamicLiveProducts.length > 0) {
+    return dynamicLiveProducts;
+  }
+  if (isFetchingLive) return dynamicLiveProducts;
+  isFetchingLive = true;
+
+  try {
+    const res = await fetch("https://boogieandtheyoyozmerch.com/products.json?limit=250");
+    if (res.ok) {
+      const data = await res.json();
+      if (data.products && data.products.length > 0) {
+        dynamicLiveCatalog = data.products;
+        dynamicLiveProducts = data.products.map(mapRawShopifyProduct);
+        lastFetchTime = Date.now();
+      }
+    }
+  } catch (err) {
+    console.warn("[shopify] Live fetch fallback:", err);
+  } finally {
+    isFetchingLive = false;
+  }
+  return dynamicLiveProducts;
+}
 
 
 /**
@@ -115,8 +202,12 @@ function mapShopifyProduct(product) {
  */
 export const getProducts = async (filters = {}) => {
   if (!isConfigured) {
-    // Apply filters on the mock catalog dataset so filter options work in dev mode
-    let products = [...MOCK_OR_LIVE_PRODUCTS];
+    try {
+      await fetchLiveShopifyProducts();
+    } catch (_) {}
+
+    // Apply filters on the dynamic catalog dataset so filter options work in dev mode and live
+    let products = [...dynamicLiveProducts];
 
     if (filters.category && filters.category !== "all") {
       if (filters.category.startsWith("category_")) {
@@ -386,13 +477,15 @@ export function getShopifyCheckoutUrl(cartItems) {
     const qty = item.quantity || 1;
     let variantId = item.variant_id;
 
-    if (!variantId && liveShopifyCatalog) {
+    const catalogSource = (dynamicLiveCatalog && dynamicLiveCatalog.length > 0) ? dynamicLiveCatalog : liveShopifyCatalog;
+
+    if (!variantId && catalogSource) {
       const cleanName = (item.product_name || "")
         .toLowerCase()
         .replace(/\s*\(custom:.*\)/i, "")
         .trim();
 
-      const product = liveShopifyCatalog.find((p) =>
+      const product = catalogSource.find((p) =>
         String(p.id) === String(item.product_id).replace(/\D/g, "") ||
         p.title.toLowerCase().includes(cleanName) ||
         cleanName.includes(p.title.toLowerCase())
