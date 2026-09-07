@@ -52,9 +52,20 @@ export default function Layout({ children, currentPageName }) {
   });
 
   useEffect(() => {
-    const handler = () => refetchCart();
-    window.addEventListener("cart-updated", handler);
-    return () => window.removeEventListener("cart-updated", handler);
+    const handleCartUpdate = (e) => {
+      refetchCart();
+      if (e?.detail?.openCart !== false) {
+        setCartOpen(true);
+      }
+    };
+    const handleOpenCart = () => setCartOpen(true);
+
+    window.addEventListener("cart-updated", handleCartUpdate);
+    window.addEventListener("open-cart", handleOpenCart);
+    return () => {
+      window.removeEventListener("cart-updated", handleCartUpdate);
+      window.removeEventListener("open-cart", handleOpenCart);
+    };
   }, [refetchCart]);
 
   const handleUpdateQuantity = async (id, quantity) => {

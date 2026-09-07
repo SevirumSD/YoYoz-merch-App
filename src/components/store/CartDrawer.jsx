@@ -160,13 +160,14 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                 </div>
                 <Button
                   onClick={() => redirectToShopifyCheckout(cartItems)}
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-6 rounded-xl text-base transition-all hover:shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:scale-[1.01]"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-wider py-6 rounded-xl text-base transition-all hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] hover:scale-[1.01]"
                 >
-                  Proceed to Checkout
+                  Proceed to Shopify Checkout
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
-                <div className="flex items-center justify-center gap-2 text-zinc-500 text-[11px]">
+                <div className="flex flex-col items-center justify-center gap-1 text-zinc-500 text-[11px] font-bold uppercase tracking-wider">
                   <span>🔒 Powered by Shopify Secure Checkout</span>
+                  <span className="text-[10px] text-zinc-600">Shop Pay • Apple Pay • Google Pay • Cards</span>
                 </div>
               </div>
             )}

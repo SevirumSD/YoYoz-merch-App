@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
-import { getProduct } from "@/lib/shopifyClient";
+import { getProduct, redirectToShopifyCheckout } from "@/lib/shopifyClient";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -101,6 +101,31 @@ export default function ProductDetail() {
     window.dispatchEvent(new Event("cart-updated"));
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
+  };
+
+  const handleBuyNow = () => {
+    let displayName = product.name;
+    const details = [];
+    if (customText) details.push(`Text: "${customText}"`);
+    if (uploadedLogo) details.push("Custom Logo Printed");
+    if (printPosition !== "front") details.push(`Position: ${printPosition}`);
+    if (selectedFont !== "modern" && customText) details.push(`Font: ${selectedFont}`);
+    
+    if (details.length > 0) {
+      displayName += ` (Custom: ${details.join(", ")})`;
+    }
+
+    const item = {
+      product_id: product.id,
+      product_name: displayName,
+      price: unitPrice,
+      quantity: quantity,
+      size: selectedSize || product.sizes?.[0] || "",
+      color: selectedColor || product.colors?.[0] || "",
+      image_url: product.image_url,
+    };
+
+    redirectToShopifyCheckout([item]);
   };
 
   if (isLoading) {
@@ -514,29 +539,39 @@ export default function ProductDetail() {
               )}
             </div>
 
-            {/* Add to Cart button */}
-            <Button
-              onClick={handleAddToCart}
-              disabled={added}
-              className={cn(
-                "w-full mt-8 font-black uppercase tracking-wider py-7 rounded-xl text-lg transition-all",
-                added
-                  ? "bg-green-600 hover:bg-green-600 text-white"
-                  : "bg-red-600 hover:bg-red-700 text-white hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]"
-              )}
-            >
-              {added ? (
-                <>
-                  <Check className="w-5 h-5 mr-2" />
-                  Added to Cart!
-                </>
-              ) : (
-                <>
-                  <ShoppingCart className="w-5 h-5 mr-2" />
-                  Add Custom Order to Cart
-                </>
-              )}
-            </Button>
+            {/* Action Buttons: Add to Cart + Buy Now with Shopify Checkout */}
+            <div className="flex flex-col sm:flex-row gap-3 mt-8">
+              <Button
+                onClick={handleAddToCart}
+                disabled={added}
+                variant="outline"
+                className="flex-1 border-zinc-700 bg-zinc-900/60 hover:bg-zinc-800 text-white font-black uppercase tracking-wider py-7 rounded-xl text-base transition-all"
+              >
+                {added ? (
+                  <>
+                    <Check className="w-5 h-5 mr-2 text-green-400" />
+                    Added to Cart!
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="w-5 h-5 mr-2" />
+                    Add to Cart
+                  </>
+                )}
+              </Button>
+
+              <Button
+                onClick={handleBuyNow}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-wider py-7 rounded-xl text-base transition-all hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] hover:scale-[1.01]"
+              >
+                <Zap className="w-5 h-5 mr-2 fill-white" />
+                Buy Now
+              </Button>
+            </div>
+
+            <div className="flex items-center justify-center gap-2 text-zinc-500 text-[11px] font-bold uppercase tracking-wider mt-4">
+              <span>🔒 Powered by Shopify • Shop Pay • Apple Pay • Google Pay • Cards</span>
+            </div>
           </motion.div>
         </div>
       </div>
