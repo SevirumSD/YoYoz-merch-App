@@ -514,13 +514,31 @@ export function getShopifyCheckoutUrl(cartItems) {
     return "https://www.boogieandtheyoyozmerch.com/cart";
   }
 
-  return `https://www.boogieandtheyoyozmerch.com/cart/${parts.join(",")}`;
+  let baseUrl = `https://www.boogieandtheyoyozmerch.com/cart/${parts.join(",")}`;
+  const params = new URLSearchParams();
+
+  if (options.discount) params.append("discount", options.discount);
+  if (options.note) params.append("note", options.note);
+  if (options.email) params.append("checkout[email]", options.email);
+  if (options.shippingAddress) {
+    const addr = options.shippingAddress;
+    if (addr.firstName) params.append("checkout[shipping_address][first_name]", addr.firstName);
+    if (addr.lastName) params.append("checkout[shipping_address][last_name]", addr.lastName);
+    if (addr.address1) params.append("checkout[shipping_address][address1]", addr.address1);
+    if (addr.city) params.append("checkout[shipping_address][city]", addr.city);
+    if (addr.province) params.append("checkout[shipping_address][province]", addr.province);
+    if (addr.zip) params.append("checkout[shipping_address][zip]", addr.zip);
+    if (addr.country) params.append("checkout[shipping_address][country]", addr.country || "US");
+  }
+
+  const queryStr = params.toString();
+  return queryStr ? `${baseUrl}?${queryStr}` : baseUrl;
 }
 
 /**
  * Trigger immediate browser redirect to Shopify checkout
  */
-export function redirectToShopifyCheckout(cartItems) {
-  const url = getShopifyCheckoutUrl(cartItems);
+export function redirectToShopifyCheckout(cartItems, options = {}) {
+  const url = getShopifyCheckoutUrl(cartItems, options);
   window.location.href = url;
 }
