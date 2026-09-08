@@ -15,6 +15,9 @@ import { MOCK_CUSTOM_PRODUCTS } from "./supabase";
 
 const SHOPIFY_STORE_URL = import.meta.env.VITE_SHOPIFY_STORE_URL;
 const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN;
+// Shopify sunsets API versions ~12 months after release — keep this current
+// (matches the Admin API version already used in scripts/deploy-theme.mjs).
+const STOREFRONT_API_VERSION = "2026-07";
 
 export const isConfigured =
   SHOPIFY_STORE_URL && 
@@ -34,7 +37,7 @@ export async function shopifyFetch(query, variables = {}) {
     throw new Error("[shopify] Not configured");
   }
 
-  const res = await fetch(`${SHOPIFY_STORE_URL}/api/2024-01/graphql.json`, {
+  const res = await fetch(`${SHOPIFY_STORE_URL}/api/${STOREFRONT_API_VERSION}/graphql.json`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
