@@ -40,6 +40,16 @@ async function main() {
   // 540x960 viewport @ 2x device scale = 1080x1920 output (Play Store phone spec)
   const page = await browser.newPage({ viewport: { width: 540, height: 960 }, deviceScaleFactor: 2 });
 
+  // Surface browser-console errors (e.g. Shopify fetch failures logged via
+  // console.error in shopifyClient.js) directly in this terminal — otherwise
+  // they're invisible since they only ever print to the browser's own console.
+  page.on("console", (msg) => {
+    if (msg.type() === "error" || msg.type() === "warning") {
+      console.log(`[browser ${msg.type()}]`, msg.text());
+    }
+  });
+  page.on("pageerror", (err) => console.error("[browser page error]", err));
+
   // 1. Home — hero
   await page.goto(BASE_URL + "/Home", { waitUntil: "networkidle" });
   await shot(page, "01-home-hero.png");
