@@ -68,7 +68,7 @@ export const getProducts = async (filters = {}) => {
     };
   });
 
-  const combined = [...dbProducts, ...MOCK_CUSTOM_PRODUCTS];
+  let combined = [...dbProducts, ...MOCK_CUSTOM_PRODUCTS];
 
   // Apply filters on the combined dataset
   if (targetCategory && targetCategory !== 'all') {

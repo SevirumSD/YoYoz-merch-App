@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ShoppingCart, Eye, Package, Flame, Check } from "lucide-react";
+import { ShoppingCart, Eye, Package, Flame } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { motion } from "framer-motion";
@@ -14,7 +14,6 @@ const ACCENTS = [
 
 export default function ProductCard({ product, onQuickAdd, onAddToCart, index = 0 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isAdded, setIsAdded] = useState(false);
   const [selectedSize, setSelectedSize] = useState(product.sizes && product.sizes.length > 0 ? product.sizes[0] : "");
   const [selectedColor, setSelectedColor] = useState(product.colors && product.colors.length > 0 ? product.colors[0] : "");
   const accent = ACCENTS[index % ACCENTS.length];
@@ -28,9 +27,6 @@ export default function ProductCard({ product, onQuickAdd, onAddToCart, index = 
       selectedSize,
       selectedColor,
     };
-
-    setIsAdded(true);
-    setTimeout(() => setIsAdded(false), 2000);
 
     if (onQuickAdd) {
       onQuickAdd(productWithVariants);
@@ -218,7 +214,7 @@ export default function ProductCard({ product, onQuickAdd, onAddToCart, index = 
               textShadow: isHovered ? `0 0 15px ${accent.glow}` : "none",
             }}
           >
-            ${Number(product.price).toFixed(2)}
+            ${product.price}
           </span>
 
           <button
@@ -247,17 +243,8 @@ export default function ProductCard({ product, onQuickAdd, onAddToCart, index = 
               }
             }}
           >
-            {isAdded ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-green-400" />
-                <span className="text-green-400">Added</span>
-              </>
-            ) : (
-              <>
-                <ShoppingCart className="w-3.5 h-3.5" />
-                Add to Cart
-              </>
-            )}
+            <ShoppingCart className="w-3.5 h-3.5" />
+            Buy
           </button>
         </div>
       </div>

@@ -1,0 +1,70 @@
+name: Android Release Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: "Play Console track to upload to (leave blank to only build the AAB)"
+        required: false
+        default: ""
+        type: choice
+        options: ["", "internal", "alpha", "beta", "production"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web app
+        run: npm run build
+        env:
+          VITE_SHOPIFY_STORE_URL: ${{ secrets.VITE_SHOPIFY_STORE_URL }}
+          VITE_SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.VITE_SHOPIFY_STOREFRONT_TOKEN }}
+
+      - name: Sync Capacitor Android project
+        run: npx cap sync android
+
+      - name: Decode signing keystore
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        working-directory: android
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > release.keystore
+          cat > keystore.properties <<EOF
+          storeFile=release.keystore
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          EOF
+
+      - name: Build release AAB
+        working-directory: android
+        run: ./gradlew bundleRelease
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
+
+      - name: Upload to Google Play
+        if: ${{ inputs.track != '' && secrets.PLAY_SERVICE_ACCOUNT_JSON != '' }}
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.boogieyoyoz.merch
+          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          track: ${{ inputs.track }}

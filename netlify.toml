@@ -1,0 +1,4 @@
+# Netlify config for the standalone Boogie storefront.
+# Deploys the static storefront/ dir (no build step needed).
+[build]
+  publish = "storefront"

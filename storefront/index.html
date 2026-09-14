@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boogie & The Yo-Yoz — Official Merch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --card: #161616;
+    --card-border: #2a2a2a;
+    --red: #DC2626;
+    --red-glow: rgba(220, 38, 38, 0.45);
+    --gold: #D4A017;
+    --gold-glow: rgba(212, 160, 23, 0.4);
+    --text: #f5f5f5;
+    --muted: #9ca3af;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Assistant', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  h1, h2, h3, .brand { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px;
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1f1f1f;
+  }
+  .brand { font-size: 1.25rem; font-weight: 700; color: #fff; text-decoration: none; }
+  .brand span { color: var(--red); }
+  .nav-links { display: flex; gap: 20px; align-items: center; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: color .2s; }
+  .nav-links a:hover { color: #fff; }
+  #cart-btn {
+    background: var(--red); color: #fff; border: none; border-radius: 8px;
+    padding: 8px 16px; font-weight: 700; font-family: 'Assistant', sans-serif;
+    font-size: 0.95rem; cursor: pointer;
+    box-shadow: 0 0 18px var(--red-glow);
+    transition: transform .15s, box-shadow .2s;
+  }
+  #cart-btn:hover { transform: translateY(-1px); box-shadow: 0 0 28px var(--red-glow); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; overflow: hidden;
+    padding: 110px 24px 90px; text-align: center;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: -40%;
+    background: radial-gradient(circle at 50% 30%, var(--red-glow) 0%, transparent 55%);
+    animation: pulse 4s ease-in-out infinite; pointer-events: none;
+  }
+  @keyframes pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+  .hero h1 {
+    position: relative; font-size: clamp(2.4rem, 7vw, 4.5rem); font-weight: 700;
+    text-shadow: 0 0 30px var(--red-glow);
+  }
+  .hero h1 em { font-style: normal; color: var(--red); }
+  .hero p { position: relative; margin-top: 14px; color: var(--muted); font-size: 1.15rem; }
+  .hero .cta {
+    position: relative; display: inline-block; margin-top: 30px;
+    background: var(--red); color: #fff; text-decoration: none;
+    padding: 14px 36px; border-radius: 10px; font-weight: 700; font-size: 1.05rem;
+    box-shadow: 0 0 26px var(--red-glow); transition: transform .15s, box-shadow .2s;
+  }
+  .hero .cta:hover { transform: translateY(-2px); box-shadow: 0 0 40px var(--red-glow); }
+
+  /* ---------- Sections ---------- */
+  section { max-width: 1200px; margin: 0 auto; padding: 60px 24px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
+  .section-head h2 { font-size: 1.8rem; }
+  .section-head h2 .bar { display: inline-block; width: 34px; height: 4px; background: var(--red); border-radius: 2px; margin-right: 12px; vertical-align: middle; }
+  #limited .section-head h2 .bar { background: var(--gold); }
+  #limited .section-head h2 { color: var(--gold); text-shadow: 0 0 20px var(--gold-glow); }
+  .badge { font-size: .75rem; font-weight: 700; letter-spacing: .1em; color: var(--gold); border: 1px solid var(--gold); padding: 4px 10px; border-radius: 999px; }
+
+  .grid {
+    display: grid; gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 14px; overflow: hidden; cursor: pointer;
+    transition: transform .2s, border-color .2s, box-shadow .25s;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-5px); border-color: var(--red); box-shadow: 0 8px 34px var(--red-glow); }
+  #limited .card:hover { border-color: var(--gold); box-shadow: 0 8px 34px var(--gold-glow); }
+  .card .img { aspect-ratio: 1; background: #111; }
+  .card .img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card .img .ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #444; font-size: 2.5rem; }
+  .card .info { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .card .title { font-weight: 700; font-size: 1rem; line-height: 1.3; }
+  .card .price { color: var(--red); font-weight: 700; font-size: 1.15rem; margin-top: auto; }
+  #limited .card .price { color: var(--gold); }
+  .card .soldout { color: var(--muted); font-weight: 700; margin-top: auto; }
+
+  .status { text-align: center; color: var(--muted); padding: 40px 0; font-size: 1.05rem; }
+  .status.error { color: #f87171; }
+
+  /* ---------- Product modal ---------- */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 90;
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: var(--card); border: 1px solid var(--card-border); border-radius: 16px;
+    max-width: 760px; width: 100%; max-height: 90vh; overflow-y: auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    box-shadow: 0 0 60px var(--red-glow);
+  }
+  @media (max-width: 640px) { .modal { grid-template-columns: 1fr; } }
+  .modal .m-img { aspect-ratio: 1; background: #111; }
+  .modal .m-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .modal .m-body { padding: 26px; display: flex; flex-direction: column; gap: 14px; }
+  .modal h3 { font-size: 1.4rem; }
+  .modal .m-price { color: var(--red); font-size: 1.5rem; font-weight: 700; }
+  .modal .m-desc { color: var(--muted); font-size: .95rem; line-height: 1.55; }
+  .modal label { font-size: .8rem; font-weight: 700; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+  .modal select {
+    width: 100%; background: #0f0f0f; color: #fff; border: 1px solid var(--card-border);
+    border-radius: 8px; padding: 10px 12px; font-size: 1rem; font-family: inherit;
+  }
+  .modal .m-add {
+    background: var(--red); color: #fff; border: none; border-radius: 10px;
+    padding: 14px; font-size: 1.05rem; font-weight: 700; cursor: pointer; font-family: inherit;
+    box-shadow: 0 0 20px var(--red-glow); transition: transform .15s;
+  }
+  .modal .m-add:hover:not(:disabled) { transform: translateY(-1px); }
+  .modal .m-add:disabled { background: #333; box-shadow: none; cursor: not-allowed; color: #888; }
+  .m-close {
+    position: absolute; top: 18px; right: 22px; background: none; border: none;
+    color: #fff; font-size: 2rem; cursor: pointer; line-height: 1; z-index: 95;
+  }
+
+  /* ---------- Cart drawer ---------- */
+  .drawer {
+    position: fixed; top: 0; right: -420px; width: min(400px, 92vw); height: 100vh; z-index: 100;
+    background: #101010; border-left: 1px solid var(--card-border);
+    transition: right .3s ease; display: flex; flex-direction: column;
+  }
+  .drawer.open { right: 0; box-shadow: -10px 0 50px rgba(0,0,0,.6); }
+  .drawer header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--card-border); }
+  .drawer header h3 { font-size: 1.2rem; }
+  .drawer .items { flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; }
+  .c-item { display: flex; gap: 12px; align-items: center; }
+  .c-item img { width: 64px; height: 64px; border-radius: 8px; object-fit: cover; background: #111; }
+  .c-item .c-info { flex: 1; }
+  .c-item .c-title { font-weight: 700; font-size: .92rem; }
+  .c-item .c-variant { color: var(--muted); font-size: .8rem; }
+  .c-item .c-price { color: var(--red); font-weight: 700; font-size: .95rem; }
+  .c-item button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.2rem; }
+  .drawer footer { padding: 20px; border-top: 1px solid var(--card-border); }
+  .drawer .checkout {
+    width: 100%; background: var(--red); color: #fff; border: none; border-radius: 10px;
+    padding: 15px; font-size: 1.05rem; font-weight: 700; cursor: pointer; font-family: inherit;
+    box-shadow: 0 0 20px var(--red-glow);
+  }
+  .drawer .checkout:disabled { background: #333; box-shadow: none; cursor: not-allowed; color: #888; }
+  .drawer .empty { color: var(--muted); text-align: center; margin-top: 40px; }
+
+  footer.site { border-top: 1px solid #1f1f1f; margin-top: 40px; padding: 40px 24px; text-align: center; color: var(--muted); }
+  footer.site .brand { font-size: 1.1rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="#">BOOGIE <span>&amp;</span> THE YO-YOZ</a>
+  <div class="nav-links">
+    <a href="#main">Merch</a>
+    <a href="#limited">Limited</a>
+    <button id="cart-btn">Cart (<span id="cart-count">0</span>)</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>BOOGIE <em>&amp;</em> THE YO-YOZ</h1>
+  <p>Official merchandise — Can You Feel It Tour 2026</p>
+  <a class="cta" href="#main">Shop The Collection</a>
+</header>
+
+<section id="main">
+  <div class="section-head">
+    <h2><span class="bar"></span>Main Collection</h2>
+  </div>
+  <div class="grid" id="main-grid"><div class="status">Loading merch…</div></div>
+</section>
+
+<section id="limited">
+  <div class="section-head">
+    <h2><span class="bar"></span>Limited Edition</h2>
+    <span class="badge">TOUR EXCLUSIVE</span>
+  </div>
+  <div class="grid" id="limited-grid"><div class="status">Loading tour gear…</div></div>
+</section>
+
+<footer class="site">
+  <div class="brand">BOOGIE <span style="color:var(--red)">&amp;</span> THE YO-YOZ</div>
+  <p style="margin-top:10px">© 2026 Boogie &amp; The Yo-Yoz. All rights reserved.</p>
+</footer>
+
+<!-- Product modal -->
+<div class="overlay" id="overlay">
+  <button class="m-close" id="m-close">&times;</button>
+  <div class="modal" id="modal"></div>
+</div>
+
+<!-- Cart drawer -->
+<div class="drawer" id="drawer">
+  <header>
+    <h3>Your Cart</h3>
+    <button class="m-close" style="position:static" id="drawer-close">&times;</button>
+  </header>
+  <div class="items" id="cart-items"><p class="empty">Your cart is empty</p></div>
+  <footer>
+    <button class="checkout" id="checkout-btn" disabled>Checkout</button>
+  </footer>
+</div>
+
+<script>
+const STORE = "https://boogie-the-yo-yoz-merch.myshopify.com";
+const TOKEN = "b7cb14f653d51451c8a5e8e521d48510"; // public Storefront API token
+const API = STORE + "/api/2024-01/graphql.json";
+
+async function gql(query, variables = {}) {
+  const res = await fetch(API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Shopify-Storefront-Access-Token": TOKEN,
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+  const json = await res.json();
+  if (json.errors) throw new Error(json.errors[0]?.message || "Shopify API error");
+  return json.data;
+}
+
+const PRODUCT_FIELDS = `
+  id title handle description
+  featuredImage { url altText }
+  variants(first: 100) {
+    nodes {
+      id title availableForSale
+      price { amount currencyCode }
+      selectedOptions { name value }
+    }
+  }
+  options { name values }
+`;
+
+const money = (amount) =>
+  "$" + Number(amount).toFixed(2);
+
+function priceRange(product) {
+  const prices = product.variants.nodes.map((v) => Number(v.price.amount));
+  const min = Math.min(...prices), max = Math.max(...prices);
+  return min === max ? money(min) : money(min) + " – " + money(max);
+}
+
+// ---------- Collection discovery ----------
+// Finds the store's collections by handle/title so this page works even if
+// handles change: "main" matches Main Collection, "limited" matches any
+// Limited Edition collection. Falls back to all products if nothing matches.
+async function loadCollections() {
+  const data = await gql(`{
+    collections(first: 50) { nodes { id title handle } }
+  }`);
+  const all = data.collections.nodes;
+  const limited = all.find((c) => /limited/i.test(c.handle) || /limited/i.test(c.title));
+  const main = all.find((c) => /^main/i.test(c.handle) || /^main/i.test(c.title));
+  return { main, limited, all };
+}
+
+async function productsByCollection(handle) {
+  const data = await gql(
+    `query($handle: String!) {
+      collection(handle: $handle) {
+        products(first: 50) { nodes { ${PRODUCT_FIELDS} } }
+      }
+    }`,
+    { handle }
+  );
+  return data.collection?.products?.nodes || [];
+}
+
+async function allProducts() {
+  const data = await gql(`{ products(first: 50) { nodes { ${PRODUCT_FIELDS} } } }`);
+  return data.products.nodes;
+}
+
+// ---------- Rendering ----------
+const productCache = {};
+
+function renderGrid(el, products) {
+  if (!products.length) {
+    el.innerHTML = '<div class="status">No products in this collection yet.</div>';
+    return;
+  }
+  el.innerHTML = "";
+  for (const p of products) {
+    productCache[p.id] = p;
+    const available = p.variants.nodes.some((v) => v.availableForSale);
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="img">${
+        p.featuredImage
+          ? `<img loading="lazy" src="${p.featuredImage.url}" alt="${p.featuredImage.altText || p.title}">`
+          : `<div class="ph">🎸</div>`
+      }</div>
+      <div class="info">
+        <div class="title">${p.title}</div>
+        ${available ? `<div class="price">${priceRange(p)}</div>` : `<div class="soldout">Sold Out</div>`}
+      </div>`;
+    card.addEventListener("click", () => openModal(p.id));
+    el.appendChild(card);
+  }
+}
+
+// ---------- Product modal ----------
+const overlay = document.getElementById("overlay");
+const modalEl = document.getElementById("modal");
+
+function findVariant(product, selections) {
+  return product.variants.nodes.find((v) =>
+    v.selectedOptions.every((o) => selections[o.name] === o.value)
+  );
+}
+
+function openModal(id) {
+  const p = productCache[id];
+  const selections = {};
+  p.options.forEach((o) => (selections[o.name] = o.values[0]));
+
+  const selectors = p.options
+    .filter((o) => !(o.name === "Title" && o.values.length === 1))
+    .map(
+      (o) => `
+      <div>
+        <label>${o.name}</label>
+        <select data-option="${o.name}">
+          ${o.values.map((v) => `<option value="${v}">${v}</option>`).join("")}
+        </select>
+      </div>`
+    )
+    .join("");
+
+  modalEl.innerHTML = `
+    <div class="m-img">${
+      p.featuredImage
+        ? `<img src="${p.featuredImage.url}" alt="${p.title}">`
+        : `<div class="ph" style="display:flex;height:100%;align-items:center;justify-content:center;font-size:3rem;color:#444">🎸</div>`
+    }</div>
+    <div class="m-body">
+      <h3>${p.title}</h3>
+      <div class="m-price" id="m-price"></div>
+      <div class="m-desc">${p.description || ""}</div>
+      ${selectors}
+      <button class="m-add" id="m-add">Add to Cart</button>
+    </div>`;
+
+  const priceEl = modalEl.querySelector("#m-price");
+  const addBtn = modalEl.querySelector("#m-add");
+
+  function refresh() {
+    const v = findVariant(p, selections);
+    if (v) {
+      priceEl.textContent = money(v.price.amount);
+      addBtn.disabled = !v.availableForSale;
+      addBtn.textContent = v.availableForSale ? "Add to Cart" : "Sold Out";
+    } else {
+      priceEl.textContent = priceRange(p);
+      addBtn.disabled = true;
+      addBtn.textContent = "Unavailable";
+    }
+  }
+
+  modalEl.querySelectorAll("select").forEach((sel) =>
+    sel.addEventListener("change", () => {
+      selections[sel.dataset.option] = sel.value;
+      refresh();
+    })
+  );
+
+  addBtn.addEventListener("click", async () => {
+    const v = findVariant(p, selections);
+    if (!v) return;
+    addBtn.disabled = true;
+    addBtn.textContent = "Adding…";
+    try {
+      await addToCart(v.id);
+      closeModal();
+      openDrawer();
+    } catch (e) {
+      addBtn.textContent = "Error — try again";
+      addBtn.disabled = false;
+    }
+  });
+
+  refresh();
+  overlay.classList.add("open");
+}
+
+function closeModal() { overlay.classList.remove("open"); }
+document.getElementById("m-close").addEventListener("click", closeModal);
+overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
+
+// ---------- Cart (Shopify Storefront Cart API) ----------
+const CART_FIELDS = `
+  id checkoutUrl totalQuantity
+  lines(first: 50) {
+    nodes {
+      id quantity
+      merchandise {
+        ... on ProductVariant {
+          id title
+          price { amount }
+          image { url }
+          product { title }
+        }
+      }
+    }
+  }
+`;
+
+let cart = null;
+
+async function ensureCart() {
+  if (cart) return cart;
+  const saved = localStorage.getItem("boogie_cart_id");
+  if (saved) {
+    try {
+      const d = await gql(`query($id: ID!) { cart(id: $id) { ${CART_FIELDS} } }`, { id: saved });
+      if (d.cart) { cart = d.cart; return cart; }
+    } catch (e) { /* stale cart — create a new one */ }
+  }
+  const d = await gql(`mutation { cartCreate { cart { ${CART_FIELDS} } } }`);
+  cart = d.cartCreate.cart;
+  localStorage.setItem("boogie_cart_id", cart.id);
+  return cart;
+}
+
+async function addToCart(variantId) {
+  await ensureCart();
+  const d = await gql(
+    `mutation($cartId: ID!, $lines: [CartLineInput!]!) {
+      cartLinesAdd(cartId: $cartId, lines: $lines) { cart { ${CART_FIELDS} } }
+    }`,
+    { cartId: cart.id, lines: [{ merchandiseId: variantId, quantity: 1 }] }
+  );
+  cart = d.cartLinesAdd.cart;
+  renderCart();
+}
+
+async function removeLine(lineId) {
+  const d = await gql(
+    `mutation($cartId: ID!, $lineIds: [ID!]!) {
+      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) { cart { ${CART_FIELDS} } }
+    }`,
+    { cartId: cart.id, lineIds: [lineId] }
+  );
+  cart = d.cartLinesRemove.cart;
+  renderCart();
+}
+
+const drawer = document.getElementById("drawer");
+const cartItemsEl = document.getElementById("cart-items");
+const cartCountEl = document.getElementById("cart-count");
+const checkoutBtn = document.getElementById("checkout-btn");
+
+function renderCart() {
+  const lines = cart?.lines?.nodes || [];
+  cartCountEl.textContent = cart?.totalQuantity || 0;
+  checkoutBtn.disabled = !lines.length;
+  if (!lines.length) {
+    cartItemsEl.innerHTML = '<p class="empty">Your cart is empty</p>';
+    return;
+  }
+  cartItemsEl.innerHTML = "";
+  for (const line of lines) {
+    const m = line.merchandise;
+    const item = document.createElement("div");
+    item.className = "c-item";
+    item.innerHTML = `
+      ${m.image ? `<img src="${m.image.url}" alt="">` : `<div style="width:64px;height:64px;border-radius:8px;background:#222"></div>`}
+      <div class="c-info">
+        <div class="c-title">${m.product.title}</div>
+        ${m.title !== "Default Title" ? `<div class="c-variant">${m.title}</div>` : ""}
+        <div class="c-price">${money(m.price.amount)} × ${line.quantity}</div>
+      </div>
+      <button title="Remove">&times;</button>`;
+    item.querySelector("button").addEventListener("click", () => removeLine(line.id));
+    cartItemsEl.appendChild(item);
+  }
+}
+
+function openDrawer() { drawer.classList.add("open"); }
+document.getElementById("cart-btn").addEventListener("click", openDrawer);
+document.getElementById("drawer-close").addEventListener("click", () => drawer.classList.remove("open"));
+checkoutBtn.addEventListener("click", () => { if (cart?.checkoutUrl) window.location.href = cart.checkoutUrl; });
+
+// ---------- Boot ----------
+(async function init() {
+  const mainGrid = document.getElementById("main-grid");
+  const limitedGrid = document.getElementById("limited-grid");
+  try {
+    const { main, limited } = await loadCollections();
+
+    let limitedProducts = limited ? await productsByCollection(limited.handle) : [];
+    let mainProducts = main ? await productsByCollection(main.handle) : [];
+
+    // Fallback: no "Main Collection" — show everything that isn't limited edition
+    if (!mainProducts.length) {
+      const everything = await allProducts();
+      const limitedIds = new Set(limitedProducts.map((p) => p.id));
+      mainProducts = everything.filter((p) => !limitedIds.has(p.id));
+    }
+
+    renderGrid(mainGrid, mainProducts);
+    renderGrid(limitedGrid, limitedProducts);
+  } catch (e) {
+    console.error(e);
+    const msg = `<div class="status error">Couldn't load products: ${e.message}</div>`;
+    mainGrid.innerHTML = msg;
+    limitedGrid.innerHTML = msg;
+  }
+
+  // Restore cart badge on load
+  try { await ensureCart(); renderCart(); } catch (e) { /* cart is created on first add */ }
+})();
+</script>
+</body>
+</html>

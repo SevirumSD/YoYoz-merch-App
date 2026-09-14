@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
-import { getProducts } from "@/lib/shopifyClient";
+import { addToCart } from "@/lib/shopifyCart";
+import { getProducts, getCollectionProducts, RED_BLACK_COLLECTION_HANDLE } from "@/lib/shopifyClient";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../components/store/ProductCard";
 import ComingSoonCard from "../components/store/ComingSoonCard";
@@ -31,6 +31,7 @@ export default function Shop() {
   const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const initialFilter = urlParams.get("filter") || "";
+  const collectionHandle = urlParams.get("collection") || null;
   const location = useLocation();
 
   // Unified filter state supporting category, gender, and style
@@ -55,10 +56,12 @@ export default function Shop() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
 
-  // Dynamically query Supabase based on unified filter state
+  // Dynamically query Supabase based on unified filter state, or a specific
+  // curated collection (e.g. the Red & Black app-promo set) when navigated
+  // to with ?collection=<handle>
   const { data: products = [], isLoading } = useQuery({
-    queryKey: ["products", filters],
-    queryFn: () => getProducts(filters),
+    queryKey: collectionHandle ? ["collection-products", collectionHandle] : ["products", filters],
+    queryFn: () => (collectionHandle ? getCollectionProducts(collectionHandle) : getProducts(filters)),
   });
 
   const filteredProducts = useMemo(() => {
@@ -91,14 +94,10 @@ export default function Shop() {
   }, [products, search, sort, initialFilter]);
 
   const handleQuickAdd = async (product) => {
-    await base44.entities.CartItem.create({
-      product_id: product.id,
-      product_name: product.name,
-      price: product.price,
-      quantity: 1,
+    await addToCart(product, {
       size: product.selectedSize || product.sizes?.[0] || "",
       color: product.selectedColor || product.colors?.[0] || "",
-      image_url: product.image_url,
+      quantity: 1,
     });
     window.dispatchEvent(new Event("cart-updated"));
   };
@@ -136,52 +135,32 @@ export default function Shop() {
   const groupedProducts = useMemo(() => {
     if (!isDefaultView) return null;
 
-    // V-Necks (Men's & Women's V-Necks)
-    const vnecks = filteredProducts.filter(p =>
-      p.name?.toLowerCase().includes('v-neck') || p.style === 'v-neck'
+    const shirts = filteredProducts.filter(p => p.dbCategory === 'Shirts' || p.category === 't-shirts' || p.category === 'shirts');
+    const hoodies = filteredProducts.filter(p => p.dbCategory === 'Hoodies' || p.category === 'hoodies');
+    
+    // Custom Can Koozies
+    const koozies = filteredProducts.filter(p => 
+      p.dbCategory?.toLowerCase() === 'koozies' ||
+      p.dbCategory?.toLowerCase() === 'can koozies' ||
+      p.category?.toLowerCase() === 'koozies' || 
+      p.name?.toLowerCase().includes('koozie') ||
+      p.koozie
     );
 
-    // Hoodies & Sweaters / Half-Zips
-    const hoodies = filteredProducts.filter(p =>
-      !vnecks.includes(p) && (
-        p.name?.toLowerCase().includes('hoodie') ||
-        p.name?.toLowerCase().includes('sweatshirt') ||
-        p.name?.toLowerCase().includes('quarter-zip') ||
-        p.name?.toLowerCase().includes('half-zip') ||
-        p.category?.toLowerCase().includes('hoodie')
-      )
-    );
-
-    // Tanks & Tops
-    const tanks = filteredProducts.filter(p =>
-      !vnecks.includes(p) && !hoodies.includes(p) && (
-        p.name?.toLowerCase().includes('tank') ||
-        p.name?.toLowerCase().includes('crop')
-      )
-    );
-
-    // Custom Drinkware & Tumblers
+    // Custom Insulated Tumblers
     const tumblers = filteredProducts.filter(p =>
-      p.name?.toLowerCase().includes('tumbler') ||
-      p.name?.toLowerCase().includes('koozie')
+      p.dbCategory?.toLowerCase() === 'steel tumblers' ||
+      p.dbCategory?.toLowerCase() === 'steel_tumbler' ||
+      p.dbCategory?.toLowerCase() === 'wine tumblers' ||
+      p.dbCategory?.toLowerCase() === 'wine_tumbler' ||
+      p.name?.toLowerCase().includes('tumbler')
     );
 
-    // Beanies & Accessories
-    const accessories = filteredProducts.filter(p =>
-      p.name?.toLowerCase().includes('beanie') ||
-      p.name?.toLowerCase().includes('hat')
+    const other = filteredProducts.filter(p => 
+      !shirts.includes(p) && !hoodies.includes(p) && !koozies.includes(p) && !tumblers.includes(p)
     );
 
-    // Classic Shirts & Tees (all remaining tees)
-    const shirts = filteredProducts.filter(p =>
-      !vnecks.includes(p) &&
-      !hoodies.includes(p) &&
-      !tanks.includes(p) &&
-      !tumblers.includes(p) &&
-      !accessories.includes(p)
-    );
-
-    return { shirts, vnecks, hoodies, tanks, tumblers, accessories };
+    return { shirts, hoodies, koozies, tumblers, other };
   }, [filteredProducts, isDefaultView]);
 
   return (
@@ -198,7 +177,9 @@ export default function Shop() {
             <img src={logoFull} alt="Band Logo" className="w-10 h-10 md:w-16 md:h-16 object-contain inline-block select-none invert brightness-200" />
           </h1>
           <p className="text-zinc-400 mt-2.5 text-xs md:text-sm font-medium max-w-md mx-auto uppercase tracking-wide">
-            {initialFilter === "tour_exclusive" ? "Exclusive Tour Merch" : initialFilter === "new" ? "Fresh New Drops" : "Shop the Gig Collection"}
+            {collectionHandle === RED_BLACK_COLLECTION_HANDLE
+              ? "App Exclusive: Red & Black Collection"
+              : initialFilter === "tour_exclusive" ? "Exclusive Tour Merch" : initialFilter === "new" ? "Fresh New Drops" : "Shop the Gig Collection"}
           </p>
           <div className="mt-4 flex items-center justify-center gap-2 text-zinc-600 text-xs font-bold uppercase tracking-wider">
             <span>{filteredProducts.length} Items Available</span>
@@ -424,13 +405,28 @@ export default function Shop() {
           </div>
         ) : isDefaultView ? (
           <div className="space-y-14">
-            {/* Classic Shirts & Tees Section */}
-            {groupedProducts.shirts?.length > 0 && (
+            {/* Shirts Collection */}
+            {groupedProducts.shirts.length > 0 && (
               <div className="space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-900 pb-3 gap-3">
-                  <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Shirts & Tees
-                  </h2>
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      Shirts Collection
+                    </h2>
+                    {/* V-Necks Filter Button right inside the layout section */}
+                    <button
+                      onClick={() => setFilters(f => ({ ...f, category: "all", gender: "all", style: f.style === "v-neck" ? "all" : "v-neck" }))}
+                      className={cn(
+                        "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5 font-bold",
+                        filters.style === "v-neck"
+                          ? "bg-red-600 border-red-600 text-white shadow-md shadow-red-600/20"
+                          : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
+                      )}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                      V-Necks
+                    </button>
+                  </div>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
                     4 items
                   </span>
@@ -456,45 +452,8 @@ export default function Shop() {
               </div>
             )}
 
-            {/* V-Necks Collection Section */}
-            {groupedProducts.vnecks?.length > 0 && (
-              <div className="space-y-5">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-900 pb-3 gap-3">
-                  <div className="flex items-center gap-3">
-                    <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                      V-Necks Collection
-                    </h2>
-                    <span className="bg-red-600/20 text-red-500 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full border border-red-500/30">
-                      V-Necks
-                    </span>
-                  </div>
-                  <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
-                    4 items
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {groupedProducts.vnecks.slice(0, 4).map((product, i) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onQuickAdd={handleQuickAdd}
-                      index={i}
-                    />
-                  ))}
-                  {Array(Math.max(0, 4 - groupedProducts.vnecks.slice(0, 4).length))
-                    .fill(0)
-                    .map((_, i) => (
-                      <ComingSoonCard
-                        key={`placeholder-vnecks-${i}`}
-                        index={groupedProducts.vnecks.slice(0, 4).length + i}
-                      />
-                    ))}
-                </div>
-              </div>
-            )}
-
-            {/* Hoodies & Sweaters Section */}
-            {groupedProducts.hoodies?.length > 0 && (
+            {/* Hoodies Collection */}
+            {groupedProducts.hoodies.length > 0 && (
               <div className="space-y-5">
                 <div className="flex items-end justify-between border-b border-zinc-900 pb-3">
                   <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
@@ -525,19 +484,19 @@ export default function Shop() {
               </div>
             )}
 
-            {/* Tanks & Tops Section */}
-            {groupedProducts.tanks?.length > 0 && (
+            {/* Custom Can Koozies Collection */}
+            {groupedProducts.koozies.length > 0 && (
               <div className="space-y-5">
                 <div className="flex items-end justify-between border-b border-zinc-900 pb-3">
                   <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Tanks & Tops
+                    Custom Can Koozies
                   </h2>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
                     4 items
                   </span>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {groupedProducts.tanks.slice(0, 4).map((product, i) => (
+                  {groupedProducts.koozies.slice(0, 4).map((product, i) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -545,24 +504,24 @@ export default function Shop() {
                       index={i}
                     />
                   ))}
-                  {Array(Math.max(0, 4 - groupedProducts.tanks.slice(0, 4).length))
+                  {Array(Math.max(0, 4 - groupedProducts.koozies.slice(0, 4).length))
                     .fill(0)
                     .map((_, i) => (
                       <ComingSoonCard
-                        key={`placeholder-tanks-${i}`}
-                        index={groupedProducts.tanks.slice(0, 4).length + i}
+                        key={`placeholder-koozies-${i}`}
+                        index={groupedProducts.koozies.slice(0, 4).length + i}
                       />
                     ))}
                 </div>
               </div>
             )}
 
-            {/* Custom Drinkware & Tumblers Section */}
+            {/* Custom Insulated Tumblers Collection */}
             {groupedProducts.tumblers?.length > 0 && (
               <div className="space-y-5">
                 <div className="flex items-end justify-between border-b border-zinc-900 pb-3">
                   <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Custom Drinkware & Tumblers
+                    Custom Insulated Tumblers
                   </h2>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
                     4 items
@@ -589,19 +548,19 @@ export default function Shop() {
               </div>
             )}
 
-            {/* Beanies & Accessories Section */}
-            {groupedProducts.accessories?.length > 0 && (
+            {/* Other Concert Gear Section */}
+            {groupedProducts.other.length > 0 && (
               <div className="space-y-5">
                 <div className="flex items-end justify-between border-b border-zinc-900 pb-3">
                   <h2 className="text-white font-black text-xl tracking-tight uppercase" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Beanies & Accessories
+                    Other Concert Gear
                   </h2>
                   <span className="text-zinc-600 text-xs font-bold tracking-wider uppercase">
                     4 items
                   </span>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {groupedProducts.accessories.slice(0, 4).map((product, i) => (
+                  {groupedProducts.other.slice(0, 4).map((product, i) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -609,12 +568,12 @@ export default function Shop() {
                       index={i}
                     />
                   ))}
-                  {Array(Math.max(0, 4 - groupedProducts.accessories.slice(0, 4).length))
+                  {Array(Math.max(0, 4 - groupedProducts.other.slice(0, 4).length))
                     .fill(0)
                     .map((_, i) => (
                       <ComingSoonCard
-                        key={`placeholder-accessories-${i}`}
-                        index={groupedProducts.accessories.slice(0, 4).length + i}
+                        key={`placeholder-other-${i}`}
+                        index={groupedProducts.other.slice(0, 4).length + i}
                       />
                     ))}
                 </div>
