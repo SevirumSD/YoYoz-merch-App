@@ -1,5 +1,14 @@
 #env
 .env
+
+# Mobile signing material — never commit these
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+*.p8
+android/keystore.properties
+ios/App/fastlane/report.xml
 .env.*
 
 # Logs

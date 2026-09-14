@@ -1,96 +1,4 @@
 import { MOCK_CUSTOM_PRODUCTS } from "./supabase";
-import liveShopifyProducts from "../data/shopify_products.json";
-import liveShopifyCatalog from "../data/live_shopify_catalog.json";
-
-export let dynamicLiveProducts = liveShopifyProducts && liveShopifyProducts.length > 0 ? liveShopifyProducts : MOCK_CUSTOM_PRODUCTS;
-export let dynamicLiveCatalog = liveShopifyCatalog || [];
-
-export function mapRawShopifyProduct(p) {
-  const firstVariant = p.variants?.[0] || {};
-  const price = parseFloat(firstVariant.price || 0);
-
-  let category = (p.product_type || "merch").toLowerCase();
-  const tags = (p.tags || []).map((t) => (typeof t === "string" ? t.toLowerCase() : ""));
-  const fullText = `${p.title} ${p.body_html || ""} ${tags.join(" ")}`.toLowerCase();
-
-  if (tags.includes("hoodie") || tags.includes("hoodies") || fullText.includes("hoodie") || fullText.includes("sweatshirt")) {
-    category = "hoodies";
-  } else if (tags.includes("v-neck") || tags.includes("vneck") || fullText.includes("v-neck")) {
-    category = "vnecks";
-  } else if (tags.includes("tank") || tags.includes("tanks") || fullText.includes("tank") || fullText.includes("crop")) {
-    category = "tanks";
-  } else if (tags.includes("tumbler") || tags.includes("tumblers") || fullText.includes("tumbler") || fullText.includes("drinkware")) {
-    category = "tumblers";
-  } else if (tags.includes("beanie") || tags.includes("hat") || tags.includes("accessories") || fullText.includes("beanie")) {
-    category = "accessories";
-  } else if (category === "merch" || tags.includes("shirts") || fullText.includes("tee") || fullText.includes("shirt")) {
-    category = "shirts";
-  }
-
-  const sizeOpt = p.options?.find((o) => o.name.toLowerCase() === "size");
-  const colorOpt = p.options?.find((o) => o.name.toLowerCase() === "color");
-  const sizes = sizeOpt ? sizeOpt.values : ["S", "M", "L", "XL", "2XL"];
-  const colors = colorOpt ? colorOpt.values : ["Black", "White"];
-
-  let dbGender = "unisex";
-  if (fullText.includes("women's") || fullText.includes("womens") || fullText.includes("women") || fullText.includes("ladies") || fullText.includes("racerback")) {
-    dbGender = "women";
-  } else if (fullText.includes("men's") || fullText.includes("mens")) {
-    dbGender = "men";
-  }
-
-  const imageUrl = p.images?.[0]?.src || "";
-
-  return {
-    id: `gid://shopify/Product/${p.id}`,
-    name: p.title,
-    description: (p.body_html || "").replace(/<[^>]*>?/gm, ""),
-    price: price > 0 ? price : 28.00,
-    image_url: imageUrl,
-    category,
-    dbCategory: category,
-    dbGender,
-    style: fullText.includes("v-neck") ? "v-neck" : "normal",
-    sizes,
-    colors,
-    stock: 50,
-    is_new: tags.includes("new") || tags.includes("new-drop"),
-    is_featured: true,
-    tour_exclusive: tags.includes("tour-exclusive") || tags.includes("tour"),
-    isCustom: true,
-  };
-}
-
-let isFetchingLive = false;
-let lastFetchTime = 0;
-
-export async function fetchLiveShopifyProducts() {
-  const now = Date.now();
-  // Cache for 15 seconds to allow fast updates while preventing API abuse
-  if (now - lastFetchTime < 15000 && dynamicLiveProducts.length > 0) {
-    return dynamicLiveProducts;
-  }
-  if (isFetchingLive) return dynamicLiveProducts;
-  isFetchingLive = true;
-
-  try {
-    const res = await fetch("https://boogieandtheyoyozmerch.com/products.json?limit=250");
-    if (res.ok) {
-      const data = await res.json();
-      if (data.products && data.products.length > 0) {
-        dynamicLiveCatalog = data.products;
-        dynamicLiveProducts = data.products.map(mapRawShopifyProduct);
-        lastFetchTime = Date.now();
-      }
-    }
-  } catch (err) {
-    console.warn("[shopify] Live fetch fallback:", err);
-  } finally {
-    isFetchingLive = false;
-  }
-  return dynamicLiveProducts;
-}
-
 
 /**
  * Shopify Storefront API integration.
@@ -107,8 +15,11 @@ export async function fetchLiveShopifyProducts() {
 
 const SHOPIFY_STORE_URL = import.meta.env.VITE_SHOPIFY_STORE_URL;
 const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN;
+// Shopify sunsets API versions ~12 months after release — keep this current
+// (matches the Admin API version already used in scripts/deploy-theme.mjs).
+const STOREFRONT_API_VERSION = "2026-07";
 
-const isConfigured = 
+export const isConfigured =
   SHOPIFY_STORE_URL && 
   SHOPIFY_STOREFRONT_TOKEN && 
   SHOPIFY_STORE_URL !== "https://your-store.myshopify.com" && 
@@ -121,12 +32,12 @@ if (!isConfigured) {
 /**
  * Raw GraphQL fetch to Shopify Storefront API.
  */
-async function shopifyFetch(query, variables = {}) {
+export async function shopifyFetch(query, variables = {}) {
   if (!isConfigured) {
     throw new Error("[shopify] Not configured");
   }
 
-  const res = await fetch(`${SHOPIFY_STORE_URL}/api/2024-01/graphql.json`, {
+  const res = await fetch(`${SHOPIFY_STORE_URL}/api/${STOREFRONT_API_VERSION}/graphql.json`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -146,15 +57,58 @@ async function shopifyFetch(query, variables = {}) {
 }
 
 /**
+ * Normalize Shopify's productType into the buckets the app's UI expects
+ * (Shirts / Hoodies / Accessories). Printify assigns productType
+ * inconsistently per blank (e.g. "Hoodie" vs "Hoodies", "Tank Top", "Mug"),
+ * and the store's collections are overlapping/duplicated, so productType +
+ * title keywords is the most reliable signal — far more so than picking
+ * whichever collection a product happens to load first in. Hats and
+ * drinkware both land in "Accessories" to match the nav's "Accessories &
+ * Fan Gear" grouping (see normalizeStyle for the tumbler/cup sub-filter).
+ */
+function normalizeCategory(productType, title) {
+  const type = (productType || "").toLowerCase();
+  const t = (title || "").toLowerCase();
+  if (/hoodie|sweatshirt|zip|pullover/.test(type) || /hoodie|sweatshirt|zip/.test(t)) return "Hoodies";
+  if (/hat|cap|beanie|mug/.test(type) || /hat|cap|beanie|tumbler|koozie/.test(t)) return "Accessories";
+  if (/shirt|tee|tank|v-neck/.test(type) || /shirt|tee|tank|v-neck/.test(t)) return "Shirts";
+  return productType || "Merch";
+}
+
+/**
+ * Derive gender from tags ("mens"/"womens") since these products don't have
+ * a gender metafield set — matches the values used by CategoryBar/Layout nav
+ * filters ("men" / "women" / "unisex").
+ */
+function normalizeGender(tags) {
+  const hasMens = tags?.includes("mens");
+  const hasWomens = tags?.includes("womens");
+  if (hasMens && !hasWomens) return "men";
+  if (hasWomens && !hasMens) return "women";
+  return "unisex";
+}
+
+/**
+ * Derive style from title keywords for the Hoodies submenu filters
+ * (half-zip / quarter-zip) and the Accessories submenu filters
+ * (tumbler / cup) since these aren't tagged or metafielded either.
+ */
+function normalizeStyle(title) {
+  const t = (title || "").toLowerCase();
+  if (t.includes("v-neck")) return "v-neck";
+  if (t.includes("half-zip")) return "half-zip";
+  if (t.includes("quarter-zip") || t.includes("1/4-zip")) return "quarter-zip";
+  if (t.includes("tumbler")) return "tumbler";
+  if (t.includes("koozie")) return "cup";
+  return "normal";
+}
+
+/**
  * Map Shopify product to the same shape as supabase.js getProducts.
  */
 function mapShopifyProduct(product) {
   const variant = product.variants.nodes?.[0] || {};
-
-  const category =
-    product.collections?.nodes?.[0]?.handle ||
-    product.metafield?.value ||
-    "merch";
+  const category = normalizeCategory(product.productType, product.title);
 
   const sizes = [
     ...new Set(
@@ -176,16 +130,25 @@ function mapShopifyProduct(product) {
     ),
   ];
 
+  const variants = (product.variants.nodes || []).map((v) => ({
+    id: v.id,
+    available: v.availableForSale !== false,
+    price: parseFloat(v.price?.amount || 0),
+    size: v.selectedOptions?.find((o) => o.name.toLowerCase() === "size")?.value || null,
+    color: v.selectedOptions?.find((o) => o.name.toLowerCase() === "color")?.value || null,
+  }));
+
   return {
     id: product.id,
     name: product.title,
+    variants,
     description: product.description || "",
     price: parseFloat(variant.price?.amount || 0),
     image_url: product.featuredImage?.url || "",
     category,
     dbCategory: category,
-    dbGender: product.metafields?.find((m) => m.key === "gender")?.value || "unisex",
-    style: product.metafields?.find((m) => m.key === "style")?.value || null,
+    dbGender: normalizeGender(product.tags),
+    style: normalizeStyle(product.title),
     sizes,
     colors,
     stock: variant.quantityAvailable || 0,
@@ -202,12 +165,8 @@ function mapShopifyProduct(product) {
  */
 export const getProducts = async (filters = {}) => {
   if (!isConfigured) {
-    try {
-      await fetchLiveShopifyProducts();
-    } catch (_) {}
-
-    // Apply filters on the dynamic catalog dataset so filter options work in dev mode and live
-    let products = [...dynamicLiveProducts];
+    // Apply filters on the mock catalog dataset so filter options work in dev mode
+    let products = [...MOCK_CUSTOM_PRODUCTS];
 
     if (filters.category && filters.category !== "all") {
       if (filters.category.startsWith("category_")) {
@@ -234,16 +193,6 @@ export const getProducts = async (filters = {}) => {
     }
 
     return products;
-  }
-
-  let queryFilter = "status:active";
-
-  if (filters.category && filters.category !== "all") {
-    queryFilter += ` AND collection:"${filters.category}"`;
-  }
-
-  if (filters.gender && filters.gender !== "all") {
-    queryFilter += ` AND metafield:gender:${filters.gender}`;
   }
 
   const query = `
@@ -255,6 +204,7 @@ export const getProducts = async (filters = {}) => {
           description
           handle
           tags
+          productType
           featuredImage {
             url
           }
@@ -266,6 +216,7 @@ export const getProducts = async (filters = {}) => {
                 amount
               }
               quantityAvailable
+              availableForSale
               selectedOptions {
                 name
                 value
@@ -273,17 +224,10 @@ export const getProducts = async (filters = {}) => {
             }
           }
           metafields(identifiers: [
-            { namespace: "custom", key: "gender" }
             { namespace: "custom", key: "featured" }
-            { namespace: "custom", key: "style" }
           ]) {
             key
             value
-          }
-          collections(first: 5) {
-            nodes {
-              handle
-            }
           }
         }
       }
@@ -291,23 +235,13 @@ export const getProducts = async (filters = {}) => {
   `;
 
   try {
-    const data = await shopifyFetch(query, { first: 100, query: queryFilter });
+    // Category/gender/style are derived client-side from productType/title/tags
+    // (see normalizeCategory/normalizeGender/normalizeStyle above) rather than
+    // filtered server-side, since this store's collections overlap/duplicate
+    // and its products don't carry gender/style metafields.
+    const data = await shopifyFetch(query, { first: 250, query: "status:active" });
 
     let products = (data.products?.nodes || []).map(mapShopifyProduct);
-
-    // Client-side style filter (same logic as supabase.js — handles NULL safely)
-    if (filters.style && filters.style !== "all") {
-      if (filters.style === "normal") {
-        products = products.filter((p) => p.style === "normal" || !p.style);
-      } else {
-        products = products.filter((p) => p.style === filters.style);
-      }
-    }
-
-    return products;
-  } catch (error) {
-    console.error("Error fetching products, falling back to mock catalog:", error);
-    let products = [...MOCK_OR_LIVE_PRODUCTS];
 
     if (filters.category && filters.category !== "all") {
       if (filters.category.startsWith("category_")) {
@@ -334,6 +268,75 @@ export const getProducts = async (filters = {}) => {
     }
 
     return products;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
+};
+
+/**
+ * The manual "Limited Edition - CAN YOU FEEL IT 2026 Tour" collection,
+ * repurposed as the Red & Black app-promo set (see getRedBlackCollection).
+ */
+export const RED_BLACK_COLLECTION_HANDLE = "limited-edition-can-you-feel-it-2026-tour";
+
+/**
+ * Get products from one specific, known collection by handle. Unlike
+ * getProducts()'s category filter (which has to guess a product's "primary"
+ * category across overlapping collections), this queries an explicit
+ * collection directly — no ambiguity, since there's only one collection
+ * being asked about.
+ */
+export const getCollectionProducts = async (handle) => {
+  if (!isConfigured) return [];
+
+  const query = `
+    query GetCollectionProducts($handle: String!, $first: Int!) {
+      collection(handle: $handle) {
+        products(first: $first) {
+          nodes {
+            id
+            title
+            description
+            handle
+            tags
+            productType
+            featuredImage {
+              url
+            }
+            variants(first: 100) {
+              nodes {
+                id
+                title
+                price {
+                  amount
+                }
+                quantityAvailable
+                availableForSale
+                selectedOptions {
+                  name
+                  value
+                }
+              }
+            }
+            metafields(identifiers: [
+              { namespace: "custom", key: "featured" }
+            ]) {
+              key
+              value
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await shopifyFetch(query, { handle, first: 50 });
+    return (data.collection?.products?.nodes || []).map(mapShopifyProduct);
+  } catch (error) {
+    console.error("Error fetching collection products:", error);
+    return [];
   }
 };
 
@@ -343,7 +346,7 @@ export const getProducts = async (filters = {}) => {
  */
 export const getProduct = async (id) => {
   if (!isConfigured) {
-    return MOCK_OR_LIVE_PRODUCTS.find((p) => p.id === id) || null;
+    return MOCK_CUSTOM_PRODUCTS.find((p) => p.id === id) || null;
   }
 
   const query = `
@@ -354,6 +357,7 @@ export const getProduct = async (id) => {
         description
         handle
         tags
+        productType
         featuredImage {
           url
         }
@@ -370,6 +374,7 @@ export const getProduct = async (id) => {
               amount
             }
             quantityAvailable
+            availableForSale
             selectedOptions {
               name
               value
@@ -377,17 +382,10 @@ export const getProduct = async (id) => {
           }
         }
         metafields(identifiers: [
-          { namespace: "custom", key: "gender" }
           { namespace: "custom", key: "featured" }
-          { namespace: "custom", key: "style" }
         ]) {
           key
           value
-        }
-        collections(first: 5) {
-          nodes {
-            handle
-          }
         }
       }
     }
@@ -397,8 +395,8 @@ export const getProduct = async (id) => {
     const data = await shopifyFetch(query, { id });
     return data.product ? mapShopifyProduct(data.product) : null;
   } catch (error) {
-    console.error("Error fetching product, falling back to mock catalog:", error);
-    return MOCK_OR_LIVE_PRODUCTS.find((p) => p.id === id) || null;
+    console.error("Error fetching product:", error);
+    return null;
   }
 };
 
@@ -452,93 +450,7 @@ export const getShopifyTourDates = async () => {
       })
       .filter((s) => s.show_date);
   } catch (error) {
-    console.error("Error fetching tour dates, falling back to mock dates:", error);
-    return [
-      { id: "mock-show-1", city: "Austin, TX", venue: "The Continental Club", show_date: "2026-07-14", ticket_url: "#" },
-      { id: "mock-show-2", city: "Dallas, TX", venue: "Deep Ellum Art Co.", show_date: "2026-07-21", ticket_url: "#" },
-      { id: "mock-show-3", city: "Houston, TX", venue: "White Oak Music Hall", show_date: "2026-07-28", ticket_url: "#" },
-      { id: "mock-show-4", city: "New Orleans, LA", venue: "Tipitina's", show_date: "2026-08-04", ticket_url: "#" },
-    ];
+    console.error("Error fetching tour dates:", error);
+    return [];
   }
 };
-
-/**
- * Generate a direct Shopify checkout permalink URL for cart items.
- * Redirects user directly to Shopify checkout with all selected items and variants.
- */
-export function getShopifyCheckoutUrl(cartItems) {
-  if (!cartItems || cartItems.length === 0) {
-    return "https://www.boogieandtheyoyozmerch.com";
-  }
-
-  const parts = [];
-
-  for (const item of cartItems) {
-    const qty = item.quantity || 1;
-    let variantId = item.variant_id;
-
-    const catalogSource = (dynamicLiveCatalog && dynamicLiveCatalog.length > 0) ? dynamicLiveCatalog : liveShopifyCatalog;
-
-    if (!variantId && catalogSource) {
-      const cleanName = (item.product_name || "")
-        .toLowerCase()
-        .replace(/\s*\(custom:.*\)/i, "")
-        .trim();
-
-      const product = catalogSource.find((p) =>
-        String(p.id) === String(item.product_id).replace(/\D/g, "") ||
-        p.title.toLowerCase().includes(cleanName) ||
-        cleanName.includes(p.title.toLowerCase())
-      );
-
-      if (product && product.variants && product.variants.length > 0) {
-        const matched = product.variants.find((v) => {
-          const opt1 = (v.option1 || "").toLowerCase();
-          const opt2 = (v.option2 || "").toLowerCase();
-          const color = (item.color || "").toLowerCase();
-          const size = (item.size || "").toLowerCase();
-          const hasColor = !color || opt1 === color || opt2 === color;
-          const hasSize = !size || opt1 === size || opt2 === size;
-          return hasColor && hasSize;
-        });
-        variantId = matched ? matched.id : product.variants[0].id;
-      }
-    }
-
-    if (variantId) {
-      parts.push(`${variantId}:${qty}`);
-    }
-  }
-
-  if (parts.length === 0) {
-    return "https://www.boogieandtheyoyozmerch.com/cart";
-  }
-
-  let baseUrl = `https://www.boogieandtheyoyozmerch.com/cart/${parts.join(",")}`;
-  const params = new URLSearchParams();
-
-  if (options.discount) params.append("discount", options.discount);
-  if (options.note) params.append("note", options.note);
-  if (options.email) params.append("checkout[email]", options.email);
-  if (options.shippingAddress) {
-    const addr = options.shippingAddress;
-    if (addr.firstName) params.append("checkout[shipping_address][first_name]", addr.firstName);
-    if (addr.lastName) params.append("checkout[shipping_address][last_name]", addr.lastName);
-    if (addr.address1) params.append("checkout[shipping_address][address1]", addr.address1);
-    if (addr.city) params.append("checkout[shipping_address][city]", addr.city);
-    if (addr.province) params.append("checkout[shipping_address][province]", addr.province);
-    if (addr.zip) params.append("checkout[shipping_address][zip]", addr.zip);
-    if (addr.country) params.append("checkout[shipping_address][country]", addr.country || "US");
-  }
-
-  const queryStr = params.toString();
-  return queryStr ? `${baseUrl}?${queryStr}` : baseUrl;
-}
-
-/**
- * Trigger immediate browser redirect to Shopify checkout
- */
-export function redirectToShopifyCheckout(cartItems, options = {}) {
-  const url = getShopifyCheckoutUrl(cartItems, options);
-  window.location.href = url;
-}
