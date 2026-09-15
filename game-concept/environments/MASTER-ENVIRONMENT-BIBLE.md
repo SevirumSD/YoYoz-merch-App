@@ -13,7 +13,7 @@
 
 ---
 
-## ENVIRONMENT ZONES (10 IDENTIFIED)
+## ENVIRONMENT ZONES (11 IDENTIFIED)
 
 ### ZONE 1: URBAN DECAY
 **Visual DNA:** Weathered concrete, abandoned infrastructure, moss-covered surfaces, water staining, monolithic brutalism.
@@ -235,6 +235,7 @@
 - Light emission systems (glowing panels, organism clusters)
 - Integration transition meshes (nature-tech blending)
 - Water and fluid systems
+- **Sanctuary Window (Batch 8 addition):** a large framed aperture — window, blast door, or observation cut — set into an otherwise sealed tech interior, revealing a self-contained bioluminescent garden/waterfall pocket beyond. This is the zone's signature "held breath" beat: the tech facility is closed and dark, but the window proves something alive and untouched still exists inside/beyond it. Use sparingly (1–2 per major installation) as a discovery/vista moment, not a repeated tile.
 
 **Nanite Budget:** 1.2M–1.8M triangles per installation hub
 **Lumen Settings:** Quality Very High, resolution 192, update frequency 0.75
@@ -514,6 +515,19 @@
 - Signage: stenciled functional text ("WATCH STEP", numbered bay codes) as decal details — worldbuilding through environmental text
 - Use for: Ghost squad staging areas, Trident/ExZer production facilities, Aegis Syndicate bases
 
+### Sub-Type G: Command / Control Interiors
+- Curved command-deck geometry (CIC-style layouts): central console/holotable, radiating workstations, large forward viewport
+- Orange accent lighting (RGB 255, 150, 60) as primary identifier — distinguishes control/command spaces from the cooler white/blue of standard corridors
+- Circular/radial door and airlock geometry (contrasts with the rectilinear corridors elsewhere in the system)
+- Numbered/lettered bay signage on doors and consoles (e.g. "33-C") — reinforces the environmental-text worldbuilding principle below
+- Use for: Trident/ExZer command facilities, Aegis Syndicate operations centers, Imperial Megastructure command hubs (Zone 11), Ghost squad staging bridges
+
+### Sub-Type H: Rock-Cut Transit Hub
+- Natural cave-wall geometry left deliberately exposed (unfinished rock) surrounding a fully finished, polished transit platform — the contrast IS the design statement (ancient/natural vs. engineered/modern coexisting)
+- Polished floor (Roughness 0.15–0.25) reflecting overhead practical lighting, rough rock ceiling/walls (Roughness 0.9+, unchanged from Zone 2 cave stone spec)
+- Overhead cable runs and practical fixtures following the tunnel's natural curve rather than an imposed grid
+- Use for: transit points connecting Underground Megastructures (Zone 2) to surface zones — the literal transition space between the two, reinforcing that Zone 2's tech was built INTO existing geology rather than replacing it
+
 ### Sub-Type F: Bunker Threshold (Exterior)
 - Exterior establishing shot type: reinforced concrete bunker door set into hillside/forest
 - Environmental contrast: natural setting (snow, forest) framing hard artificial threshold
@@ -527,11 +541,57 @@
 - **Color discipline:** Reserve accent color for one narrative purpose per corridor type — white/blue = human/clean tech, teal/green = alien/unknown origin, red = warning/emergency (ties to Zone 3 emergency lighting spec).
 - **Symmetry as tension:** Perfect bilateral symmetry reads as controlled/artificial (Faction, Helticor). Asymmetry or organic breaks in the pattern signal decay, sabotage, or non-human intrusion.
 
+### Environmental Storytelling Signage (Cross-Zone Principle)
+Batch 8 reference included facility signage reading **"HUMAN RESEARCH — SECTOR 41 — LAB 08"** on a Sub-Type C-style greebled corridor. This is a flag, not a resolved decision: signage like this is exactly the kind of in-world text that should appear inside Faction/FCT facilities per `open-questions.md` #11n (where FCT's converted-human units are sourced from, and whether the process is reversible). Treat sector/lab signage as a worldbuilding asset category in its own right:
+- Stenciled or backlit panel signage, procedurally numbered (sector/lab/bay codes) for environmental variety
+- Placement in Faction-controlled corridors (Sub-Types B and C) signals institutional, bureaucratic horror — the banality of the facility undercuts the atrocity implied by the sheets
+- Do not resolve the open question in asset text (no explicit "conversion" labeling) — let players infer, consistent with the intel-as-storytelling design pillar in `README.md`
+- Use as a hook for the creator to eventually canonize signage language once #11n is resolved
+
 ### UE5 Implementation Notes
 - **Nanite Budget:** 200K–400K triangles per corridor segment (these are geometrically simple — budget goes to lighting fidelity, not mesh complexity)
 - **Lumen Settings:** Quality Very High, resolution 256 — critical because these spaces rely entirely on lighting for mood; poor GI breaks the effect
 - **Modular kit:** Build as a true modular corridor kit (2m repeating sections) with swappable light-strip material instances per sub-type, so the same geometry kit can reskin between Faction/Helticor/Trident/Ghost visual identities by swapping only the emissive material and prop set
 - **Post-Process:** Heavy vignette (0.4–0.6) to reinforce tunnel-vision framing, minimal film grain (0.05), bloom tuned per accent color (white/blue: 0.8, teal/green: 1.2)
+
+---
+
+## ZONE 11: IMPERIAL MEGASTRUCTURE (TOWER COMPLEX)
+**Visual DNA:** Colossal sloped/faceted towers at city-block scale, vertical energy-conduit lighting, crowds and vehicles dwarfed at ground level, orbital-scale ambition made physical.
+
+**Reference Photo Count:** 3 images (Batch 8)
+**Threat Level:** Political/institutional — the visible face of imperial power
+
+**Lore Tie:** Primary architectural language for the **Helticor Empire** (King Zanmer, Odion's homeworld). Scale and material finish should read as centuries-old imperial permanence, not scrappy human construction — this is the counterpoint to Urban Decay's abandoned human infrastructure.
+
+**Lighting Archetype:** Vertical Energy Conduit + Ground-Level Practical Wash
+- Base: Cool blue-white exterior floodlight (7000K) on hull surfaces, minimal shadow softness (engineered precision, not natural weathering)
+- Signature element: single vertical light seam running the full height of each tower (color RGB 0, 200, 255 or amber RGB 255, 160, 60 — pick one per sub-faction/wing to differentiate Helticor court factions)
+- Ground level: dense practical lighting (streetlights, vehicle lights, crowd-scale activity) contrasting with the empty vertical scale above
+- Night-dominant: these structures read best in darkness/snow, where the vertical seam becomes the dominant visual anchor from kilometers away
+
+**Material Specification:**
+- Hull plating: Roughness 0.3–0.45, Metallic 0.85, brushed white/gunmetal composite (RGB 210, 210, 215 base)
+- Energy seam: self-emissive 8–15 intensity, hexagonal or linear circuit-pattern normal map beneath translucent panel
+- Accent trim: orange (255, 150, 50) or cyan (0, 200, 255) — faction/wing color-coding, consistent with existing accent-color-as-identity rule used elsewhere in the bible
+- Ground materials: packed snow/ice or paved plaza (Roughness 0.4–0.6), heavy footfall/vehicle wear patterns
+
+**Architecture:**
+- Faceted, angular tower silhouettes (not organic curves) — precision-cut, aspirational
+- Extreme height-to-base ratio (readable from the entire surrounding district)
+- Sloped/canted tower faces (dramatic non-vertical silhouettes distinguish this from generic sci-fi skyscrapers)
+- Ground-level plaza with distinct human/vehicle scale for contrast
+- Interior control/command spaces (see Corridor System Sub-Type G below) nested at tower base or within a central dome structure
+
+**Asset Breakdown:**
+- Tower hull modules (Nanite, extremely high triangle budget given hero-structure status)
+- Energy seam material system (emissive + parallax circuit pattern, animated pulse optional)
+- Ground plaza kit (paving, lighting poles, vehicle/crowd scatter meshes)
+- Central dome/command hub structure (distinct material language from tower hulls — see Sub-Type G)
+
+**Nanite Budget:** 3M–5M triangles for a hero tower (distant silhouette + close-approach detail both required)
+**Lumen Settings:** Quality Very High, resolution 256, update frequency 0.5 (mostly static exterior, dynamic only at energy seam)
+**Post-Process:** Cool color grading, minimal grain (0.05 — imperial architecture reads clean, not decayed), bloom 1.0 on energy seams only
 
 ---
 
@@ -880,7 +940,7 @@ Coverage: Varies per slope angle (accumulation modeling)
 
 ## REFERENCE PHOTO MAPPING (COMPLETE)
 
-**80+ photos total** organized by zone assignment and lighting archetype, plus the cross-cutting Corridor & Threshold Architecture System (Batch 7, 16 images). Photographic reference becomes canon for:
+**96+ photos total** organized by zone assignment and lighting archetype, plus the cross-cutting Corridor & Threshold Architecture System (Batch 7, 16 images) and Zone 11 Imperial Megastructure (Batch 8, 16 images). Photographic reference becomes canon for:
 - **Lighting mood:** Emergency red vs. operational cyan vs. sterile white vs. natural overcast
 - **Architectural proportion:** Corridor widths, ceiling heights, perspective drive
 - **Material weathering:** Rust, corrosion, patina patterns reflected in PBR specifications
