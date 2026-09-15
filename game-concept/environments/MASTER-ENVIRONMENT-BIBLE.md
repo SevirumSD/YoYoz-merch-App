@@ -641,6 +641,40 @@ Batch 8 reference included facility signage reading **"HUMAN RESEARCH — SECTOR
 **Lumen Settings:** Quality Very High, resolution 256 — the pod glow IS the scene, GI quality directly determines whether the mood lands
 **Post-Process:** Heavy vignette (0.5), cold color grade with the single warm accent preserved, minimal bloom (0.6, tight radius — glow should feel contained, not spilling)
 
+### Sub-Zone 12b: Bio-Transformation / Bonding Chamber (Batch 10 addition)
+A distinct room-type within Zone 12, built around vertical glass cylinder pods with a subject suspended inside and a luminous golden double-helix strand descending from the ceiling into the pod. This is the single most useful asset in the bible for visualizing an unresolved core mystery either way it eventually gets canonized: **how a Zenith suit bonds to its wearer**, or **how the Faction's human-conversion process physically happens** (`open-questions.md` #11n, and the Zenith-origin mystery in the Locked Canon section). Recommend keeping this room type flexible/reusable rather than assigning it exclusively to one faction until the creator decides.
+- Pod material: identical spec to Zone 12's containment glass (Roughness 0.05, high transparency, internal emissive volume)
+- Helix effect: particle-based double-helix strand, warm gold emissive (255, 200, 120), intensity 4–8, animated downward flow into the pod — the one warm-gold accent permitted inside an otherwise cold-blue/white Zone 12 space, reserved specifically for the active-transformation beat
+- Companion assets: mirrored ceiling (doubles the pod array visually, reinforces "this has been done many times"), wall-mounted scanner/diagnostic units with cyan bio-data holograms (cell diagrams, DNA readouts) as set dressing
+- Adjacent room types: quarantine observation corridor (glass-walled cells, "WARNING — KEEP YOUR DISTANCE" signage, grated floor) and clinical treatment-room windows with CCTV — both reinforce Zone 12's institutional-surveillance mood and should sit immediately before/after the bonding chamber in level layout
+- Empty-pod variant (unoccupied, powered down) works as an environmental storytelling beat on its own — implies capacity/scale without requiring a populated scene
+
+---
+
+## SIGNATURE ARTIFACTS & VISUAL MOTIFS (Batch 10 additions)
+
+> Smaller than a zone, bigger than a prop — these are hero-asset/set-piece motifs that recur across zones and carry narrative weight. Documented here rather than folded into one zone since each could appear in multiple locations.
+
+### Ancient-to-Circuit Artifact
+Reference: a weathered stone tablet covered in worn glyphic/cuneiform script, its broken cross-section revealing an inner structure of glowing gold circuit traces and teal energy nodes — ancient stone on one face, active technology on the other.
+
+**Lore significance (flag, not resolved):** this is the strongest available visual for the setting's central technological mystery — fragments of **AZRAEL-0**, the pre-Old-War First Frame that all adaptive Zenith technology reportedly derives from (`entities/azrael-0.md`, `open-questions.md` #11b). The "ancient stone housing living technology" idea directly matches the sheets' framing of Azrael-0 as impossibly old yet still active. Recommend reserving this specific visual language — worn stone/glyph exterior, gold-circuit-and-teal interior — exclusively for Azrael-0-lineage artifacts (Zenith fragments, Black Archive relics, XIIX-era finds) so it reads as a consistent "tell" whenever players encounter true First Frame technology, distinct from the Faction's own reverse-engineered tech (which should look deliberately more mundane/institutional per the Environmental Storytelling Signage principle above).
+- Material: stone half — Roughness 0.9, matte, worn glyph normal detail; tech half — self-emissive gold circuit pattern (255, 200, 100) over deep teal base (0, 60, 70), intensity 3–6
+- Scale flexibility: same material language should read at hand-prop scale (a recovered fragment) and at monument scale (an intact Azrael-0-era structure)
+
+### Mirror Threshold Motif
+Two references: a chamber of freestanding cracked/shattered mirrors surrounding a single lit object on a pedestal, and a natural cave corridor lined with rows of freestanding glowing mirror-frame portals leading toward a light source.
+- Suggests a visual language for **dimensional or mystical thresholds** — appropriate for demon Covenant spaces (the Underlying, the Void/First Fracture, the Ancient Way per `open-questions.md` #13) or moments where the player crosses into somewhere the normal rules don't apply
+- Shattered-mirror variant: chaotic, fractured framing — appropriate for unstable/dangerous crossings or psychological-horror beats
+- Row-of-portals variant: ordered, ritualistic framing — appropriate for controlled/sanctioned crossings (a Covenant-maintained threshold, as opposed to a broken/wild one)
+- Material: mirror surfaces should be near-perfect reflectivity (0.95+) with a thin self-emissive frame (white or cool blue, 2–4 intensity) — the frame reads as "active," the reflection itself should be ambiguous/distorted rather than a clean mirror image where technically feasible
+
+### Ancient Reservoir / Conduit Structure
+Reference: an aerial view of a circular stone amphitheater-dam structure deep in dense forest, with teal energy/water channels radiating from a central ring outward through carved spillways.
+- Reads as a large-scale hero set-piece combining Zone 8 (Mystical Energy Centers) and Zone 6 (Overgrown Cities) — ancient, monumental, reclaimed by nature, actively channeling energy or water (or both, deliberately ambiguous) through engineered spillways
+- Recommend as a destination/landmark structure rather than a repeated tile — the circular radial symmetry and forest isolation make it read as a specific named location, not a generic biome dressing
+- Material and lighting: reuse Zone 8's energy-manifestation spec for the teal channels (self-emissive, animated flow), Zone 6's aggressive-overgrowth vegetation spec for the surrounding forest
+
 ---
 
 ## GLOBAL COLOR PALETTE
@@ -988,7 +1022,7 @@ Coverage: Varies per slope angle (accumulation modeling)
 
 ## REFERENCE PHOTO MAPPING (COMPLETE)
 
-**112+ photos total** organized by zone assignment and lighting archetype, plus the cross-cutting Corridor & Threshold Architecture System (Batch 7, 16 images), Zone 11 Imperial Megastructure (Batch 8, 16 images), and Zone 12 Medical Containment / Conversion Facility + Personal Quarters sub-type (Batch 9, 16 images). Photographic reference becomes canon for:
+**128+ photos total** organized by zone assignment and lighting archetype, plus the cross-cutting Corridor & Threshold Architecture System (Batch 7, 16 images), Zone 11 Imperial Megastructure (Batch 8, 16 images), Zone 12 Medical Containment / Conversion Facility + Personal Quarters sub-type (Batch 9, 16 images), and the Bio-Transformation Chamber sub-zone + Signature Artifacts & Visual Motifs (Batch 10, 16 images). Photographic reference becomes canon for:
 - **Lighting mood:** Emergency red vs. operational cyan vs. sterile white vs. natural overcast
 - **Architectural proportion:** Corridor widths, ceiling heights, perspective drive
 - **Material weathering:** Rust, corrosion, patina patterns reflected in PBR specifications
