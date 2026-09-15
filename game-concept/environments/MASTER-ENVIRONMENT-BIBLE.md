@@ -13,7 +13,7 @@
 
 ---
 
-## ENVIRONMENT ZONES (11 IDENTIFIED)
+## ENVIRONMENT ZONES (12 IDENTIFIED)
 
 ### ZONE 1: URBAN DECAY
 **Visual DNA:** Weathered concrete, abandoned infrastructure, moss-covered surfaces, water staining, monolithic brutalism.
@@ -528,6 +528,12 @@
 - Overhead cable runs and practical fixtures following the tunnel's natural curve rather than an imposed grid
 - Use for: transit points connecting Underground Megastructures (Zone 2) to surface zones — the literal transition space between the two, reinforcing that Zone 2's tech was built INTO existing geology rather than replacing it
 
+### Sub-Type I: Personal Quarters / Habitat Pod
+- Circular or arched light-frame surrounding a sleep/rest nook (bed set into a glowing ring, distinct silhouette from the rectilinear language elsewhere in the system)
+- Two distinct social registers observed in reference: (1) austere dark pod with moss/rock framing — field/squad quarters, minimal but not cold; (2) full penthouse-scale room with floor-to-ceiling city view, hanging plants, personal tech desk — high-status civilian or command-tier quarters
+- Lighting: warm-neutral (3500–4500K) — the one interior type in the entire system that should NOT default to cool white/blue/teal, since these are meant to feel lived-in rather than institutional
+- Use for: Ghost squad personal quarters aboard bases/ships, Odion or command-tier NPC quarters (penthouse variant signals Helticor or high Faction rank), rest/save points if the game uses them
+
 ### Sub-Type F: Bunker Threshold (Exterior)
 - Exterior establishing shot type: reinforced concrete bunker door set into hillside/forest
 - Environmental contrast: natural setting (snow, forest) framing hard artificial threshold
@@ -547,6 +553,8 @@ Batch 8 reference included facility signage reading **"HUMAN RESEARCH — SECTOR
 - Placement in Faction-controlled corridors (Sub-Types B and C) signals institutional, bureaucratic horror — the banality of the facility undercuts the atrocity implied by the sheets
 - Do not resolve the open question in asset text (no explicit "conversion" labeling) — let players infer, consistent with the intel-as-storytelling design pillar in `README.md`
 - Use as a hook for the creator to eventually canonize signage language once #11n is resolved
+
+**Batch 9 addition — "Humanity First":** one Sub-Type B corridor reference is titled in its own concept-art label as **"Humanity First / Interior / Corridor / Behind Garden."** This reads as a named in-world slogan or program title, not just a file name — the phrasing ("Humanity First") sits in direct thematic tension with the Faction's confirmed motto ("We do not serve humanity. We shape it," `factions/the-faction.md`). Flagging as a lore hook rather than assigning it: this could be (a) the Faction's own public-facing propaganda name — the friendly mask over the true doctrine, (b) a rival human-loyalist faction/movement not yet canonized, or (c) unrelated set-dressing. Recommend the creator resolve this alongside #9 and #11m in `open-questions.md` before the signage is used narratively. Until then, treat "Humanity First" branding as a placeholder identity for clean corporate/institutional corridors (Sub-Type B) with public-facing amenities (reception areas, planted greenery, office/laboratory wayfinding) — distinct from the harder, unmarked Faction-internal Sub-Type C spaces.
 
 ### UE5 Implementation Notes
 - **Nanite Budget:** 200K–400K triangles per corridor segment (these are geometrically simple — budget goes to lighting fidelity, not mesh complexity)
@@ -592,6 +600,46 @@ Batch 8 reference included facility signage reading **"HUMAN RESEARCH — SECTOR
 **Nanite Budget:** 3M–5M triangles for a hero tower (distant silhouette + close-approach detail both required)
 **Lumen Settings:** Quality Very High, resolution 256, update frequency 0.5 (mostly static exterior, dynamic only at energy seam)
 **Post-Process:** Cool color grading, minimal grain (0.05 — imperial architecture reads clean, not decayed), bloom 1.0 on energy seams only
+
+**Daytime Commercial Variant (Batch 9 addition):** a second observed mode — sprawling multi-level plaza/mall structure at tower base, gold/amber accent trim instead of the cyan/orange night seam, dense crowds and retail-scale activity, daylight sky. Use this variant for Imperial Megastructure districts meant to read as populated/functioning civilian centers rather than restricted military-imperial cores; keep the sloped-tower silhouette language consistent so both variants are legible as the same architectural culture.
+
+---
+
+## ZONE 12: MEDICAL CONTAINMENT / CONVERSION FACILITY
+**Visual DNA:** Sterile dark-glass specimen chambers, angular black architecture, clinical figures in white coats framed against glowing containment pods — beauty and horror sharing the same frame.
+
+**Reference Photo Count:** 1 image (Batch 9), flagged as a priority sub-zone pending more reference
+**Threat Level:** Existential/psychological — this is where atrocity wears a lab coat
+
+**Lore Tie:** This is the strongest visual match yet for **The Doctor's** operations and the FCT human-conversion process (`open-questions.md` #11n, #11m). Recommend treating this as the canonical look for any facility where the conversion process is implied or witnessed. Deliberately underplay overt horror-genre cues (no blood, no visible suffering) — the design language should sell "advanced medicine" first, so the player's dawning realization of what it actually is lands harder. This is consistent with the bible's existing note on Human Research signage: institutional banality over spectacle.
+
+**Lighting Archetype:** Clinical Glow + Deep Black Negative Space
+- Base: Near-black ambient (10, 10, 12), 0.05 intensity — the architecture itself should barely be visible
+- Containment pods: self-emissive interior glow, cool white-blue (200, 220, 255), 3–6 intensity, acts as the only real light source in the room
+- Practical: single warm amber accent per pod cluster (255, 180, 100) — the "life support is active" tell, deliberately warmer/more organic than the cold pod glow
+- No volumetric fog — this space should read as sealed, filtered, over-controlled air
+
+**Material Specification:**
+- Architecture: matte black composite, Roughness 0.3, Metallic 0.6 — reflective enough to catch pod glow, not enough to read as "chrome sci-fi"
+- Containment glass: Roughness 0.05, Metallic 0.0, high transparency with internal emissive volume (not just a glowing texture — should read as a lit interior behind glass)
+- Floor: polished dark stone or composite (Roughness 0.15), full reflection of pod lighting for doubled visual density
+- Staff uniforms (if populated): pure white, minimal detail — contrast garment against the black architecture, coding "authority/clinical" against "unknown/contained"
+
+**Architecture:**
+- Angular, faceted pod housings (not organic capsule shapes — these are engineered, not grown)
+- Repeating pod rhythm down a central spine (implies scale: this has happened many times, not once)
+- Low ceiling height relative to other zones (2.5–3m) — deliberately claustrophobic compared to the vertical drama elsewhere in the bible
+- No windows to exterior — this facility does not want to be seen from outside
+
+**Asset Breakdown:**
+- Containment pod module (Nanite, high-detail hero asset — this will be looked at closely)
+- Repeating spine corridor connecting pod clusters
+- Staff workstation/monitoring consoles (minimal, functional, no clutter — this is not an industrial space)
+- Signage system (reuse Environmental Storytelling Signage principle from the Corridor System — sector/lab numbering, never explicit "conversion" language)
+
+**Nanite Budget:** 400K–600K triangles per pod cluster
+**Lumen Settings:** Quality Very High, resolution 256 — the pod glow IS the scene, GI quality directly determines whether the mood lands
+**Post-Process:** Heavy vignette (0.5), cold color grade with the single warm accent preserved, minimal bloom (0.6, tight radius — glow should feel contained, not spilling)
 
 ---
 
@@ -940,7 +988,7 @@ Coverage: Varies per slope angle (accumulation modeling)
 
 ## REFERENCE PHOTO MAPPING (COMPLETE)
 
-**96+ photos total** organized by zone assignment and lighting archetype, plus the cross-cutting Corridor & Threshold Architecture System (Batch 7, 16 images) and Zone 11 Imperial Megastructure (Batch 8, 16 images). Photographic reference becomes canon for:
+**112+ photos total** organized by zone assignment and lighting archetype, plus the cross-cutting Corridor & Threshold Architecture System (Batch 7, 16 images), Zone 11 Imperial Megastructure (Batch 8, 16 images), and Zone 12 Medical Containment / Conversion Facility + Personal Quarters sub-type (Batch 9, 16 images). Photographic reference becomes canon for:
 - **Lighting mood:** Emergency red vs. operational cyan vs. sterile white vs. natural overcast
 - **Architectural proportion:** Corridor widths, ceiling heights, perspective drive
 - **Material weathering:** Rust, corrosion, patina patterns reflected in PBR specifications
