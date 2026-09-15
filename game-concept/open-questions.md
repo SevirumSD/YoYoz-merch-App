@@ -16,6 +16,23 @@
 - ✅ Sevirum is the **main character** and served in hidden squad **XIIX**.
 - ✅ Sevirum sheet v1 and Zanmer's head are flagged for redesign.
 
+## Story structure — creator-approved, pending full narrative lock
+
+- ✅ **Opening cold-open spoiler:** the game opens on the Ancient-to-Circuit
+  Artifact (`environments/MASTER-ENVIRONMENT-BIBLE.md`, Signature Artifacts
+  & Visual Motifs — weathered stone/glyph exterior splitting into glowing
+  gold-circuit-and-teal interior) being found or activated, completely
+  unexplained, before cutting away to the actual campaign start elsewhere.
+  The player carries that unexplained image through the whole game without
+  context until it recontextualizes late — in service of the "mystery is
+  load-bearing" design pillar (`README.md`). Likely payoff: the artifact is
+  an AZRAEL-0-lineage fragment (#11b), so this cold open is provisionally
+  the player's first — unrecognized — glimpse of the First Frame or its
+  technology. Not yet locked: what the opening scene actually shows
+  happening to/with the artifact, who is present, and how long into the
+  campaign the callback lands. Revisit once the story spine (#6–11) is
+  further resolved.
+
 ## Identity & names
 
 1. **"Gustave Sevirum"** (Aria's bio) — is Sevirum a surname? Are Gustave and
