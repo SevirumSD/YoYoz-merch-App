@@ -468,6 +468,73 @@
 
 ---
 
+## CORRIDOR & THRESHOLD ARCHITECTURE SYSTEM (Cross-Zone Connective Language)
+
+> Derived from Photo Batch 7 (16 images). Unlike the 10 destination zones above, this is a **connective system** — the corridors, transitions, and thresholds that link zones together. Highly consistent visual language: extreme minimalism, forced symmetry, single-axis linear lighting, vanishing-point composition. Use this as the "in-between" grammar of the world — the space players traverse between the 10 destination zones.
+
+**Visual DNA:** Radical minimalism, geometric precision, single dominant light axis (ceiling strip or vertical), monochrome base with one accent color, forced-perspective symmetry driving the eye to a single vanishing point or doorway.
+
+**Reference Photo Count:** 16 images (Batch 7)
+
+### Sub-Type A: Concrete Threshold Corridors
+- Diagonal-slat or straight concrete tunnels, dark, single soft light source at terminus
+- Roughness 0.8, Metallic 0.0, minimal weathering (cleaner than Urban Decay concrete)
+- Lighting: single point/area light at vanishing point, 0.3–0.5 intensity, cool white (6000K)
+- No side-wall fixtures — light exists only where the corridor terminates or bends
+- Use for: transitions between Underground Megastructures and surface zones
+
+### Sub-Type B: Linear Strip-Lit Corridors
+- Ceiling-mounted or floor-adjacent continuous light strips (not point lights)
+- Strip color: pure white (5500K) or cold blue-white (7000K), rarely colored
+- Pattern: single centered strip, twin parallel strips, or geometric strip arrays (right-angle turns forming rectilinear ceiling patterns)
+- Floor material: polished/reflective (0.15–0.25 roughness) to double the light via reflection
+- Wall material: matte black or dark charcoal (RGB 20–35 per channel), zero detail — walls exist only to frame the light line
+- Intensity: 1.0–1.5 at the strip, falling to near-zero 2m off-axis (aggressive falloff for drama)
+- Use for: FCT/Faction facility interiors, Ghost-tech installations, any "clean power" location
+
+### Sub-Type C: Sci-Fi Greebled Corridors (Tech-Detailed)
+- Heavily detailed wall paneling (greeble), alien script/runic overlays as emissive decals
+- Base material: worn gunmetal (Roughness 0.4, Metallic 0.9), edge-wear only (no rust — this is maintained tech, not decay)
+- Emissive accent color: teal/cyan (0, 200, 200) or sickly green (100, 220, 140) for "alien/unknown origin" tech
+- Grated or paneled floors with subtle emissive seam lines
+- Use for: Helticor Empire architecture, Exzerai facilities, AZRAEL-0-adjacent locations (unknown-origin tech signaled by non-human script)
+
+### Sub-Type D: Colonnade / Pillar Halls
+- Massive repeating pillar structures (concrete or stone), deep shadow between pillars
+- Water on floor (thin reflective layer) doubling pillar silhouettes
+- Lighting: rare, sparse point sources (one light per 4–6 pillars), rest in near-darkness
+- Roughness 0.85 (raw concrete/stone), Metallic 0.0
+- Use for: Faction Black Archive approaches, AGS Prototype Archive sites, ceremonial pre-Sacred-Hybrid-Space approaches
+
+### Sub-Type E: Hangar / Cargo Bay Interiors
+- Wide-format interiors (not corridors but share the family's clean minimal language)
+- High ceilings with linear or panel-grid lighting (hexagonal or rectangular panel arrays)
+- Floor: painted markings (directional arrows, stenciled numbers/codes), matte industrial finish
+- Wall material: painted metal panel, RGB 30–45 per channel (near-black to dark gray), minimal weathering
+- Signage: stenciled functional text ("WATCH STEP", numbered bay codes) as decal details — worldbuilding through environmental text
+- Use for: Ghost squad staging areas, Trident/ExZer production facilities, Aegis Syndicate bases
+
+### Sub-Type F: Bunker Threshold (Exterior)
+- Exterior establishing shot type: reinforced concrete bunker door set into hillside/forest
+- Environmental contrast: natural setting (snow, forest) framing hard artificial threshold
+- Warning marking (single stenciled number or symbol in accent red/orange) as sole color note
+- Vents with steam/smoke particle effects (implies active interior systems behind sealed door)
+- Use for: hidden Faction facility entrances, XIIX-era black sites, Black Archive access points
+
+### Lighting Principles (Corridor System)
+- **One axis rule:** Light travels along a single dominant axis (the direction of travel). Never light corridors broadly — light guides movement.
+- **Falloff aggression:** Off-axis falloff should be steep (2–3m to near-black) to maximize contrast and drama.
+- **Color discipline:** Reserve accent color for one narrative purpose per corridor type — white/blue = human/clean tech, teal/green = alien/unknown origin, red = warning/emergency (ties to Zone 3 emergency lighting spec).
+- **Symmetry as tension:** Perfect bilateral symmetry reads as controlled/artificial (Faction, Helticor). Asymmetry or organic breaks in the pattern signal decay, sabotage, or non-human intrusion.
+
+### UE5 Implementation Notes
+- **Nanite Budget:** 200K–400K triangles per corridor segment (these are geometrically simple — budget goes to lighting fidelity, not mesh complexity)
+- **Lumen Settings:** Quality Very High, resolution 256 — critical because these spaces rely entirely on lighting for mood; poor GI breaks the effect
+- **Modular kit:** Build as a true modular corridor kit (2m repeating sections) with swappable light-strip material instances per sub-type, so the same geometry kit can reskin between Faction/Helticor/Trident/Ghost visual identities by swapping only the emissive material and prop set
+- **Post-Process:** Heavy vignette (0.4–0.6) to reinforce tunnel-vision framing, minimal film grain (0.05), bloom tuned per accent color (white/blue: 0.8, teal/green: 1.2)
+
+---
+
 ## GLOBAL COLOR PALETTE
 
 ### Foundation Colors (Structural Dominance)
@@ -813,7 +880,7 @@ Coverage: Varies per slope angle (accumulation modeling)
 
 ## REFERENCE PHOTO MAPPING (COMPLETE)
 
-**64+ photos total** organized by zone assignment and lighting archetype. Photographic reference becomes canon for:
+**80+ photos total** organized by zone assignment and lighting archetype, plus the cross-cutting Corridor & Threshold Architecture System (Batch 7, 16 images). Photographic reference becomes canon for:
 - **Lighting mood:** Emergency red vs. operational cyan vs. sterile white vs. natural overcast
 - **Architectural proportion:** Corridor widths, ceiling heights, perspective drive
 - **Material weathering:** Rust, corrosion, patina patterns reflected in PBR specifications
