@@ -23,6 +23,17 @@ def align(src, dst):
     return cv2.warpAffine(src, A, (W, H), flags=cv2.INTER_LANCZOS4, borderMode=cv2.BORDER_REPLICATE)
 imgs['open'] = align(imgs['open'], imgs['visor'])
 
+# The title lettering differs by a few pixels between the posters: give the open
+# poster the visor poster's lettering so the title never shifts or doubles.
+def sky_of(im):
+    f = im.astype(np.float32)
+    return (f.mean(-1) > 175) & ((f.max(-1) - f.min(-1)) < 32)
+box = np.zeros((H, W), bool); box[960:1350, 505:] = True
+text = box & ~(sky_of(imgs['open']) & sky_of(imgs['visor']))
+text = ndimage.binary_dilation(text, iterations=4)
+a = cv2.GaussianBlur(text.astype(np.float32), (0, 0), 2)[..., None]
+imgs['open'] = (imgs['open'] * (1 - a) + imgs['visor'] * a).astype(np.uint8)
+
 sky = {}
 for name, im in imgs.items():
     Image.fromarray(im).save(f'{name}.png')

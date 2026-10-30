@@ -20,9 +20,14 @@
   // her (sky masks), water drips off her chin or mask, and the suit lights pulse.
   // Click to skip ahead to the next change. All scene coordinates are in poster
   // pixels (1024 x 1536); the three posters are aligned by tools/prep.py.
+  // ?morph swaps the hex waves for fluid optical-flow morphs (frames from
+  // tools/morph.py) where the helmet slides into place with no glow or flash; the
+  // phone video uses it.
   const IW = 1024, IH = 1536;
   const params = new URLSearchParams(location.search);
   const CAPTURE = params.has('capture');
+  const MORPH = params.has('morph');
+  const MORPH_FRAMES = 31; // must match tools/morph.py
 
   // Deterministic RNG so rendered video loops are reproducible.
   let seed = 1337;
@@ -40,7 +45,16 @@
   let W = 0, H = 0, dpr = 1, view, rainLayer, rainMix, cellMask, reveal, bokehSprite;
 
   // ---------- timeline ----------
-  const TIMELINE = [
+  const TIMELINE = MORPH ? [
+    { hold: 'open', dur: 3.6 },
+    { from: 'open', to: 'visor', dur: 1.0 },
+    { hold: 'visor', dur: 2.6 },
+    { from: 'visor', to: 'closed', dur: 0.9 },
+    { hold: 'closed', dur: 3.8 },
+    { from: 'closed', to: 'visor', dur: 0.8 },
+    { hold: 'visor', dur: 1.4 },
+    { from: 'visor', to: 'open', dur: 0.9 },
+  ] : [
     { hold: 'open', dur: 3.6 },
     { from: 'open', to: 'visor', cells: 'full', dur: 1.6 },
     { hold: 'visor', dur: 2.4 },
@@ -245,13 +259,7 @@
     rv.globalCompositeOperation = 'destination-in'; rv.drawImage(cellMask, 0, 0);
     ctx.drawImage(reveal, 0, 0);
 
-    // Rain: crossfade the two sky masks.
-    const rm = rainMix.getContext('2d');
-    rm.clearRect(0, 0, W, H);
-    rm.globalAlpha = 1 - q; rm.drawImage(A.rainMask, 0, 0);
-    rm.globalAlpha = q; rm.drawImage(B.rainMask, 0, 0);
-    rm.globalAlpha = 1;
-    drawRain(rainMix);
+    drawRainBetween(A, B, q);
     drawGlow(A, (1 - q) * (1 + Math.sin(Math.PI * u)));
     drawGlow(B, q * (1 + Math.sin(Math.PI * u)));
 
@@ -295,6 +303,44 @@
     }
     lastReveal = { key, i: seg.reverse ? rg.reveal[0] : rg.reveal[1] };
   }
+  // Rain during a change: crossfade the two sky masks.
+  function drawRainBetween(A, B, q) {
+    const rm = rainMix.getContext('2d');
+    rm.clearRect(0, 0, W, H);
+    rm.globalAlpha = 1 - q; rm.drawImage(A.rainMask, 0, 0);
+    rm.globalAlpha = q; rm.drawImage(B.rainMask, 0, 0);
+    rm.globalAlpha = 1;
+    drawRain(rainMix);
+  }
+
+  // ---------- fluid morph transition ----------
+  const morphCache = new Map(); // url -> Image, the last few frames
+  let morphBase = null, morphBaseFor = null;
+  const morphUrl = (seg, u) => `morph/${seg.from}-${seg.to}_${Math.round(u * (MORPH_FRAMES - 1))}.jpg`;
+  // Loads the morph frame the current time needs; capture awaits it before drawing.
+  async function prepare() {
+    const { seg, u } = phaseAt(cycleT);
+    if (!MORPH || seg.hold) return;
+    const url = morphUrl(seg, u);
+    if (morphCache.has(url)) return;
+    morphCache.set(url, null);
+    const img = await load(url);
+    morphCache.set(url, img);
+    while (morphCache.size > 4) morphCache.delete(morphCache.keys().next().value);
+  }
+  function drawMorph(seg, u) {
+    const A = st[seg.from], B = st[seg.to], q = smooth(u);
+    const frame = morphCache.get(morphUrl(seg, u));
+    if (frame) {
+      if (frame !== morphBaseFor) { morphBase = buildBase(frame); morphBaseFor = frame; }
+      ctx.drawImage(morphBase, 0, 0);
+    } else ctx.drawImage((u < 0.5 ? A : B).base, 0, 0);
+    drawRainBetween(A, B, q);
+    // The lights move with the morph, so their glow eases out and back in rather
+    // than sitting still while the plates slide.
+    drawGlow(A, (1 - q) * (1 - q)); drawGlow(B, q * q);
+  }
+
   function stepSparks(dt) {
     for (const s of sparks) { s.vy += 160 * dt; s.x += s.vx * dt; s.y += s.vy * dt; s.life -= dt; }
     sparks = sparks.filter(s => s.life > 0);
@@ -423,7 +469,7 @@
       drawGlow(S, 1);
       drawWater([[WATER[seg.hold], 1]], S.img);
     } else {
-      drawTransition(seg, u);
+      if (MORPH) drawMorph(seg, u); else drawTransition(seg, u);
       const q = smooth(u);
       drawWater([[WATER[seg.from], 1 - q], [WATER[seg.to], q]], st[u < 0.5 ? seg.from : seg.to].img);
     }
@@ -449,13 +495,13 @@
     resize();
     for (let i = 0; i < 60; i++) step(1 / 30); // warm up so water is already flowing
     cycleT = CAPTURE ? 0 : cycleT;
-    if (CAPTURE) { window.wp = { step, draw, canvas, CYCLE }; draw(); window.wpReady = true; return; }
+    if (CAPTURE) { window.wp = { step, draw, prepare, canvas, CYCLE }; draw(); window.wpReady = true; return; }
     addEventListener('resize', resize);
     addEventListener('pointerdown', skipAhead);
     let last = performance.now();
     const frame = now => {
       const dt = Math.min(0.05, (now - last) / 1000); last = now;
-      step(dt); draw(); requestAnimationFrame(frame);
+      step(dt); prepare(); draw(); requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
   });
