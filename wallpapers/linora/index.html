@@ -67,13 +67,14 @@
   }
 
   function resize() {
-    dpr = CAPTURE ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+    dpr = CAPTURE ? +params.get('dpr') || 1 : Math.min(window.devicePixelRatio || 1, 2);
     const cw = CAPTURE ? +params.get('w') || innerWidth : innerWidth;
     const ch = CAPTURE ? +params.get('h') || innerHeight : innerHeight;
     W = canvas.width = Math.round(cw * dpr);
     H = canvas.height = Math.round(ch * dpr);
     if (CAPTURE) { canvas.style.width = cw + 'px'; canvas.style.height = ch + 'px'; }
     view = computeView();
+    ctx.imageSmoothingQuality = 'high';
 
     // Static base: blurred backdrop + sharp poster feathered into it.
     base = mk(W, H);
@@ -86,6 +87,7 @@
     if (rw > 60 * dpr) { b.save(); b.translate(view.ox + view.w, 0); b.scale(-1, 1); const fw = Math.min(rw / view.s, 70); b.drawImage(img, IW - fw, 0, fw, IH, -rw, view.oy, rw, view.h); b.restore(); }
     b.filter = 'none';
     const sharp = mk(W, H), sc = sharp.getContext('2d');
+    sc.imageSmoothingQuality = 'high';
     sc.drawImage(img, view.ox, view.oy, view.w, view.h);
     sc.globalCompositeOperation = 'destination-in';
     sc.fillStyle = featherGrad(sc, false); sc.fillRect(0, 0, W, H);
