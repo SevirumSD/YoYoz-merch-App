@@ -1,6 +1,6 @@
 # Linora — animated rain wallpaper
 
-Animated version of the Sevirum *Linora* poster. Rain falls behind her (masked to the sky only). The drips painted into the poster come alive: the drop hanging off her jaw fills, swells and falls, then re-forms; the beads on her tear streak grow, slide down into each other and run off; the trickle under her chin flows. Extra runoff slides down her face with wet trails, glints sparkle on wet skin, and the blue armor lights pulse.
+Animated version of the Sevirum *Linora* poster. Rain falls behind her (masked to the sky only). The drips painted into the poster come alive: the drop hanging off her jaw fills, swells and falls, then re-forms; the beads on her tear streak grow, slide down into each other and run off; the trickle under her chin flows. Water streams down her face, armor and hair: drops slide down her skin and the armor plates, gather at her jaw, the plate tips and the hair tips, and drip or pour off in thin streams that splash on the armor below. Glints sparkle on wet skin, and the blue armor lights pulse. Rates and positions are tables near the top of the face-drops section of `index.html` (`PATHS`, `SITES`, `POURS`).
 
 | File | Use |
 | --- | --- |
