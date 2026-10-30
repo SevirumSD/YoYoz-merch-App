@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Linora Helmet</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #e9ebee; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script src="cells.js"></script>
+<script>
+(() => {
+  // Animated wallpaper: Linora's nanotech helmet deploys over her face (open -> visor
+  // -> closed), holds, then retracts, on a 16 s cycle. Each change is a wave of hex
+  // cells that flip to the next poster with a glowing orange edge. Rain falls behind
+  // her (sky masks), water drips off her chin or mask, and the suit lights pulse.
+  // Click to skip ahead to the next change. All scene coordinates are in poster
+  // pixels (1024 x 1536); the three posters are aligned by tools/prep.py.
+  const IW = 1024, IH = 1536;
+  const params = new URLSearchParams(location.search);
+  const CAPTURE = params.has('capture');
+
+  // Deterministic RNG so rendered video loops are reproducible.
+  let seed = 1337;
+  const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const rr = (a, b) => a + rnd() * (b - a);
+  const smooth = u => u * u * (3 - 2 * u);
+
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const load = src => new Promise((ok, err) => { const i = new Image(); i.onload = () => ok(i); i.onerror = err; i.src = src; });
+  const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+
+  const STATES = ['open', 'visor', 'closed'];
+  const st = {}; // per state: img, sky, glow, glowBlur, base, rainMask
+  let W = 0, H = 0, dpr = 1, view, rainLayer, rainMix, cellMask, reveal, bokehSprite;
+
+  // ---------- timeline ----------
+  const TIMELINE = [
+    { hold: 'open', dur: 3.6 },
+    { from: 'open', to: 'visor', cells: 'full', dur: 1.6 },
+    { hold: 'visor', dur: 2.4 },
+    { from: 'visor', to: 'closed', cells: 'helmet', dur: 1.3, powerUp: true },
+    { hold: 'closed', dur: 3.6 },
+    { from: 'closed', to: 'visor', cells: 'helmet', reverse: true, dur: 1.1 },
+    { hold: 'visor', dur: 0.9 },
+    { from: 'visor', to: 'open', cells: 'full', reverse: true, dur: 1.5 },
+  ];
+  const CYCLE = TIMELINE.reduce((a, s) => a + s.dur, 0);
+  function phaseAt(t) {
+    t %= CYCLE;
+    for (const seg of TIMELINE) { if (t < seg.dur) return { seg, u: t / seg.dur }; t -= seg.dur; }
+    return { seg: TIMELINE[0], u: 0 };
+  }
+
+  // ---------- layout ----------
+  function computeView() {
+    const aspect = W / H;
+    let s, ox, oy;
+    if (aspect < 1) {
+      // Portrait (phones): cover, keeping her head and the title in frame.
+      s = Math.max(W / IW, H / IH);
+      ox = Math.min(0, Math.max(W - IW * s, W / 2 - 640 * s));
+      oy = Math.min(0, Math.max(H - IH * s, H / 2 - 780 * s));
+    } else {
+      // Landscape (desktops): head + title fill the height, the scene extends to the sides.
+      s = H / 1110;
+      oy = -190 * s;
+      ox = (W - IW * s) * 0.35;
+      if (IW * s >= W) { s = W / IW; ox = 0; oy = Math.min(0, H / 2 - 760 * s); }
+    }
+    return { s, ox, oy, w: IW * s, h: IH * s };
+  }
+  const sx = x => view.ox + x * view.s;
+  const sy = y => view.oy + y * view.s;
+
+  function featherGrad(c, inverse) {
+    const F = Math.min(140 * dpr, view.w * 0.15);
+    const g = c.createLinearGradient(view.ox, 0, view.ox + view.w, 0);
+    const a = inverse ? 1 : 0, b = inverse ? 0 : 1;
+    const leftEdge = view.ox > 0.5, rightEdge = view.ox + view.w < W - 0.5;
+    g.addColorStop(0, `rgba(0,0,0,${leftEdge ? a : b})`);
+    g.addColorStop(F / view.w, `rgba(0,0,0,${b})`);
+    g.addColorStop(1 - F / view.w, `rgba(0,0,0,${b})`);
+    g.addColorStop(1, `rgba(0,0,0,${rightEdge ? a : b})`);
+    return g;
+  }
+
+  function buildBase(img) {
+    const base = mk(W, H), b = base.getContext('2d');
+    // Fill the sides with a blurred mirror of the poster's edges so it continues naturally.
+    b.filter = `blur(${Math.round(28 * dpr)}px) brightness(1.03)`;
+    const lw = view.ox + 60 * dpr, rw = W - view.ox - view.w + 60 * dpr;
+    if (lw > 60 * dpr) { b.save(); b.translate(view.ox, 0); b.scale(-1, 1); b.drawImage(img, 0, 0, lw / view.s, IH, 0, view.oy, lw, view.h); b.restore(); }
+    if (rw > 60 * dpr) { b.save(); b.translate(view.ox + view.w, 0); b.scale(-1, 1); const fw = Math.min(rw / view.s, 70); b.drawImage(img, IW - fw, 0, fw, IH, -rw, view.oy, rw, view.h); b.restore(); }
+    b.filter = 'none';
+    const sharp = mk(W, H), sc = sharp.getContext('2d');
+    sc.imageSmoothingQuality = 'high';
+    sc.drawImage(img, view.ox, view.oy, view.w, view.h);
+    sc.globalCompositeOperation = 'destination-in';
+    sc.fillStyle = featherGrad(sc, false); sc.fillRect(0, 0, W, H);
+    b.drawImage(sharp, 0, 0);
+    return base;
+  }
+  function buildRainMask(sky) {
+    // Rain shows in the sky inside the poster and everywhere outside it.
+    const mask = mk(W, H), m = mask.getContext('2d');
+    m.drawImage(sky, view.ox, view.oy, view.w, view.h);
+    m.globalCompositeOperation = 'destination-in';
+    m.fillStyle = featherGrad(m, false); m.fillRect(0, 0, W, H);
+    m.globalCompositeOperation = 'destination-over';
+    m.fillStyle = featherGrad(m, true); m.fillRect(0, 0, W, H);
+    m.fillRect(0, 0, W, view.oy); m.fillRect(0, view.oy + view.h, W, H);
+    return mask;
+  }
+
+  function resize() {
+    dpr = CAPTURE ? +params.get('dpr') || 1 : Math.min(window.devicePixelRatio || 1, 2);
+    const cw = CAPTURE ? +params.get('w') || innerWidth : innerWidth;
+    const ch = CAPTURE ? +params.get('h') || innerHeight : innerHeight;
+    W = canvas.width = Math.round(cw * dpr);
+    H = canvas.height = Math.round(ch * dpr);
+    if (CAPTURE) { canvas.style.width = cw + 'px'; canvas.style.height = ch + 'px'; }
+    view = computeView();
+    ctx.imageSmoothingQuality = 'high';
+    for (const n of STATES) { st[n].base = buildBase(st[n].img); st[n].rainMask = buildRainMask(st[n].sky); }
+    rainLayer = mk(W, H); rainMix = mk(W, H); cellMask = mk(W, H); reveal = mk(W, H);
+    for (const f of Object.values(FIELDS)) {
+      const sky = f.list.map((c, i) => c[3] ? -1 : i).filter(i => i >= 0);
+      f.skyPath = new Path2D();
+      for (const i of sky) hexPath(f.skyPath, f.list, i, i + 1, 1.04, false);
+    }
+    initRain();
+  }
+
+  // ---------- background rain ----------
+  let streaks = [], bokeh = [], front = [];
+  const WIND = -0.12; // horizontal drift per unit of fall
+  const RAIN_ALPHA = [0.2, 0.3, 0.42];
+  function newStreak(layer, anywhere) {
+    const depth = [0.45, 0.75, 1.0][layer];
+    return {
+      x: rr(-0.1, 1.1) * W, y: anywhere ? rr(-0.1, 1) * H : rr(-0.3, -0.02) * H,
+      v: (900 + rnd() * 500) * depth * dpr, len: (14 + rnd() * 26) * depth * dpr, layer,
+    };
+  }
+  function newBokeh(anywhere) {
+    return { x: rr(0, W), y: anywhere ? rr(0, H) : -40 * dpr, r: rr(6, 22) * dpr, v: rr(25, 70) * dpr, a: rr(0.25, 0.7), ph: rr(0, 6.28) };
+  }
+  function newFront(anywhere) {
+    return { x: rr(-0.1, 1.1) * W, y: anywhere ? rr(-0.2, 1) * H : rr(-0.4, -0.1) * H, v: rr(1700, 2300) * dpr, len: rr(60, 120) * dpr, w: rr(1.2, 2.2) * dpr, a: rr(0.06, 0.13) };
+  }
+  function initRain() {
+    const area = (W * H) / (dpr * dpr) / (1920 * 1080);
+    streaks = Array.from({ length: Math.round(380 * Math.max(0.5, area)) }, (_, i) => newStreak(i % 3, true));
+    bokeh = Array.from({ length: Math.round(22 * Math.max(0.6, area)) }, () => newBokeh(true));
+    front = Array.from({ length: Math.round(30 * Math.max(0.5, area)) }, () => newFront(true));
+    bokehSprite = mk(64, 64);
+    const g = bokehSprite.getContext('2d'), rg = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    rg.addColorStop(0, 'rgba(90,96,108,0.55)'); rg.addColorStop(0.55, 'rgba(90,96,108,0.35)'); rg.addColorStop(1, 'rgba(90,96,108,0)');
+    g.fillStyle = rg; g.fillRect(0, 0, 64, 64);
+  }
+  function stepRain(dt) {
+    for (const s of streaks) { s.y += s.v * dt; s.x += s.v * WIND * dt; if (s.y - s.len > H) Object.assign(s, newStreak(s.layer, false)); }
+    for (const b of bokeh) { b.y += b.v * dt; b.x += b.v * WIND * 0.5 * dt; b.ph += dt; if (b.y - b.r > H) Object.assign(b, newBokeh(false)); }
+    for (const f of front) { f.y += f.v * dt; f.x += f.v * WIND * dt; if (f.y - f.len > H) Object.assign(f, newFront(false)); }
+  }
+  function drawRain(mask) {
+    const r = rainLayer.getContext('2d');
+    r.globalCompositeOperation = 'source-over';
+    r.clearRect(0, 0, W, H);
+    for (const b of bokeh) {
+      r.globalAlpha = b.a * (0.75 + 0.25 * Math.sin(b.ph * 1.3));
+      r.drawImage(bokehSprite, b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
+    }
+    r.globalAlpha = 1; r.lineCap = 'round';
+    for (let layer = 0; layer < 3; layer++) {
+      r.lineWidth = (0.6 + layer * 0.45) * dpr;
+      r.beginPath();
+      for (const s of streaks) if (s.layer === layer) { r.moveTo(s.x, s.y); r.lineTo(s.x - s.len * WIND, s.y - s.len); }
+      r.strokeStyle = `rgba(105,115,132,${RAIN_ALPHA[layer]})`;
+      r.stroke();
+    }
+    r.globalCompositeOperation = 'destination-in';
+    r.drawImage(mask, 0, 0);
+    ctx.drawImage(rainLayer, 0, 0);
+  }
+  function drawFront() {
+    ctx.lineCap = 'round';
+    for (const f of front) {
+      ctx.strokeStyle = `rgba(225,232,245,${f.a})`; ctx.lineWidth = f.w;
+      ctx.beginPath(); ctx.moveTo(f.x, f.y); ctx.lineTo(f.x - f.len * WIND, f.y - f.len); ctx.stroke();
+    }
+  }
+
+  // ---------- nanotech hex transition ----------
+  const R = window.HEX_R;
+  const HEX = Array.from({ length: 6 }, (_, i) => [Math.cos(Math.PI / 6 + i * Math.PI / 3), Math.sin(Math.PI / 6 + i * Math.PI / 3)]);
+  const FIELDS = {};
+  for (const [k, list] of Object.entries(window.CELLS)) FIELDS[k] = { list, t: Float32Array.from(list, c => c[2]) };
+  const GLOW_W = 0.14, PREVIEW_W = 0.07;
+  // First index whose activation time is >= v (cells are sorted by t).
+  function lowerBound(arr, v) { let lo = 0, hi = arr.length; while (lo < hi) { const m = (lo + hi) >> 1; if (arr[m] < v) lo = m + 1; else hi = m; } return lo; }
+  function hexPath(c, list, i0, i1, scale, onlySubject) {
+    const r = R * scale * view.s;
+    for (let i = i0; i < i1; i++) {
+      const cell = list[i];
+      if (onlySubject && !cell[3]) continue;
+      const x = sx(cell[0]), y = sy(cell[1]);
+      c.moveTo(x + HEX[0][0] * r, y + HEX[0][1] * r);
+      for (let k = 1; k < 6; k++) c.lineTo(x + HEX[k][0] * r, y + HEX[k][1] * r);
+      c.closePath();
+    }
+  }
+  // Index ranges (in t-sorted order) of the cells revealed, glowing and about to flip
+  // at wave position p. A reverse wave runs the same field from t = 1 down to 0.
+  function waveRanges(f, p, reverse) {
+    const n = f.list.length, at = v => lowerBound(f.t, v);
+    if (!reverse) return { reveal: [0, at(p)], glow: [at(p - GLOW_W), at(p)], preview: [at(p), at(p + PREVIEW_W)], age: t => p - t };
+    return { reveal: [at(1 - p), n], glow: [at(1 - p), at(1 - p + GLOW_W)], preview: [at(1 - p - PREVIEW_W), at(1 - p)], age: t => p - (1 - t) };
+  }
+  let sparks = [], lastReveal = null;
+  function drawTransition(seg, u) {
+    const f = FIELDS[seg.cells], A = st[seg.from], B = st[seg.to];
+    const p = -0.02 + smooth(u) * (1 + GLOW_W + 0.04), q = smooth(u);
+    const rg = waveRanges(f, p, seg.reverse);
+    // Poster: the old image, with the new one in every flipped cell. Open sky, the
+    // title and the desktop side fills (where the poster feathers out) crossfade.
+    ctx.drawImage(A.base, 0, 0);
+    const m = cellMask.getContext('2d');
+    m.clearRect(0, 0, W, H); m.fillStyle = '#fff';
+    m.globalAlpha = q; m.fill(f.skyPath);
+    m.globalAlpha = 1; m.beginPath(); hexPath(m, f.list, rg.reveal[0], rg.reveal[1], 1.04, true); m.fill();
+    m.globalCompositeOperation = 'destination-in'; m.fillStyle = featherGrad(m, false); m.fillRect(0, 0, W, H);
+    m.globalCompositeOperation = 'destination-over'; m.globalAlpha = q; m.fillStyle = featherGrad(m, true); m.fillRect(0, 0, W, H);
+    m.fillStyle = '#fff'; m.fillRect(0, 0, W, view.oy); m.fillRect(0, view.oy + view.h, W, H);
+    m.globalCompositeOperation = 'source-over'; m.globalAlpha = 1;
+    const rv = reveal.getContext('2d');
+    rv.globalCompositeOperation = 'source-over'; rv.clearRect(0, 0, W, H);
+    rv.drawImage(B.base, 0, 0);
+    rv.globalCompositeOperation = 'destination-in'; rv.drawImage(cellMask, 0, 0);
+    ctx.drawImage(reveal, 0, 0);
+
+    // Rain: crossfade the two sky masks.
+    const rm = rainMix.getContext('2d');
+    rm.clearRect(0, 0, W, H);
+    rm.globalAlpha = 1 - q; rm.drawImage(A.rainMask, 0, 0);
+    rm.globalAlpha = q; rm.drawImage(B.rainMask, 0, 0);
+    rm.globalAlpha = 1;
+    drawRain(rainMix);
+    drawGlow(A, (1 - q) * (1 + Math.sin(Math.PI * u)));
+    drawGlow(B, q * (1 + Math.sin(Math.PI * u)));
+
+    // Energy: freshly flipped cells burn orange and fade; cells just ahead of the
+    // wave show a faint scanning outline.
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    const lw = Math.max(1, 1.2 * view.s);
+    ctx.lineWidth = lw;
+    const buckets = [[], [], [], []];
+    // No energy over the feathered poster edges on desktop.
+    const F = Math.min(140 * dpr, view.w * 0.15);
+    const x0 = view.ox > 0.5 ? view.ox + F : -Infinity, x1 = view.ox + view.w < W - 0.5 ? view.ox + view.w - F : Infinity;
+    for (let i = rg.glow[0]; i < rg.glow[1]; i++) {
+      const cell = f.list[i];
+      if (!cell[3] || sx(cell[0]) < x0 || sx(cell[0]) > x1) continue;
+      const k = 1 - rg.age(cell[2]) / GLOW_W;
+      if (k > 0) buckets[Math.min(3, Math.floor(k * 4))].push(i);
+    }
+    buckets.forEach((idx, b) => {
+      if (!idx.length) return;
+      const k = (b + 0.5) / 4;
+      ctx.beginPath();
+      for (const i of idx) hexPath(ctx, f.list, i, i + 1, 0.92, false);
+      ctx.fillStyle = `rgba(255,120,30,${0.32 * k})`; ctx.fill();
+      ctx.strokeStyle = `rgba(255,190,110,${0.95 * k})`; ctx.stroke();
+    });
+    ctx.beginPath();
+    for (let i = rg.preview[0]; i < rg.preview[1]; i++) { const x = sx(f.list[i][0]); if (x > x0 && x < x1) hexPath(ctx, f.list, i, i + 1, 0.92, true); }
+    ctx.strokeStyle = 'rgba(255,150,60,0.16)'; ctx.stroke();
+    ctx.restore();
+
+    // Sparks thrown off cells as they lock into place.
+    const key = seg.from + seg.to;
+    if (lastReveal && lastReveal.key === key) {
+      const [a0, a1] = seg.reverse ? [rg.reveal[0], lastReveal.i] : [lastReveal.i, rg.reveal[1]];
+      for (let i = a0; i < a1; i++) {
+        const cell = f.list[i];
+        if (cell[3] && sx(cell[0]) > x0 && sx(cell[0]) < x1 && rnd() < 0.3) sparks.push({ x: cell[0] + rr(-R, R), y: cell[1] + rr(-R, R), vx: rr(-60, 60), vy: rr(-90, 20), life: rr(0.35, 0.8) });
+      }
+    }
+    lastReveal = { key, i: seg.reverse ? rg.reveal[0] : rg.reveal[1] };
+  }
+  function stepSparks(dt) {
+    for (const s of sparks) { s.vy += 160 * dt; s.x += s.vx * dt; s.y += s.vy * dt; s.life -= dt; }
+    sparks = sparks.filter(s => s.life > 0);
+  }
+  function drawSparks() {
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (const s of sparks) {
+      const a = Math.min(1, s.life * 2.5);
+      ctx.fillStyle = `rgba(255,170,70,${a})`;
+      ctx.beginPath(); ctx.arc(sx(s.x), sy(s.y), 1.6 * view.s, 0, 6.283); ctx.fill();
+      ctx.fillStyle = `rgba(255,120,30,${0.25 * a})`;
+      ctx.beginPath(); ctx.arc(sx(s.x), sy(s.y), 5 * view.s, 0, 6.283); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ---------- suit lights ----------
+  let time = 0, powerUp = -10;
+  function drawGlow(S, amount) {
+    if (amount <= 0.01) return;
+    const pulse = 0.5 + 0.5 * Math.sin(time * 1.6) * Math.sin(time * 0.37 + 1);
+    const boost = 1 + 1.6 * Math.exp(-(time - powerUp) * 2.2) * (time >= powerUp ? 1 : 0);
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = Math.min(1, (0.25 + 0.45 * pulse) * amount * boost);
+    ctx.drawImage(S.glowBlur, view.ox, view.oy, view.w, view.h);
+    ctx.globalAlpha = Math.min(1, (0.15 + 0.3 * pulse) * amount * boost);
+    ctx.drawImage(S.glow, view.ox, view.oy, view.w, view.h);
+    ctx.restore();
+  }
+
+  // ---------- water ----------
+  // Per helmet state: drip points [x, y, bead radius, fill/s] where water gathers and
+  // drops off, and fine streams [x, y, drops/s, droplet size].
+  const WATER = {
+    open:   { drips: [[477, 928, 3.4, 1.0], [515, 942, 3.0, 0.8], [552, 938, 3.4, 1.2], [600, 915, 2.8, 0.7], [632, 858, 2.6, 0.6]], pours: [[552, 944, 14, 1.2]] },
+    visor:  { drips: [[562, 896, 3.6, 1.2], [527, 860, 3.0, 0.8], [602, 876, 3.0, 1.0], [640, 858, 2.6, 0.6]], pours: [[590, 882, 18, 1.3]] },
+    closed: { drips: [[561, 892, 3.4, 1.0], [614, 926, 3.4, 1.1], [654, 940, 3.8, 1.3], [686, 912, 2.8, 0.8], [845, 750, 3.2, 0.9], [819, 766, 2.8, 0.8]],
+              pours: [[588, 916, 16, 1.3], [820, 768, 12, 1.2], [654, 946, 10, 1.4]] },
+  };
+  const FALL_END = 1130;
+  for (const w of Object.values(WATER)) {
+    w.beads = w.drips.map(([x, y, r, feed]) => ({ x, y, r, feed, vol: rr(0, 0.8), limit: rr(0.6, 1) }));
+    w.streams = w.pours.map(([x, y, rate, size]) => ({ x, y, rate, size, acc: 0 }));
+  }
+  let falling = [], bits = [];
+  function stepWater(dt, active) {
+    const w = WATER[active];
+    for (const b of w.beads) {
+      b.vol += b.feed * dt;
+      if (b.vol >= b.limit) {
+        const r = b.r * Math.pow(b.vol, 0.35);
+        falling.push({ x: b.x, y: b.y + r, r, vy: 20, life: 1 });
+        b.vol = 0.08; b.limit = rr(0.6, 1);
+      }
+    }
+    for (const p of w.streams) {
+      p.acc += p.rate * dt;
+      while (p.acc >= 1) { p.acc--; bits.push({ x: p.x + rr(-1.2, 1.2), y: p.y + rr(0, 25), vx: rr(-6, 6), vy: rr(80, 260), r: p.size * rr(0.55, 1.25) }); }
+    }
+    for (const d of falling) { d.vy += 1400 * dt; d.y += d.vy * dt; if (d.y > FALL_END) d.life -= dt * 5; }
+    falling = falling.filter(d => d.life > 0);
+    for (const b of bits) { b.vy += 1400 * dt; b.x += b.vx * dt; b.y += b.vy * dt; }
+    bits = bits.filter(b => b.y < FALL_END + 40);
+  }
+  // Procedural drop: a tiny inverted lens over the scene, centred at (x, y) image coords.
+  function drawLens(img, x, y, rad, stretch, alpha) {
+    const r = rad * view.s;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+    ctx.translate(sx(x), sy(y));
+    ctx.scale(1, stretch);
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, 6.283); ctx.clip();
+    ctx.save(); ctx.scale(-1, -1);
+    const k = 3.2;
+    ctx.drawImage(img, x - rad * k, y - rad * k, rad * k * 2, rad * k * 2, -r * 1.05, -r * 1.05, r * 2.1, r * 2.1);
+    ctx.restore();
+    const sh = ctx.createRadialGradient(-r * 0.25, -r * 0.3, r * 0.1, 0, 0, r);
+    sh.addColorStop(0, 'rgba(255,255,255,0.05)'); sh.addColorStop(0.7, 'rgba(40,40,50,0.08)'); sh.addColorStop(1, 'rgba(20,20,30,0.45)');
+    ctx.fillStyle = sh; ctx.fillRect(-r, -r, r * 2, r * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.beginPath(); ctx.ellipse(-r * 0.35, -r * 0.4, r * 0.28, r * 0.18, -0.6, 0, 6.283); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.beginPath(); ctx.ellipse(r * 0.2, r * 0.55, r * 0.35, r * 0.12, 0, 0, 6.283); ctx.fill();
+    ctx.restore();
+  }
+  function drawWater(beadSets, img) {
+    // Stream droplets as short motion-blurred streaks: a dark edge reads on the sky,
+    // a bright core reads on the armor.
+    const s = view.s;
+    ctx.lineCap = 'round';
+    for (const [style, wide] of [['rgba(55,60,72,0.3)', 2], ['rgba(255,255,255,0.9)', 0.9]]) {
+      ctx.strokeStyle = style;
+      for (const b of bits) {
+        const len = Math.min(34, Math.max(2, b.vy * 0.026));
+        ctx.lineWidth = b.r * wide * s;
+        ctx.beginPath(); ctx.moveTo(sx(b.x - b.vx * 0.02), sy(b.y - len)); ctx.lineTo(sx(b.x), sy(b.y)); ctx.stroke();
+      }
+    }
+    for (const [w, alpha] of beadSets) {
+      for (const b of w.beads) {
+        const sc = Math.pow(b.vol, 0.35), sy_ = Math.pow(b.vol, 0.6), r = b.r * sc;
+        drawLens(img, b.x, b.y + b.r * sy_, r, sy_ / sc, Math.min(1, b.vol * 3) * alpha);
+      }
+    }
+    for (const d of falling) drawLens(img, d.x, d.y, d.r, 1 + Math.min(1.6, d.vy / 600), d.life);
+  }
+
+  // ---------- loop ----------
+  let cycleT = 0, lastSeg = null;
+  function step(dt) {
+    time += dt; cycleT += dt;
+    const { seg, u } = phaseAt(cycleT);
+    if (seg !== lastSeg && lastSeg && lastSeg.powerUp) powerUp = time;
+    lastSeg = seg;
+    const active = seg.hold || (u < 0.5 ? seg.from : seg.to);
+    stepRain(dt); stepWater(dt, active); stepSparks(dt);
+  }
+  function draw() {
+    const { seg, u } = phaseAt(cycleT);
+    if (seg.hold) {
+      const S = st[seg.hold];
+      ctx.drawImage(S.base, 0, 0);
+      drawRain(S.rainMask);
+      drawGlow(S, 1);
+      drawWater([[WATER[seg.hold], 1]], S.img);
+    } else {
+      drawTransition(seg, u);
+      const q = smooth(u);
+      drawWater([[WATER[seg.from], 1 - q], [WATER[seg.to], q]], st[u < 0.5 ? seg.from : seg.to].img);
+    }
+    drawSparks();
+    drawFront();
+  }
+  // Click (or tap) jumps to the next helmet change.
+  function skipAhead() {
+    let t = cycleT % CYCLE, base = cycleT - t;
+    for (const seg of TIMELINE) {
+      if (t < seg.dur) { if (seg.hold) cycleT = base + seg.dur; return; }
+      t -= seg.dur; base += seg.dur;
+    }
+  }
+
+  Promise.all(STATES.flatMap(n => [load(`${n}.png`), load(`sky_${n}.png`), load(`glow_${n}.png`)])).then(imgs => {
+    STATES.forEach((n, i) => {
+      const [img, sky, glow] = imgs.slice(i * 3, i * 3 + 3);
+      const glowBlur = mk(IW, IH), g = glowBlur.getContext('2d');
+      g.filter = 'blur(10px)'; g.drawImage(glow, 0, 0); g.drawImage(glow, 0, 0);
+      st[n] = { img, sky, glow, glowBlur };
+    });
+    resize();
+    for (let i = 0; i < 60; i++) step(1 / 30); // warm up so water is already flowing
+    cycleT = CAPTURE ? 0 : cycleT;
+    if (CAPTURE) { window.wp = { step, draw, canvas, CYCLE }; draw(); window.wpReady = true; return; }
+    addEventListener('resize', resize);
+    addEventListener('pointerdown', skipAhead);
+    let last = performance.now();
+    const frame = now => {
+      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+      step(dt); draw(); requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  });
+})();
+</script>
+</body>
+</html>
